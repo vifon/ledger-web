@@ -1,5 +1,5 @@
 from django.contrib import admin
 
-from .models import Rules
+from .models import Rule
 
-admin.site.register(Rules)
+admin.site.register(Rule)
