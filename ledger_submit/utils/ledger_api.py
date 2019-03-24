@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import subprocess
 import time
 
 
@@ -38,7 +37,7 @@ class Entry:
 
     template = """
 {date} {payee}
-    {account_to:<34s}  {amount:>12}{currency}
+    {account_to:<34s}  {amount:>12}{spacing}{currency}
     {account_from}
 """.rstrip()
 
@@ -47,6 +46,7 @@ class Entry:
         self.account_from = kwargs['account_from']
         self.account_to = kwargs['account_to']
         self.amount = "{:.2f}".format(float(kwargs['amount'].split()[0]))
+        self.spacing = ""
         self.currency = kwargs['amount'].split()[1]
         self.date = kwargs.get('date', time.strftime("%F"))
         self.normalize_currency()
@@ -59,7 +59,7 @@ class Entry:
             pre_currency, self.currency = conversions[self.currency]
             self.amount = "{}{}".format(pre_currency, self.amount)
         if self.currency:
-            self.currency = " {}".format(self.currency)
+            self.spacing = " "
 
     def __str__(self):
         return self.template.format(**vars(self))
@@ -67,18 +67,6 @@ class Entry:
     def store(self, ledger_path):
         with open(ledger_path, 'a') as ledger_file:
             print(self, file=ledger_file)
-
-
-def accounts(ledger_path):
-    return _call(ledger_path, ["accounts"])
-
-
-def _call(ledger_path, args):
-    output = subprocess.check_output(
-        ["ledger", "-f", ledger_path] + args,
-        universal_newlines=True
-    )
-    return output.strip().split("\n")
 
 
 if __name__ == '__main__':
