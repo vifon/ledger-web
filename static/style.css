@@ -2,3 +2,12 @@
   border: 1px solid black;
   padding: 3px;
 }
+
+.column-header {
+  color: black;
+  text-align: center;
+  border: 2px solid black;
+}
+.column-header:hover {
+  background-color: #aaa;
+}

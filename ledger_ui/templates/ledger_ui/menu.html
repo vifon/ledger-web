@@ -1,0 +1,11 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static "style.css" %}">
+
+<div class="border">
+  <ul>
+    <li><a href="{% url 'ledger_ui:index' %}">Main</a></li>
+    <li><a href="{% url 'ledger_ui:accounts' %}">Accounts</a></li>
+    <li><a href="{% url 'ledger_ui:submit' %}">Submit</a></li>
+  </ul>
+</div>
