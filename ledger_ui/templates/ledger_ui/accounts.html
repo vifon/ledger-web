@@ -1,5 +1,9 @@
 {% include 'ledger_ui/menu.html' %}
 
+<form action="{{ request.path }}" method="GET">
+  <input name="search" type="text" value="{{ search }}" />
+  <input type="submit" value="Search" />
+</form>
 <ul>
   {% for account in accounts %}
     <li>{{ account }}</li>

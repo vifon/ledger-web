@@ -1,15 +1,12 @@
+from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render
 
-import os
-
 from .utils import ledger_api
-
-LEDGER_PATH = os.environ.get('LEDGER_PATH', '/home/vifon/sync.d/Cloud/ledger.dat')
 
 
 def index(request):
-    with open(LEDGER_PATH, 'r') as ledger_fd:
+    with open(settings.LEDGER_PATH, 'r') as ledger_fd:
         entries = list(ledger_api.read_entries(ledger_fd))
     reverse = request.GET.get('reverse', 'false').lower() not in ['false', '0']
     if reverse:
@@ -29,9 +26,15 @@ def submit(request):
 
 
 def accounts(request):
-    accounts = ledger_api.accounts(LEDGER_PATH)
+    accounts = ledger_api.accounts(settings.LEDGER_PATH)
+    search = request.GET.get('search', '').lower()
+    if search:
+        accounts = [account for account in accounts if search in account.lower()]
     return render(
         request,
         'ledger_ui/accounts.html',
-        {'accounts': accounts},
+        {
+            'accounts': accounts,
+            'search': search,
+        },
     )

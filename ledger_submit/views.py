@@ -1,16 +1,13 @@
+from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods, require_POST
 
-import os
 import json
 
 from .models import Rule
 from .utils import ledger_api
-
-
-LEDGER_PATH = os.environ.get('LEDGER_PATH', '/dev/null')
 
 
 def add_ledger_entry(account_from, account_to, payee, amount):
@@ -29,7 +26,7 @@ def add_ledger_entry(account_from, account_to, payee, amount):
         account_to=account_to,
         amount=amount,
     )
-    entry.store(LEDGER_PATH)
+    entry.store(settings.LEDGER_PATH)
     return entry
 
 
