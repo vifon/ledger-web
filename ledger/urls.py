@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
+    path('', RedirectView.as_view(pattern_name='ledger_ui:index')),
     path('admin/', admin.site.urls),
     path('ledger/ui/', include('ledger_ui.urls')),
     path('ledger/submit/', include('ledger_submit.urls')),
