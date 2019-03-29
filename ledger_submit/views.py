@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods, require_POST
 
 import json
@@ -60,7 +59,6 @@ def add_ledger_entry(account_from, account_to, payee, amount):
 
 
 @require_POST
-@csrf_exempt
 @require_token
 def submit_as_url(request, account_from, account_to, payee, amount):
     entry = add_ledger_entry(account_from, account_to, payee, amount)
@@ -78,7 +76,6 @@ def submit_as_url(request, account_from, account_to, payee, amount):
 
 
 @require_POST
-@csrf_exempt
 @require_token
 def submit_as_json(request):
     params = json.loads(request.body)
