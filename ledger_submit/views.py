@@ -48,6 +48,7 @@ def add_ledger_entry(account_from, account_to, payee, amount):
         account_from = replacement.acc_from or account_from
         account_to = replacement.acc_to or account_to
 
+    amount = amount.replace(",", ".").strip()
     entry = ledger_api.Entry(
         payee=payee,
         account_from=account_from,
