@@ -59,30 +59,22 @@ def add_ledger_entry(account_from, account_to, payee, amount):
     return entry
 
 
-@require_http_methods(['GET', 'POST'])
+@require_POST
 @csrf_exempt
 @require_token
 def submit_as_url(request, account_from, account_to, payee, amount):
     entry = add_ledger_entry(account_from, account_to, payee, amount)
 
-    if request.method == 'GET':
-        return render(
-            request,
-            'ledger_submit/entry.html',
-            {'entry': entry},
-            status=201,
-        )
-    elif request.method == 'POST':
-        return JsonResponse(
-            {
-                'payee': entry.payee,
-                'amount': entry.amount,
-                'currency': entry.currency,
-                'account_from': entry.account_from,
-                'account_to': entry.account_to,
-            },
-            status=201,
-        )
+    return JsonResponse(
+        {
+            'payee': entry.payee,
+            'amount': entry.amount,
+            'currency': entry.currency,
+            'account_from': entry.account_from,
+            'account_to': entry.account_to,
+        },
+        status=201,
+    )
 
 
 @require_POST
