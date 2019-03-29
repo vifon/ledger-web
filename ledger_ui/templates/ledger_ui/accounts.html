@@ -1,11 +1,13 @@
-{% include 'ledger_ui/menu.html' %}
+{% extends "ledger_ui/base.html" %}
 
-<form action="{{ request.path }}" method="GET">
-  <input name="search" type="text" value="{{ search }}" />
-  <input type="submit" value="Search" />
-</form>
-<ul>
-  {% for account in accounts %}
-    <li>{{ account }}</li>
-  {% endfor %}
-</ul>
+{% block content %}
+  <form action="{{ request.path }}" method="GET">
+    <input name="search" type="text" value="{{ search }}" />
+    <input type="submit" value="Search" />
+  </form>
+  <ul>
+    {% for account in accounts %}
+      <li>{{ account }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'ledger_ui.apps.LedgerUiConfig',
     'ledger_submit.apps.LedgerSubmitConfig',
+    'accounts.apps.AccountsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -124,5 +125,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+LOGIN_REDIRECT_URL = 'ledger_ui:index'
 
 LEDGER_PATH = os.environ.get('LEDGER_PATH', '/dev/null')

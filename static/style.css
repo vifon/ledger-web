@@ -11,3 +11,8 @@
 .column-header:hover {
   background-color: #aaa;
 }
+
+.logout {
+  float: right;
+  margin: 3px;
+}
