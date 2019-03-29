@@ -2,11 +2,19 @@ from django.test import TestCase
 from django.urls import reverse
 
 from parameterized import parameterized
+import json
 
-from .models import Rules
+from .models import Rule, Token
 
 
 class SubmitTests(TestCase):
+
+    good_token = 'awesometesttoken'
+
+    def setUp(self):
+        Token.objects.create(
+            token=self.good_token,
+        )
 
     @parameterized.expand([
         (
@@ -41,22 +49,26 @@ class SubmitTests(TestCase):
         ),
     ])
     def test_replacements(self, input_data, expected_output):
-        Rules.objects.create(
+        Rule.objects.create(
             payee='AUCHAN WARSZAWA',
             new_payee='Auchan',
             acc_from='',
             acc_to='Expenses:Food',
         )
 
-        response = self.client.post(reverse(
-            'ledger_submit:as_url',
-            args=[input_data[key] for key in [
-                'account_from',
-                'account_to',
-                'payee',
-                'amount',
-            ]],
-        ))
+        response = self.client.post(
+            reverse(
+                'ledger_submit:as_url',
+                args=[input_data[key] for key in [
+                    'account_from',
+                    'account_to',
+                    'payee',
+                    'amount',
+                ]]
+            ),
+            content_type='application/json',
+            data={'token': self.good_token},
+        )
         self.assertEqual(response.status_code, 201)
         self.assertJSONEqual(
             response.content,
@@ -66,10 +78,46 @@ class SubmitTests(TestCase):
         response = self.client.post(
             reverse('ledger_submit:as_json'),
             content_type='application/json',
-            data=input_data,
+            data=dict(**input_data, token=self.good_token),
         )
         self.assertEqual(response.status_code, 201)
         self.assertJSONEqual(
             response.content,
             expected_output,
         )
+
+    @parameterized.expand([
+        (good_token, 201),
+        ('badtesttoken', 403),
+        (None, 403),
+    ])
+    def test_authentication(self, token, expected_status):
+        input_data = {
+            'payee': 'CARREFOUR WARSZAWA',
+            'account_to': 'Expenses:Uncategorized',
+            'account_from': 'Liabilities:Credit Card',
+            'amount': '10 PLN',
+        }
+
+        if token:
+            input_data.update(token=token)
+
+        response = self.client.post(
+            reverse('ledger_submit:as_json'),
+            content_type='application/json',
+            data=input_data,
+        )
+        self.assertEqual(response.status_code, expected_status)
+        response_dict = json.loads(response.content)
+
+        if expected_status == 403:
+            self.assertEqual(
+                response_dict,
+                {
+                    'error': {
+                        'not_authorized': token,
+                    },
+                }
+            )
+        else:
+            self.assertNotIn('error', response_dict)

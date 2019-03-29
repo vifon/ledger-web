@@ -6,8 +6,37 @@ from django.views.decorators.http import require_http_methods, require_POST
 
 import json
 
-from .models import Rule
+from .models import Rule, Token
 from .utils import ledger_api
+
+
+def require_token(view):
+    def inner(request, *args, **kwargs):
+        try:
+            params = json.loads(request.body)
+            token = params['token']
+            Token.objects.get(token=token)
+        except (KeyError, json.decoder.JSONDecodeError):
+            return JsonResponse(
+                {
+                    'error': {
+                        'not_authorized': None,
+                    },
+                },
+                status=403,
+            )
+        except Token.DoesNotExist:
+            return JsonResponse(
+                {
+                    'error': {
+                        'not_authorized': token,
+                    },
+                },
+                status=403,
+            )
+        else:
+            return view(request, *args, **kwargs)
+    return inner
 
 
 def add_ledger_entry(account_from, account_to, payee, amount):
@@ -32,6 +61,7 @@ def add_ledger_entry(account_from, account_to, payee, amount):
 
 @require_http_methods(['GET', 'POST'])
 @csrf_exempt
+@require_token
 def submit_as_url(request, account_from, account_to, payee, amount):
     entry = add_ledger_entry(account_from, account_to, payee, amount)
 
@@ -57,9 +87,16 @@ def submit_as_url(request, account_from, account_to, payee, amount):
 
 @require_POST
 @csrf_exempt
+@require_token
 def submit_as_json(request):
     params = json.loads(request.body)
-    entry = add_ledger_entry(**params)
+    ledger_data = {
+        'payee': params['payee'],
+        'amount': params['amount'],
+        'account_from': params['account_from'],
+        'account_to': params['account_to'],
+    }
+    entry = add_ledger_entry(**ledger_data)
     return JsonResponse(
         {
             'payee': entry.payee,
