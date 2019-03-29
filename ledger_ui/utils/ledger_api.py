@@ -33,3 +33,4 @@ def read_entries(fd):
             if re.match(r'\d{4}-\d{2}-\d{2} ', line):
                 # A beginning of a next entry.
                 entry.append(line)
+    yield "".join(entry)
