@@ -57,7 +57,6 @@ class LedgerForm(forms.Form):
 def submit(request):
     currencies = ledger_api.currencies(settings.LEDGER_PATH)
     accounts = ledger_api.accounts(settings.LEDGER_PATH)
-    print(currencies)
 
     if request.method == 'POST':
         form = LedgerForm(
