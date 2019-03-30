@@ -45,10 +45,17 @@ class Entry:
         self.payee = kwargs['payee']
         self.account_from = kwargs['account_from']
         self.account_to = kwargs['account_to']
-        self.amount = "{:.2f}".format(float(kwargs['amount'].split()[0]))
-        self.spacing = ""
-        self.currency = kwargs['amount'].split()[1]
         self.date = kwargs.get('date', time.strftime("%F"))
+        self.spacing = ""
+
+        try:
+            self.currency = kwargs['currency']
+        except KeyError:
+            self.currency = kwargs['amount'].split()[1]
+            self.amount = "{:.2f}".format(float(kwargs['amount'].split()[0]))
+        else:
+            self.amount = "{:.2f}".format(float(kwargs['amount']))
+
         self.normalize_currency()
 
     def normalize_currency(self):

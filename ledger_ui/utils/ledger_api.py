@@ -7,6 +7,8 @@ import subprocess
 def accounts(ledger_path):
     return _call(ledger_path, ["accounts"])
 
+def currencies(ledger_path):
+    return _call(ledger_path, ["commodities"])
 
 def _call(ledger_path, args):
     output = subprocess.check_output(
