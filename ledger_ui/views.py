@@ -28,9 +28,9 @@ class LedgerForm(forms.Form):
 
     def __init__(self, *args, currencies, accounts, **kwargs):
         initial_choices = {
-            'currency': 'PLN',
-            'acc_from': 'Liabilities:Karta kredytowa',
-            'acc_to': 'Expenses:Uncategorized',
+            'currency': settings.LEDGER_DEFAULT_CURRENCY,
+            'acc_from': settings.LEDGER_DEFAULT_FROM,
+            'acc_to': settings.LEDGER_DEFAULT_TO,
         }
         super().__init__(initial=initial_choices, *args, **kwargs)
         self.currencies = currencies
@@ -40,7 +40,7 @@ class LedgerForm(forms.Form):
         )
         self.fields['acc_to'] = forms.ChoiceField(
             label='Account to',
-            choices=[(x, x) for x in (['Expenses:Uncategorized'] + accounts)],
+            choices=[(x, x) for x in ([settings.LEDGER_DEFAULT_TO] + accounts)],
         )
         self.fields['currency'] = forms.ChoiceField(
             choices=[(x, x) for x in self.currencies],

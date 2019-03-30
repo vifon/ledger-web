@@ -129,3 +129,6 @@ STATICFILES_DIRS = [
 LOGIN_REDIRECT_URL = 'ledger_ui:index'
 
 LEDGER_PATH = os.environ.get('LEDGER_PATH', '/dev/null')
+LEDGER_DEFAULT_CURRENCY = 'PLN'
+LEDGER_DEFAULT_FROM = 'Liabilities:Karta kredytowa'
+LEDGER_DEFAULT_TO = 'Expenses:Uncategorized'
