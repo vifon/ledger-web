@@ -3,8 +3,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
-from .utils import ledger_api
-from ledger_submit.utils.ledger_api import Entry
+from utils import ledger_api
 
 
 @login_required
@@ -68,7 +67,7 @@ def submit(request):
         )
         if form.is_valid():
             validated = form.cleaned_data
-            entry = Entry(
+            entry = ledger_api.Entry(
                 payee=validated['payee'],
                 account_from=validated['acc_from'],
                 account_to=validated['acc_to'],

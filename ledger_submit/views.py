@@ -7,7 +7,7 @@ from django.views.decorators.http import require_http_methods, require_POST
 import json
 
 from .models import Rule, Token
-from .utils import ledger_api
+from utils import ledger_api
 
 
 def require_token(view):

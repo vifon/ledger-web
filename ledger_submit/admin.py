@@ -4,7 +4,7 @@ from django.contrib import admin
 
 from .models import Rule, Token
 
-from ledger_ui.utils.ledger_api import accounts as ledger_accounts
+from utils.ledger_api import accounts as ledger_accounts
 
 
 def account_choices():
