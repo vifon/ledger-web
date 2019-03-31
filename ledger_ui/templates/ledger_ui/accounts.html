@@ -1,6 +1,7 @@
 {% extends "./base.html" %}
 
 {% block content %}
+  <h2>Ledger accounts</h2>
   <form action="{{ request.path }}" method="GET">
     <input name="search" type="text" value="{{ search }}" />
     <input type="submit" value="Search" />
