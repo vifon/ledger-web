@@ -1,10 +1,12 @@
 from django.test import TestCase
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 from parameterized import parameterized
 import json
 
 from .models import Rule, Token
+from ledger_ui.models import LedgerPath
 
 
 class SubmitTests(TestCase):
@@ -12,7 +14,15 @@ class SubmitTests(TestCase):
     good_token = 'awesometesttoken'
 
     def setUp(self):
+        self.user = User.objects.create_user(
+            username='tester',
+        )
+        LedgerPath.objects.create(
+            user=self.user,
+            path='/dev/null',
+        )
         Token.objects.create(
+            user=self.user,
             token=self.good_token,
         )
 
@@ -50,6 +60,7 @@ class SubmitTests(TestCase):
     ])
     def test_replacements(self, input_data, expected_output):
         Rule.objects.create(
+            user=self.user,
             payee='AUCHAN WARSZAWA',
             new_payee='Auchan',
             acc_from='',

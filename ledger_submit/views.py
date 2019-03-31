@@ -42,7 +42,7 @@ def require_token(view):
 
 def add_ledger_entry(ledger_path, account_from, account_to, payee, amount):
     try:
-        replacement = Rule.objects.get(pk=payee)
+        replacement = Rule.objects.get(payee=payee)
     except Rule.DoesNotExist:
         pass
     else:
