@@ -1,6 +1,7 @@
 <div class="border">
   {% if user.is_authenticated %}
     <div class="logout">
+      Logged in as: {{ user }}
       <a href="{% url 'logout' %}">Logout</a>
     </div>
   {% endif %}
