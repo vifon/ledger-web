@@ -4,7 +4,8 @@ from django.db import models
 
 
 class Rule(models.Model):
-    payee = models.CharField(max_length=512, primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    payee = models.CharField(max_length=512)
     new_payee = models.CharField(max_length=512, blank=True)
     acc_from = models.CharField(
         'Account from',
@@ -16,6 +17,9 @@ class Rule(models.Model):
         max_length=512,
         blank=True,
     )
+
+    class Meta:
+        unique_together = (('payee', 'user'))
 
 
 class Token(models.Model):

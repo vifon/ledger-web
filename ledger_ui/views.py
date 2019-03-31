@@ -1,14 +1,20 @@
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.http import Http404
+from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views import generic
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-from .forms import LedgerForm
+from .forms import LedgerForm, RuleModelForm
+from ledger_submit.models import Rule
 from utils import ledger_api
 
 
 @login_required
 def index(request):
-    with open(settings.LEDGER_PATH, 'r') as ledger_fd:
+    with open(request.user.ledgerpath.path, 'r') as ledger_fd:
         entries = list(ledger_api.read_entries(ledger_fd))
     reversed_sort = request.GET.get('reverse', 'false').lower() not in ['false', '0']
     if reversed_sort:
@@ -25,8 +31,10 @@ def index(request):
 
 @login_required
 def submit(request):
-    currencies = ledger_api.currencies(settings.LEDGER_PATH)
-    accounts = ledger_api.accounts(settings.LEDGER_PATH)
+    ledger_path = request.user.ledgerpath.path
+
+    currencies = ledger_api.currencies(ledger_path)
+    accounts = ledger_api.accounts(ledger_path)
 
     if request.method == 'POST':
         form = LedgerForm(
@@ -43,7 +51,7 @@ def submit(request):
                 amount=validated['amount'],
                 currency=validated['currency'],
             )
-            entry.store(settings.LEDGER_PATH)
+            entry.store(ledger_path)
     else:
         form = LedgerForm(
             currencies=currencies,
@@ -59,7 +67,8 @@ def submit(request):
 
 @login_required
 def accounts(request):
-    accounts = ledger_api.accounts(settings.LEDGER_PATH)
+    ledger_path = request.user.ledgerpath.path
+    accounts = ledger_api.accounts(ledger_path)
     search = request.GET.get('search', '').lower()
     if search:
         accounts = [account for account in accounts if search in account.lower()]
@@ -71,3 +80,59 @@ def accounts(request):
             'search': search,
         },
     )
+
+
+@method_decorator(login_required, name='dispatch')
+class RuleIndexView(generic.ListView):
+    model = Rule
+    template_name = 'ledger_ui/rules.html'
+
+    def get_queryset(self):
+        return Rule.objects.filter(user=self.request.user)
+
+
+class UserCheckMixin:
+    def get_object(self, *args, **kwargs):
+        obj = super().get_object(*args, **kwargs)
+        if not obj.user == self.request.user:
+            raise Http404
+        return obj
+
+
+class RuleViewBase(CreateView):
+    model = Rule
+    form_class = RuleModelForm
+    template_name = 'ledger_ui/rule.html'
+    success_url = reverse_lazy('ledger_ui:rules')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        ledger_path = self.request.user.ledgerpath.path
+        kwargs['accounts'] = ledger_api.accounts(ledger_path)
+        return kwargs
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+@method_decorator(login_required, name='dispatch')
+class RuleEditView(UserCheckMixin, RuleViewBase, UpdateView):
+    pass
+
+
+@method_decorator(login_required, name='dispatch')
+class RuleCreateView(RuleViewBase, CreateView):
+    pass
+
+
+@method_decorator(login_required, name='dispatch')
+class RuleDeleteView(UserCheckMixin, DeleteView):
+    model = Rule
+    success_url = reverse_lazy('ledger_ui:rules')
+
+    def get_object(self, *args, **kwargs):
+        obj = super().get_object(*args, **kwargs)
+        if not obj.user == self.request.user:
+            raise Http404
+        return obj

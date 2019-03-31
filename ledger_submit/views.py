@@ -15,7 +15,8 @@ def require_token(view):
         try:
             params = json.loads(request.body)
             token = params['token']
-            Token.objects.get(token=token)
+            token_obj = Token.objects.get(token=token)
+            request.user = token_obj.user
         except (KeyError, json.decoder.JSONDecodeError):
             return JsonResponse(
                 {
@@ -39,7 +40,7 @@ def require_token(view):
     return inner
 
 
-def add_ledger_entry(account_from, account_to, payee, amount):
+def add_ledger_entry(ledger_path, account_from, account_to, payee, amount):
     try:
         replacement = Rule.objects.get(pk=payee)
     except Rule.DoesNotExist:
@@ -56,7 +57,7 @@ def add_ledger_entry(account_from, account_to, payee, amount):
         account_to=account_to,
         amount=amount,
     )
-    entry.store(settings.LEDGER_PATH)
+    entry.store(ledger_path)
     return entry
 
 
@@ -64,7 +65,8 @@ def add_ledger_entry(account_from, account_to, payee, amount):
 @csrf_exempt
 @require_token
 def submit_as_url(request, account_from, account_to, payee, amount):
-    entry = add_ledger_entry(account_from, account_to, payee, amount)
+    ledger_path = request.user.ledgerpath.path
+    entry = add_ledger_entry(ledger_path, account_from, account_to, payee, amount)
 
     return JsonResponse(
         {
@@ -89,7 +91,8 @@ def submit_as_json(request):
         'account_from': params['account_from'],
         'account_to': params['account_to'],
     }
-    entry = add_ledger_entry(**ledger_data)
+    ledger_path = request.user.ledgerpath.path
+    entry = add_ledger_entry(ledger_path, **ledger_data)
     return JsonResponse(
         {
             'payee': entry.payee,

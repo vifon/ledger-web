@@ -1,0 +1,32 @@
+{% extends "./base.html" %}
+
+{% block content %}
+  <h2>Rules</h2>
+  <form action="../rule/">
+    <input type="submit" value="New" />
+  </form>
+  <table border="1">
+    <tr>
+      <th>Payee</th>
+      <th>New payee</th>
+      <th>Account from</th>
+      <th>Account to</th>
+    </tr>
+    {% for rule in object_list %}
+      <tr>
+        <td>
+          <a href="{% url 'ledger_ui:rule' rule.pk %}">{{ rule.payee }}</a>
+        </td>
+        <td> {{ rule.new_payee }} </td>
+        <td> {{ rule.acc_from }} </td>
+        <td> {{ rule.acc_to }} </td>
+        <td>
+          <form action="{% url 'ledger_ui:rule_delete' rule.pk %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Delete" />
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock %}
