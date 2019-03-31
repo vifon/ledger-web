@@ -1,5 +1,9 @@
 {% extends "./base.html" %}
 
+{% block title %}
+  {{ block.super }} - Register
+{% endblock %}
+
 {% block content %}
   <a style="text-decoration: none;"
      href="{{ request.path }}?reverse={{ reverse | yesno:"False,True" }}"

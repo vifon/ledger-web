@@ -1,5 +1,9 @@
 {% extends "./base.html" %}
 
+{% block title %}
+  {{ block.super }} - Rules
+{% endblock %}
+
 {% block content %}
   <h2>Rules</h2>
   <form action="../rule/">

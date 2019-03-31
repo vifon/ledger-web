@@ -1,5 +1,9 @@
 {% extends "./base.html" %}
 
+{% block title %}
+  {{ block.super }} - Accounts
+{% endblock %}
+
 {% block content %}
   <h2>Ledger accounts</h2>
   <form action="{{ request.path }}" method="GET">

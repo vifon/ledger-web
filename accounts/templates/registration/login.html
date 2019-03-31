@@ -1,5 +1,9 @@
 {% extends "ledger_ui/base.html" %}
 
+{% block title %}
+  {{ block.super }} - Login
+{% endblock %}
+
 {% block content %}
 
   {% if form.errors %}

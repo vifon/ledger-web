@@ -1,5 +1,9 @@
 {% extends "./base.html" %}
 
+{% block title %}
+  {{ block.super }} - New transaction
+{% endblock %}
+
 {% block content %}
   <h2>New transaction</h2>
   {% if form.is_valid %}
