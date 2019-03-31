@@ -1,10 +1,6 @@
-from django import forms
-from django.conf import settings
 from django.contrib import admin
 
 from .models import Rule, Token
-
-from utils.ledger_api import accounts as ledger_accounts
 
 
 @admin.register(Rule)
@@ -15,4 +11,3 @@ class RuleAdmin(admin.ModelAdmin):
 @admin.register(Token)
 class TokenAdmin(admin.ModelAdmin):
     list_display = ['user', 'short_token']
-
