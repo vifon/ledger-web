@@ -23,7 +23,7 @@ class Rule(models.Model):
 
 
 class Token(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     token = models.CharField(
         max_length=256,
         validators=[MinLengthValidator(32)],
