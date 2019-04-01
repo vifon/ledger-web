@@ -15,7 +15,7 @@ from utils import ledger_api
 def index(request):
     with open(request.user.ledgerpath.path, 'r') as ledger_fd:
         entries = list(ledger_api.read_entries(ledger_fd))
-    reversed_sort = request.GET.get('reverse', 'false').lower() not in ['false', '0']
+    reversed_sort = request.GET.get('reverse', 'true').lower() not in ['false', '0']
     if reversed_sort:
         entries = reversed(entries)
     return render(
