@@ -93,13 +93,21 @@ def _call(ledger_path, args):
 
 
 def read_entries(fd):
+    def prepare_entry(entry_lines):
+        return {
+            'body': "".join(entry_lines),
+            'payee': re.match(
+                r'\d{4}-\d{2}-\d{2}(?: [!*])?\s+(.*)', entry_lines[0]
+            ).group(1),
+        }
+
     entry = []
     for line in fd:
         if entry:
             # In the middle of parsing an entry.
             if line == "\n":
                 # End of an entry.
-                yield "".join(entry)
+                yield prepare_entry(entry)
                 entry = []
             else:
                 # Let's parse some more of it.
@@ -109,7 +117,7 @@ def read_entries(fd):
             if re.match(r'\d{4}-\d{2}-\d{2} ', line):
                 # A beginning of a next entry.
                 entry.append(line)
-    yield "".join(entry)
+    yield prepare_entry(entry)
 
 
 if __name__ == '__main__':

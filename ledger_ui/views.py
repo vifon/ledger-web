@@ -122,7 +122,14 @@ class RuleEditView(UserCheckMixin, RuleViewBase, UpdateView):
 
 @method_decorator(login_required, name='dispatch')
 class RuleCreateView(RuleViewBase, CreateView):
-    pass
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        try:
+            kwargs['initial']['payee'] = self.request.GET['payee']
+        except KeyError:
+            pass
+        return kwargs
 
 
 @method_decorator(login_required, name='dispatch')

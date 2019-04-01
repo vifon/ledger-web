@@ -4,7 +4,6 @@
 }
 
 .column-header {
-  color: black;
   text-align: center;
   border: 2px solid black;
 }
@@ -15,4 +14,12 @@
 .logout {
   float: right;
   margin: 3px;
+}
+
+.plain-link {
+  color: inherit;
+  text-decoration: inherit;
+}
+.plain-link:hover > pre {
+  background-color: #ddd;
 }

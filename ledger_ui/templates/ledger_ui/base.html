@@ -1,11 +1,16 @@
 {% load static %}
 
-<link rel="stylesheet" type="text/css" href="{% static "style.css" %}">
-
-{% include './menu.html' %}
-
-<title>
-  {% block title %}Ledger{% endblock %}
-</title>
-
-{% block content %}{% endblock %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="{% static "style.css" %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+      {% block title %}Ledger{% endblock %}
+    </title>
+  </head>
+  <body>
+    {% include './menu.html' %}
+    {% block content %}{% endblock %}
+  </body>
+</html>
