@@ -6,7 +6,7 @@
 
 {% block content %}
   <h2>Rules</h2>
-  <form action="../rule/">
+  <form action="{% url 'ledger_ui:rule' %}">
     <input type="submit" value="New" />
   </form>
   <table border="1">
