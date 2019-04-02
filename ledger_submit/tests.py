@@ -26,7 +26,34 @@ class SubmitTests(TestCase):
             token=self.good_token,
         )
 
+        self.another_user = User.objects.create_user(
+            username='another',
+        )
+        LedgerPath.objects.create(
+            user=self.another_user,
+            path='/dev/null',
+        )
+        Token.objects.create(
+            user=self.another_user,
+            token='anothertoken',
+        )
+
     @parameterized.expand([
+        (
+            {
+                'payee': 'AUCHAN WARSZAWA',
+                'account_to': 'Expenses:Uncategorized',
+                'account_from': 'Liabilities:Credit Card',
+                'amount': '10 PLN',
+            },
+            {
+                'payee': 'Auchan',
+                'account_to': 'Expenses:Food',
+                'account_from': 'Liabilities:Credit Card',
+                'amount': '10.00',
+                'currency': 'PLN',
+            }
+        ),
         (
             {
                 'payee': 'AUCHAN WARSZAWA',
@@ -59,13 +86,14 @@ class SubmitTests(TestCase):
         ),
     ])
     def test_replacements(self, input_data, expected_output):
-        Rule.objects.create(
-            user=self.user,
-            payee='AUCHAN WARSZAWA',
-            new_payee='Auchan',
-            acc_from='',
-            acc_to='Expenses:Food',
-        )
+        for user in [self.user, self.another_user]:
+            Rule.objects.create(
+                user=user,
+                payee='AUCHAN WARSZAWA',
+                new_payee='Auchan',
+                acc_from='',
+                acc_to='Expenses:Food',
+            )
 
         response = self.client.post(
             reverse(
