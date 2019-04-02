@@ -46,6 +46,7 @@ def add_ledger_entry(user, account_from, account_to, payee, amount):
         FROM ledger_submit_rule
         WHERE user_id = %s
         AND %s LIKE payee
+        LIMIT 1
         ''', [user.id, payee])[0]
     except IndexError:
         pass
