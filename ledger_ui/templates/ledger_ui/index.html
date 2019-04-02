@@ -11,13 +11,15 @@
   <h1 class="column-header">Ledger entries {{ reverse | yesno:"↑,↓" }}</h1>
   </a>
 
-  {% for entry in entries %}
-    <div>
-      <a class="plain-link"
-         href="{% url 'ledger_ui:rule' %}?payee={{ entry.payee }}"
-      >
-        <pre class="border">{{ entry.body }}</pre>
-      </a>
-    </div>
-  {% endfor %}
+  <div class="list-container">
+    {% for entry in entries %}
+      <div>
+        <a class="plain-link"
+           href="{% url 'ledger_ui:rule' %}?payee={{ entry.payee }}"
+        >
+          <pre class="border">{{ entry.body }}</pre>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
 {% endblock %}
