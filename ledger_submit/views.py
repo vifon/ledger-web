@@ -41,8 +41,13 @@ def require_token(view):
 def add_ledger_entry(user, account_from, account_to, payee, amount):
     ledger_path = user.ledgerpath.path
     try:
-        replacement = Rule.objects.get(user=user, payee=payee)
-    except Rule.DoesNotExist:
+        replacement = Rule.objects.raw('''
+        SELECT *
+        FROM ledger_submit_rule
+        WHERE user_id = %s
+        AND %s LIKE payee
+        ''', [user.id, payee])[0]
+    except IndexError:
         pass
     else:
         payee = replacement.new_payee or payee
