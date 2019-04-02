@@ -6,6 +6,8 @@ from django.utils.decorators import method_decorator
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
+import re
+
 from .forms import LedgerForm, RuleModelForm
 from ledger_submit.models import Rule
 from utils import ledger_api
@@ -126,7 +128,7 @@ class RuleCreateView(RuleViewBase, CreateView):
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         try:
-            kwargs['initial']['payee'] = self.request.GET['payee']
+            kwargs['initial']['payee'] = re.escape(self.request.GET['payee'])
         except KeyError:
             pass
         return kwargs

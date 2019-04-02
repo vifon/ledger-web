@@ -89,7 +89,7 @@ class SubmitTests(TestCase):
         for user in [self.user, self.another_user]:
             Rule.objects.create(
                 user=user,
-                payee='AUCHAN WARSZ%',
+                payee='AUCHAN WARSZ.*',
                 new_payee='Auchan',
                 acc_from='',
                 acc_to='Expenses:Food',

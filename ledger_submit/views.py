@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 import json
+import re
 
 from .models import Rule, Token
 from utils import ledger_api
@@ -40,20 +41,18 @@ def require_token(view):
 
 def add_ledger_entry(user, account_from, account_to, payee, amount):
     ledger_path = user.ledgerpath.path
-    try:
-        replacement = Rule.objects.raw('''
-        SELECT *
-        FROM ledger_submit_rule
-        WHERE user_id = %s
-        AND %s LIKE payee
-        LIMIT 1
-        ''', [user.id, payee])[0]
-    except IndexError:
-        pass
-    else:
-        payee = replacement.new_payee or payee
-        account_from = replacement.acc_from or account_from
-        account_to = replacement.acc_to or account_to
+    replacement_rules = Rule.objects.filter(user=user)
+    for rule in replacement_rules:
+        try:
+            match = re.fullmatch(rule.payee, payee)
+        except re.error:
+            pass
+        else:
+            if match:
+                payee = rule.new_payee or payee
+                account_from = rule.acc_from or account_from
+                account_to = rule.acc_to or account_to
+                break
 
     amount = amount.replace(",", ".").strip()
     entry = ledger_api.Entry(
