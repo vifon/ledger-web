@@ -94,11 +94,13 @@ def _call(ledger_path, args):
 
 def read_entries(fd):
     def prepare_entry(entry_lines):
+        match = re.match(
+            r'(\d{4}-\d{2}-\d{2})(?: [!*])?\s+(.*)', entry_lines[0]
+        )
         return {
             'body': "".join(entry_lines),
-            'payee': re.match(
-                r'\d{4}-\d{2}-\d{2}(?: [!*])?\s+(.*)', entry_lines[0]
-            ).group(1),
+            'date': match.group(1),
+            'payee': match.group(2),
         }
 
     entry = []

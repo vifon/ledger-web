@@ -15,7 +15,7 @@
   color: inherit;
   text-decoration: inherit;
 }
-.plain-link:hover > pre {
+.plain-link:hover > * {
   background-color: #ddd;
 }
 
@@ -104,4 +104,20 @@ a.menu-login:active {
 }
 .menu-rules {
   grid-area: rules;
+}
+
+.entry-payee {
+  display: none;
+}
+.entry-payee-button {
+  padding: 10px 20px 10px 20px;
+  margin: 8px;
+}
+@media screen and (max-width: 500px) {
+  .entry {
+    display: none;
+  }
+  .entry-payee {
+    display: block;
+  }
 }
