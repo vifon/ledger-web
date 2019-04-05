@@ -1,14 +1,14 @@
-<div class="border">
+<div class="border menu-grid">
   {% if user.is_authenticated %}
-    <div class="logout">
-      Logged in as: {{ user }}
-      <a href="{% url 'logout' %}">Logout</a>
+    <div class="menu-element menu-user">
+      User: <span class="username">{{ user }}</span>
     </div>
+    <a class="menu-element menu-login" href="{% url 'logout' %}">Logout</a>
+  {% else %}
+    <a class="menu-element menu-login" href="{% url 'login' %}">Login</a>
   {% endif %}
-  <ul>
-    <li><a href="{% url 'ledger_ui:index' %}">Register</a></li>
-    <li><a href="{% url 'ledger_ui:accounts' %}">Accounts</a></li>
-    <li><a href="{% url 'ledger_ui:submit' %}">Submit</a></li>
-    <li><a href="{% url 'ledger_ui:rules' %}">Rules</a></li>
-  </ul>
+  <a class="menu-element menu-register" href="{% url 'ledger_ui:index' %}">Register</a>
+  <a class="menu-element menu-accounts" href="{% url 'ledger_ui:accounts' %}">Accounts</a>
+  <a class="menu-element menu-submit" href="{% url 'ledger_ui:submit' %}">Submit</a>
+  <a class="menu-element menu-rules" href="{% url 'ledger_ui:rules' %}">Rules</a>
 </div>

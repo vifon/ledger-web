@@ -11,11 +11,6 @@
   background-color: #aaa;
 }
 
-.logout {
-  float: right;
-  margin: 3px;
-}
-
 .plain-link {
   color: inherit;
   text-decoration: inherit;
@@ -27,4 +22,86 @@
 .list-container {
   margin-left: 2em;
   margin-right: 2em;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+    "register accounts login"
+    "submit rules user"
+    ;
+  grid-gap: 10px;
+  place-items: stretch;
+  place-content: stretch;
+  padding: 10px;
+}
+@media screen and (max-width: 600px) {
+  .menu-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-areas:
+      "register register"
+      "accounts accounts"
+      "submit submit"
+      "rules rules"
+      "user login"
+      ;
+  }
+}
+
+.menu-element {
+  display: block;
+  color: inherit;
+  font-weight: bold;
+  font-size: x-large;
+  font-family: sans-serif;
+  background-color: #bdd;
+  text-transform: uppercase;
+  text-decoration: inherit;
+
+  padding: 10px 10px 10px 10px;
+
+  display: grid;
+  place-content: center;
+}
+a.menu-element:hover {
+  background-color: #95D9D9;
+}
+a.menu-element:active {
+  background-color: #73DBDB;
+  color: inherit;
+}
+.menu-user {
+  grid-area: user;
+  font-size: large;
+  text-transform: none;
+  font-weight: normal;
+  background-color: lightgrey;
+}
+.username {
+  font-style: italic;
+}
+.menu-login {
+  grid-area: login;
+  background-color: #b00;
+}
+a.menu-login:hover {
+  background-color: #c00;
+}
+a.menu-login:active {
+  background-color: #d00;
+}
+.menu-register {
+  grid-area: register;
+}
+.menu-accounts {
+  grid-area: accounts;
+}
+.menu-submit {
+  grid-area: submit;
+}
+.menu-rules {
+  grid-area: rules;
 }
