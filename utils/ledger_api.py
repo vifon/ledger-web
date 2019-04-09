@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import io
 import re
 import subprocess
 import time
@@ -83,6 +84,9 @@ def accounts(ledger_path):
 
 def currencies(ledger_path):
     return _call(ledger_path, "commodities")
+
+def csv(ledger_path, *args):
+    return io.StringIO("\n".join(_call(ledger_path, "csv", *args)))
 
 def _call(ledger_path, *args):
     output = subprocess.check_output(

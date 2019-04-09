@@ -1,11 +1,13 @@
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
 from django.http import Http404
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
+import pandas as pd
 import re
 
 from .forms import LedgerForm, RuleModelForm
@@ -33,6 +35,38 @@ def register(request):
         {
             'entries': entries,
             'reverse': reversed_sort,
+        },
+    )
+
+
+@login_required
+def charts(request):
+    ledger_path = request.user.ledgerpath.path
+
+    csv = ledger_api.csv(
+        ledger_path,
+        '--monthly',
+        '-X', settings.LEDGER_DEFAULT_CURRENCY,
+        'Expenses',
+    )
+    data = pd.read_csv(
+        csv,
+        header=None,
+        names=[
+            'date', 'code', 'payee', 'account', 'currency', 'amount',
+            'reconciled', 'comment',
+        ],
+        usecols=['date', 'payee', 'account', 'amount'],
+        parse_dates=['date'],
+    )
+    grouped = data[['date', 'amount']].groupby('date', as_index=False).sum()
+
+    return render(
+        request,
+        'ledger_ui/charts.html',
+        {
+            'expenses_x': grouped['date'].dt.strftime('%F').to_json(),
+            'expenses_y': grouped['amount'].round(2).to_json(),
         },
     )
 

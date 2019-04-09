@@ -1,0 +1,42 @@
+{% extends "./base.html" %}
+
+{% load static %}
+
+{% block title %}
+  {{ block.super }} - Charts
+{% endblock %}
+
+{% block content %}
+  <h2>Charts</h2>
+
+  <canvas id="chart"></canvas>
+
+  <script src="{% static "Chart.min.js" %}"></script>
+  <script>
+   var expenses_x = JSON.parse("{{ expenses_x|escapejs }}");
+   var expenses_y = JSON.parse("{{ expenses_y|escapejs }}");
+
+   var ctx = document.getElementById('chart').getContext('2d');
+   var myChart = new Chart(ctx, {
+     type: 'line',
+     data: {
+       labels: Object.values(expenses_x),
+       datasets: [
+         {
+           label: 'Expenses',
+           data: Object.values(expenses_y),
+         }
+       ]
+     },
+     options: {
+       scales: {
+         yAxes: [{
+           ticks: {
+             beginAtZero: true
+           }
+         }]
+       }
+     }
+   });
+  </script>
+{% endblock %}
