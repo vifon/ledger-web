@@ -32,23 +32,24 @@ body {
 
 .menu-grid {
   display: grid;
-  grid-template-columns: 2fr 2fr 1fr;
+  grid-template-columns: 1fr 2fr 2fr 1fr;
   grid-template-rows: 1fr 1fr;
   grid-template-areas:
-    "register accounts login"
-    "submit rules user"
+    "submit register accounts login"
+    "submit charts rules user"
     ;
   grid-gap: 10px;
   place-items: stretch;
   place-content: stretch;
   padding: 10px;
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
   .menu-grid {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
     grid-template-areas:
       "register register"
+      "charts charts"
       "accounts accounts"
       "submit submit"
       "rules rules"
@@ -101,6 +102,9 @@ a.menu-login:active {
 }
 .menu-register {
   grid-area: register;
+}
+.menu-charts {
+  grid-area: charts;
 }
 .menu-accounts {
   grid-area: accounts;
