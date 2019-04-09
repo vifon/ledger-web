@@ -62,6 +62,14 @@ def charts(request):
     expenses = df[df['account'].str.contains("^Expenses:")]
     income = df[df['account'].str.contains("^Income:")]
 
+    selected_account = request.GET.get('account', '')
+    if selected_account:
+        expenses = expenses[expenses['account'].str.contains(
+            selected_account,
+            case=False,
+            flags=re.VERBOSE,
+        )]
+
     grouped_expenses = expenses[['date', 'amount']].groupby('date').sum()
     grouped_income = income[['date', 'amount']].groupby('date').sum()
 
@@ -76,6 +84,7 @@ def charts(request):
             'plot_x': date_range.strftime('%F').to_series().to_json(),
             'expenses_y': grouped_expenses['amount'].round(2).to_json(),
             'income_y': (-grouped_income['amount']).round(2).to_json(),
+            'account': selected_account,
         },
     )
 

@@ -9,6 +9,11 @@
 {% block content %}
   <h2>Charts</h2>
 
+  <form action="{{ request.path }}" method="GET">
+    <input name="account" type="text" value="{{ account }}" />
+    <input type="submit" value="Show" />
+  </form>
+
   <canvas id="chart"></canvas>
 
   <script src="{% static "Chart.min.js" %}"></script>
@@ -24,7 +29,7 @@
        labels: Object.values(plot_x),
        datasets: [
          {
-           label: 'Expenses',
+           label: 'Expenses{% if account %} =~ /{{ account }}/{% endif %}',
            data: Object.values(expenses_y),
            borderColor: 'rgba(255, 100, 100, 0.5)',
            backgroundColor: 'rgba(255, 100, 100, 0.1)'
