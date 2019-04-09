@@ -79,14 +79,14 @@ class Entry:
 
 
 def accounts(ledger_path):
-    return _call(ledger_path, ["accounts"])
+    return _call(ledger_path, "accounts")
 
 def currencies(ledger_path):
-    return _call(ledger_path, ["commodities"])
+    return _call(ledger_path, "commodities")
 
-def _call(ledger_path, args):
+def _call(ledger_path, *args):
     output = subprocess.check_output(
-        ["ledger", "-f", ledger_path] + args,
+        ["ledger", "-f", ledger_path] + list(args),
         universal_newlines=True
     )
     return output.strip().split("\n")
