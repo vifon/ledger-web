@@ -47,9 +47,8 @@ def charts(request):
         ledger_path,
         '--monthly',
         '-X', settings.LEDGER_DEFAULT_CURRENCY,
-        'Expenses',
     )
-    data = pd.read_csv(
+    df = pd.read_csv(
         csv,
         header=None,
         names=[
@@ -59,14 +58,24 @@ def charts(request):
         usecols=['date', 'payee', 'account', 'amount'],
         parse_dates=['date'],
     )
-    grouped = data[['date', 'amount']].groupby('date', as_index=False).sum()
+
+    expenses = df[df['account'].str.contains("^Expenses:")]
+    income = df[df['account'].str.contains("^Income:")]
+
+    grouped_expenses = expenses[['date', 'amount']].groupby('date').sum()
+    grouped_income = income[['date', 'amount']].groupby('date').sum()
+
+    date_range = pd.date_range(df['date'].min(), df['date'].max(), freq='MS')
+    grouped_expenses = grouped_expenses.reindex(date_range, fill_value=0)
+    grouped_income = grouped_income.reindex(date_range, fill_value=0)
 
     return render(
         request,
         'ledger_ui/charts.html',
         {
-            'expenses_x': grouped['date'].dt.strftime('%F').to_json(),
-            'expenses_y': grouped['amount'].round(2).to_json(),
+            'plot_x': date_range.strftime('%F').to_series().to_json(),
+            'expenses_y': grouped_expenses['amount'].round(2).to_json(),
+            'income_y': (-grouped_income['amount']).round(2).to_json(),
         },
     )
 
