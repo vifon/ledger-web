@@ -13,8 +13,15 @@ from ledger_submit.models import Rule
 from utils import ledger_api
 
 
-@login_required
 def index(request):
+    return render(
+        request,
+        'ledger_ui/index.html',
+    )
+
+
+@login_required
+def register(request):
     with open(request.user.ledgerpath.path, 'r') as ledger_fd:
         entries = list(ledger_api.read_entries(ledger_fd))
     reversed_sort = request.GET.get('reverse', 'true').lower() not in ['false', '0']
@@ -22,7 +29,7 @@ def index(request):
         entries = reversed(entries)
     return render(
         request,
-        'ledger_ui/index.html',
+        'ledger_ui/register.html',
         {
             'entries': entries,
             'reverse': reversed_sort,
