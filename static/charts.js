@@ -64,9 +64,9 @@ $("#slider-range").slider({
       plotX[ui.values[0]],
       plotX[ui.values[1]]
     );
-    pieChart.data.labels = Object.keys(expensesInPeriod);
+    pieChart.data.labels = _.map(expensesInPeriod, _.first);
     pieChart.data.datasets.forEach(dataset =>
-                                   dataset.data = Object.values(expensesInPeriod));
+                                   dataset.data = _.map(expensesInPeriod, _.last));
     pieChart.update();
   }
 });
@@ -94,7 +94,10 @@ const sumAccounts = function (dateStart, dateEnd) {
     .flatten(true)
     .groupBy(_.first)
     .mapObject(x => _.chain(x).map(_.last).reduce((a, b) => a + b).value())
-    .mapObject(x => x.toFixed(2))
+    .pairs()
+    .sortBy(_.last)
+    .reverse()
+    .mapObject(([k,v]) => [k, v.toFixed(2)])
     .value();
 }
 const expensesInPeriod = sumAccounts(
@@ -105,10 +108,10 @@ const expensesInPeriod = sumAccounts(
 let pieChart = new Chart('piechart', {
   type: 'pie',
   data: {
-    labels: Object.keys(expensesInPeriod),
+    labels: _.map(expensesInPeriod, _.first),
     datasets: [{
       label: 'Expenses',
-      data: Object.values(expensesInPeriod),
+      data: _.map(expensesInPeriod, _.last),
       backgroundColor: [
         '#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4',
         '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff',
