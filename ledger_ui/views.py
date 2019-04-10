@@ -70,20 +70,28 @@ def charts(request):
             flags=re.VERBOSE,
         )]
 
-    grouped_expenses = expenses[['date', 'amount']].groupby('date').sum()
-    grouped_income = income[['date', 'amount']].groupby('date').sum()
+    date_grouped_expenses = expenses[['date', 'amount']].groupby('date').sum()
+    date_grouped_income = income[['date', 'amount']].groupby('date').sum()
 
     date_range = pd.date_range(df['date'].min(), df['date'].max(), freq='MS')
-    grouped_expenses = grouped_expenses.reindex(date_range, fill_value=0)
-    grouped_income = grouped_income.reindex(date_range, fill_value=0)
+    date_grouped_expenses = date_grouped_expenses.reindex(date_range, fill_value=0)
+    date_grouped_income = date_grouped_income.reindex(date_range, fill_value=0)
+
+    account_grouped_expenses = (
+        expenses[['amount', 'account']].groupby('account').sum()
+    )
 
     return render(
         request,
         'ledger_ui/charts.html',
         {
             'plot_x': date_range.strftime('%F').to_series().to_json(),
-            'expenses_y': grouped_expenses['amount'].round(2).to_json(),
-            'income_y': (-grouped_income['amount']).round(2).to_json(),
+            'expenses_y': date_grouped_expenses['amount'].round(2).to_json(),
+            'income_y': (-date_grouped_income['amount']).round(2).to_json(),
+
+            'expenses_accounts': account_grouped_expenses.index.to_series().to_json(),
+            'expenses_per_account': account_grouped_expenses['amount'].round(2).to_json(),
+
             'account': selected_account,
         },
     )

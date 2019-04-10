@@ -11,10 +11,11 @@
 
   <form action="{{ request.path }}" method="GET">
     <input name="account" type="text" value="{{ account }}" />
-    <input type="submit" value="Show" />
+    <input type="submit" value="Filter Expenses" />
   </form>
 
-  <canvas id="chart"></canvas>
+  <canvas id="timechart"></canvas>
+  <canvas id="piechart"></canvas>
 
   <script src="{% static "Chart.min.js" %}"></script>
   <script>
@@ -22,8 +23,7 @@
    var expenses_y = JSON.parse("{{ expenses_y|escapejs }}");
    var income_y = JSON.parse("{{ income_y|escapejs }}");
 
-   var ctx = document.getElementById('chart').getContext('2d');
-   var myChart = new Chart(ctx, {
+   var time_chart = new Chart('timechart', {
      type: 'line',
      data: {
        labels: Object.values(plot_x),
@@ -52,5 +52,29 @@
        }
      }
    });
+
+
+   var expenses_accounts = JSON.parse("{{ expenses_accounts|escapejs }}");
+   var expenses_per_account = JSON.parse("{{ expenses_per_account|escapejs }}");
+
+   var pie_chart = new Chart('piechart', {
+     type: 'pie',
+     data: {
+       labels: Object.values(expenses_accounts),
+       datasets: [{
+         label: 'Expenses',
+         data: Object.values(expenses_per_account),
+         backgroundColor: [
+           '#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4',
+           '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff',
+           '#9a6324', '#fffac8', '#800000', '#aaffc3', '#808000', '#ffd8b1',
+           '#000075', '#808080', '#cccccc', '#000000', '#00ff00', '#0000ff'
+         ]
+       }]
+     },
+     options: {
+       cutoutPercentage: 30
+     }
+   })
   </script>
 {% endblock %}
