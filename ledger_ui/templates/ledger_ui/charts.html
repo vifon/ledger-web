@@ -6,6 +6,10 @@
   {{ block.super }} - Charts
 {% endblock %}
 
+{% block head %}
+  <script src="{% static "Chart.min.js" %}"></script>
+{% endblock %}
+
 {% block content %}
   <h2>Charts</h2>
 
@@ -21,7 +25,6 @@
     <canvas id="piechart"></canvas>
   </div>
 
-  <script src="{% static "Chart.min.js" %}"></script>
   <script>
    var plotX = Object.values(JSON.parse("{{ plot_x|escapejs }}"));
    var expensesY = Object.values(JSON.parse("{{ expenses_y|escapejs }}"));
