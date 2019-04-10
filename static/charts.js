@@ -90,9 +90,7 @@ var expenses =
 var sumAccounts = function (dateStart, dateEnd) {
   var result = {};
   var groups = Object.entries(expenses)
-      .map(([k,v]) =>
-           ((dateStart <= k && k <= dateEnd) ? v : null))
-      .filter(x => x !== null);
+      .flatMap(([k,v]) => ((dateStart <= k && k <= dateEnd) ? [v] : []));
   for (var group in groups) {
     for (account in groups[group]) {
       if (!(account in result)) {
