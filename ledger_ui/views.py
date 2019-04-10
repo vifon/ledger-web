@@ -67,7 +67,6 @@ def charts(request):
         expenses = expenses[expenses['account'].str.contains(
             selected_account,
             case=False,
-            flags=re.VERBOSE,
         )]
 
     date_grouped_expenses = expenses[['date', 'amount']].groupby('date').sum()
