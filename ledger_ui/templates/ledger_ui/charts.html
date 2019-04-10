@@ -7,6 +7,9 @@
 {% endblock %}
 
 {% block head %}
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="{% static "Chart.min.js" %}"></script>
 {% endblock %}
 
@@ -21,6 +24,24 @@
   <div class="chart-container">
     <canvas id="timechart"></canvas>
   </div>
+
+  <div id="slider-range"></div>
+  <div>
+    <div style="float: left">
+      <input type="text"
+             id="range-text1"
+             readonly
+             style="border:0; color:#f6931f; font-weight:bold; text-align:left;">
+    </div>
+    <div style="float: right">
+      <input type="text"
+             id="range-text2"
+             readonly
+             style="border:0; color:#f6931f; font-weight:bold; text-align:right;">
+    </div>
+  </div>
+  <div style="clear:both"></div>
+
   <div class="chart-container">
     <canvas id="piechart"></canvas>
   </div>
@@ -33,7 +54,7 @@
    var timeChart = new Chart('timechart', {
      type: 'line',
      data: {
-       labels: plotX,
+       labels: plotX.slice(),
        datasets: [
          {
            label: 'Expenses{% if account %} =~ /{{ account }}/{% endif %}',
@@ -90,6 +111,28 @@
          position: 'right'
        }
      }
-   })
+   });
+
+   $("#slider-range").slider({
+     orientation: "horizontal",
+     range: true,
+     min: 0,
+     max: plotX.length - 1,
+     values: [0, plotX.length - 1],
+     step: 1,
+     slide: function(event, ui) {
+       $("#range-text1").val(plotX[ui.values[0]]);
+       $("#range-text2").val(plotX[ui.values[1]]);
+       timeChart.data.labels = plotX.slice(
+         ui.values[0],
+         ui.values[1] + 1
+       );
+       timeChart.update();
+     }
+   });
+   $("#range-text1").val(
+     plotX[$("#slider-range").slider("values", 0)]);
+   $("#range-text2").val(
+     plotX[$("#slider-range").slider("values", 1)]);
   </script>
 {% endblock %}
