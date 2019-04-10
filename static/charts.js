@@ -42,7 +42,6 @@ $("#slider-range").slider({
       ui.values[0],
       ui.values[1] + 1
     );
-    console.log(timeChart.data.datasets);
     timeChart.data.datasets.forEach(dataset => {
       switch (dataset.label) {
       case "Expenses":
