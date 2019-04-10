@@ -59,7 +59,7 @@ def charts(request):
         parse_dates=['date'],
     )
 
-    expenses = df[df['account'].str.contains("^Expenses:")]
+    expenses = df[df['account'].str.contains("^Expenses:")].copy()
     income = df[df['account'].str.contains("^Income:")]
 
     selected_account = request.GET.get('account', '')
