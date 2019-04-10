@@ -48,10 +48,10 @@
   </div>
 
   <script>
-   var plotX = Object.values(JSON.parse("{{ plot_x|escapejs }}"));
-   var expensesY = Object.values(JSON.parse("{{ expenses_y|escapejs }}"));
-   var incomeY = Object.values(JSON.parse("{{ income_y|escapejs }}"));
-   var expensesFlat = JSON.parse("{{ expenses|escapejs }}").data;
+   const plotX = Object.values(JSON.parse("{{ plot_x|escapejs }}"));
+   const expensesY = Object.values(JSON.parse("{{ expenses_y|escapejs }}"));
+   const incomeY = Object.values(JSON.parse("{{ income_y|escapejs }}"));
+   const expensesFlat = JSON.parse("{{ expenses|escapejs }}").data;
   </script>
   <script src="{% static "charts.js" %}"></script>
 {% endblock %}

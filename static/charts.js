@@ -1,4 +1,4 @@
-var timeChart = new Chart('timechart', {
+let timeChart = new Chart('timechart', {
   type: 'line',
   data: {
     labels: plotX.slice(),
@@ -60,7 +60,7 @@ $("#slider-range").slider({
     });
     timeChart.update();
 
-    var expensesInPeriod = sumAccounts(
+    const expensesInPeriod = sumAccounts(
       plotX[ui.values[0]],
       plotX[ui.values[1]]
     );
@@ -76,17 +76,17 @@ $("#range-text2").val(
   plotX[$("#slider-range").slider("values", 1)]);
 
 
-var expenses =
-    _.chain(expensesFlat)
-    .groupBy('date')
-    .mapObject(obj =>
-               _.chain(obj)
-               .groupBy('account')
-               .mapObject(obj => obj[0].amount)
-               .value())
-    .value();
+const expenses =
+      _.chain(expensesFlat)
+      .groupBy('date')
+      .mapObject(obj =>
+                 _.chain(obj)
+                 .groupBy('account')
+                 .mapObject(obj => obj[0].amount)
+                 .value())
+      .value();
 
-var sumAccounts = function (dateStart, dateEnd) {
+const sumAccounts = function (dateStart, dateEnd) {
   var result = {};
   var groups = Object.entries(expenses)
       .flatMap(([k,v]) => ((dateStart <= k && k <= dateEnd) ? [v] : []));
@@ -101,12 +101,12 @@ var sumAccounts = function (dateStart, dateEnd) {
   }
   return _.mapObject(result, x => x.toFixed(2));
 }
-var expensesInPeriod = sumAccounts(
+const expensesInPeriod = sumAccounts(
   plotX[$("#slider-range").slider("values", 0)],
   plotX[$("#slider-range").slider("values", 1)]
 );
 
-var pieChart = new Chart('piechart', {
+let pieChart = new Chart('piechart', {
   type: 'pie',
   data: {
     labels: Object.keys(expensesInPeriod),
