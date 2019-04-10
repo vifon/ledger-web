@@ -23,24 +23,24 @@
 
   <script src="{% static "Chart.min.js" %}"></script>
   <script>
-   var plot_x = Object.values(JSON.parse("{{ plot_x|escapejs }}"));
-   var expenses_y = Object.values(JSON.parse("{{ expenses_y|escapejs }}"));
-   var income_y = Object.values(JSON.parse("{{ income_y|escapejs }}"));
+   var plotX = Object.values(JSON.parse("{{ plot_x|escapejs }}"));
+   var expensesY = Object.values(JSON.parse("{{ expenses_y|escapejs }}"));
+   var incomeY = Object.values(JSON.parse("{{ income_y|escapejs }}"));
 
-   var time_chart = new Chart('timechart', {
+   var timeChart = new Chart('timechart', {
      type: 'line',
      data: {
-       labels: plot_x,
+       labels: plotX,
        datasets: [
          {
            label: 'Expenses{% if account %} =~ /{{ account }}/{% endif %}',
-           data: expenses_y,
+           data: expensesY,
            borderColor: 'rgba(255, 100, 100, 0.5)',
            backgroundColor: 'rgba(255, 100, 100, 0.1)'
          },
          {
            label: 'Income',
-           data: income_y,
+           data: incomeY,
            borderColor: 'rgba(50, 200, 50, 1)',
            backgroundColor: 'rgba(50, 200, 50, 0.1)'
          }
@@ -58,16 +58,16 @@
    });
 
 
-   var expenses_accounts = Object.values(JSON.parse("{{ expenses_accounts|escapejs }}"));
-   var expenses_per_account = Object.values(JSON.parse("{{ expenses_per_account|escapejs }}"));
+   var expensesAccounts = Object.values(JSON.parse("{{ expenses_accounts|escapejs }}"));
+   var expensesPerAccount = Object.values(JSON.parse("{{ expenses_per_account|escapejs }}"));
 
-   var pie_chart = new Chart('piechart', {
+   var pieChart = new Chart('piechart', {
      type: 'pie',
      data: {
-       labels: expenses_accounts,
+       labels: expensesAccounts,
        datasets: [{
          label: 'Expenses',
-         data: expenses_per_account,
+         data: expensesPerAccount,
          backgroundColor: [
            '#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4',
            '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff',
