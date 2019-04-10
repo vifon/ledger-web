@@ -96,6 +96,23 @@
          ui.values[0],
          ui.values[1] + 1
        );
+       console.log(timeChart.data.datasets);
+       timeChart.data.datasets.forEach(dataset => {
+         switch (dataset.label) {
+           case "Expenses":
+             dataset.data = expensesY.slice(
+               ui.values[0],
+               ui.values[1] + 1
+             );
+             break;
+           case "Income":
+             dataset.data = incomeY.slice(
+               ui.values[0],
+               ui.values[1] + 1
+             );
+             break;
+         }
+       });
        timeChart.update();
 
        var expensesInPeriod = sumAccounts(
