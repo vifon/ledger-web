@@ -19,24 +19,24 @@
 
   <script src="{% static "Chart.min.js" %}"></script>
   <script>
-   var plot_x = JSON.parse("{{ plot_x|escapejs }}");
-   var expenses_y = JSON.parse("{{ expenses_y|escapejs }}");
-   var income_y = JSON.parse("{{ income_y|escapejs }}");
+   var plot_x = Object.values(JSON.parse("{{ plot_x|escapejs }}"));
+   var expenses_y = Object.values(JSON.parse("{{ expenses_y|escapejs }}"));
+   var income_y = Object.values(JSON.parse("{{ income_y|escapejs }}"));
 
    var time_chart = new Chart('timechart', {
      type: 'line',
      data: {
-       labels: Object.values(plot_x),
+       labels: plot_x,
        datasets: [
          {
            label: 'Expenses{% if account %} =~ /{{ account }}/{% endif %}',
-           data: Object.values(expenses_y),
+           data: expenses_y,
            borderColor: 'rgba(255, 100, 100, 0.5)',
            backgroundColor: 'rgba(255, 100, 100, 0.1)'
          },
          {
            label: 'Income',
-           data: Object.values(income_y),
+           data: income_y,
            borderColor: 'rgba(50, 200, 50, 1)',
            backgroundColor: 'rgba(50, 200, 50, 0.1)'
          }
@@ -54,16 +54,16 @@
    });
 
 
-   var expenses_accounts = JSON.parse("{{ expenses_accounts|escapejs }}");
-   var expenses_per_account = JSON.parse("{{ expenses_per_account|escapejs }}");
+   var expenses_accounts = Object.values(JSON.parse("{{ expenses_accounts|escapejs }}"));
+   var expenses_per_account = Object.values(JSON.parse("{{ expenses_per_account|escapejs }}"));
 
    var pie_chart = new Chart('piechart', {
      type: 'pie',
      data: {
-       labels: Object.values(expenses_accounts),
+       labels: expenses_accounts,
        datasets: [{
          label: 'Expenses',
-         data: Object.values(expenses_per_account),
+         data: expenses_per_account,
          backgroundColor: [
            '#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4',
            '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff',
