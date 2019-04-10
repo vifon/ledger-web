@@ -30,6 +30,10 @@ body {
   margin-right: 2em;
 }
 
+.chart-container {
+  position: relative;
+}
+
 .menu-grid {
   display: grid;
   grid-template-columns: 1fr 2fr 2fr 1fr;

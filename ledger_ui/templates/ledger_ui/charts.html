@@ -14,8 +14,12 @@
     <input type="submit" value="Filter Expenses" />
   </form>
 
-  <canvas id="timechart"></canvas>
-  <canvas id="piechart"></canvas>
+  <div class="chart-container">
+    <canvas id="timechart"></canvas>
+  </div>
+  <div class="chart-container">
+    <canvas id="piechart"></canvas>
+  </div>
 
   <script src="{% static "Chart.min.js" %}"></script>
   <script>
