@@ -76,9 +76,7 @@ def charts(request):
     date_grouped_expenses = date_grouped_expenses.reindex(date_range, fill_value=0)
     date_grouped_income = date_grouped_income.reindex(date_range, fill_value=0)
 
-    account_grouped_expenses = (
-        expenses[['amount', 'account']].groupby('account').sum()
-    )
+    expenses['date'] = expenses['date'].dt.strftime("%Y-%m")
 
     return render(
         request,
@@ -88,8 +86,9 @@ def charts(request):
             'expenses_y': date_grouped_expenses['amount'].round(2).to_json(),
             'income_y': (-date_grouped_income['amount']).round(2).to_json(),
 
-            'expenses_accounts': account_grouped_expenses.index.to_series().to_json(),
-            'expenses_per_account': account_grouped_expenses['amount'].round(2).to_json(),
+            'expenses': (
+                expenses[['date', 'account', 'amount']].to_json(
+                    orient='table', index=False)),
 
             'account': selected_account,
         },
