@@ -87,19 +87,15 @@ const expenses =
       .value();
 
 const sumAccounts = function (dateStart, dateEnd) {
-  var result = {};
-  var groups = Object.entries(expenses)
-      .flatMap(([k,v]) => ((dateStart <= k && k <= dateEnd) ? [v] : []));
-  for (var group in groups) {
-    for (account in groups[group]) {
-      if (!(account in result)) {
-        result[account] = groups[group][account];
-      } else {
-        result[account] += groups[group][account];
-      }
-    }
-  }
-  return _.mapObject(result, x => x.toFixed(2));
+  const groups = Object.entries(expenses)
+        .flatMap(([k,v]) => ((dateStart <= k && k <= dateEnd) ? [v] : []));
+  return _.chain(groups)
+    .map(_.pairs)
+    .flatten(true)
+    .groupBy(_.first)
+    .mapObject(x => _.chain(x).map(_.last).reduce((a, b) => a + b).value())
+    .mapObject(x => x.toFixed(2))
+    .value();
 }
 const expensesInPeriod = sumAccounts(
   plotX[$("#slider-range").slider("values", 0)],
