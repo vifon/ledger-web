@@ -34,6 +34,10 @@ body {
   position: relative;
 }
 
+div.ui-slider-range.ui-widget-header {
+  background: skyblue;
+}
+
 .menu-grid {
   display: grid;
   grid-template-columns: 1fr 2fr 2fr 1fr;
