@@ -47,8 +47,12 @@
     <canvas id="piechart"></canvas>
   </div>
 
+  {{ dates|json_script:"dates-data" }}
   <script>
-   const dates = Object.values(JSON.parse("{{ dates|escapejs }}"));
+   const djangoExtract = function (name) {
+     return JSON.parse(document.getElementById(name + '-data').textContent);
+   }
+   const dates = djangoExtract('dates').data;
    const expensesTotals = Object.values(JSON.parse("{{ expenses_totals|escapejs }}"));
    const incomeTotals = Object.values(JSON.parse("{{ income_totals|escapejs }}"));
    const expensesFlat = JSON.parse("{{ expenses|escapejs }}").data;

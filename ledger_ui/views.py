@@ -82,7 +82,7 @@ def charts(request):
         request,
         'ledger_ui/charts.html',
         {
-            'dates': date_range.strftime('%Y-%m').to_series().to_json(),
+            'dates': {'data': date_range.strftime('%Y-%m').to_series().to_list()},
             'expenses_totals': date_grouped_expenses['amount'].round(2).to_json(),
             'income_totals': (-date_grouped_income['amount']).round(2).to_json(),
             'expenses': (
