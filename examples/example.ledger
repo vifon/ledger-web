@@ -1,0 +1,99 @@
+#!/usr/bin/ledger -f
+; -*-  mode: ledger; -*-
+
+2018-12-01 Opening Balances
+    Assets:Bank                           $200000.00
+    Assets:Wallet                            $300.00
+    Equity:Opening Balances
+
+
+2018-12-03 Gas Station
+    Expenses:Gas                             $100.00
+    Assets:Bank
+
+2018-12-03 Walmart
+    Expenses:Food                             $20.00
+    Assets:Wallet
+
+2018-12-04 Steam
+    Expenses:Entertainment                    $30.00
+    Assets:Bank
+
+2018-12-13 Walmart
+    Expenses:Food                             $15.00
+    Assets:Wallet
+
+2018-12-20 Awesome Company
+    Assets:Bank                             $6000.00
+    Income:Salary
+
+2018-12-25 Rent
+    Expenses:Rent                           $1000.00
+    Assets:Bank
+
+
+2019-01-03 Gas Station
+    Expenses:Gas                              $70.00
+    Assets:Bank
+
+2019-01-03 Walmart
+    Expenses:Food                             $50.00
+    Assets:Wallet
+
+2019-01-04 Steam
+    Expenses:Entertainment                     $5.00
+    Assets:Bank
+
+2019-01-13 Newegg
+    Expenses:Hardware                       $4000.00
+    Assets::Bank
+
+2019-01-20 Awesome Company
+    Assets:Bank                             $5500.00
+    Income:Salary
+
+
+2019-02-03 Gas Station
+    Expenses:Gas                              $40.00
+    Assets:Bank
+
+2019-02-03 Walmart
+    Expenses:Food                            $300.00
+    Assets:Wallet
+
+2019-02-04 Steam
+    Expenses:Entertainment                    $15.00
+    Assets:Bank
+
+2019-02-20 Awesome Company
+    Assets:Bank                             $4000.00
+    Income:Salary
+
+2019-02-25 Rent
+    Expenses:Rent                           $1000.00
+    Assets:Bank
+
+
+2019-03-03 Gas Station
+    Expenses:Gas                             $140.00
+    Assets:Bank
+
+2019-03-03 Walmart
+    Expenses:Food                            $100.00
+    Assets:Wallet
+
+2019-03-10 Walmart
+    Expenses:Food                             $50.00
+    Assets:Wallet
+
+2019-03-17 Walmart
+    Expenses:Food                            $130.00
+    Assets:Wallet
+
+2019-03-20 Awesome Company
+    Assets:Bank                             $7000.00
+    Income:Salary
+
+2019-03-25 Rent
+    Expenses:Rent                           $1000.00
+    Assets:Bank
