@@ -62,10 +62,10 @@ def charts(request):
     expenses = df[df['account'].str.contains("^Expenses:")].copy()
     income = df[df['account'].str.contains("^Income:")]
 
-    selected_account = request.GET.get('account', '')
-    if selected_account:
+    account_filter = request.GET.get('account_filter', '')
+    if account_filter:
         expenses = expenses[expenses['account'].str.contains(
-            selected_account,
+            account_filter,
             case=False,
         )]
 
@@ -82,15 +82,13 @@ def charts(request):
         request,
         'ledger_ui/charts.html',
         {
-            'plot_x': date_range.strftime('%Y-%m').to_series().to_json(),
-            'expenses_y': date_grouped_expenses['amount'].round(2).to_json(),
-            'income_y': (-date_grouped_income['amount']).round(2).to_json(),
-
+            'dates': date_range.strftime('%Y-%m').to_series().to_json(),
+            'expenses_totals': date_grouped_expenses['amount'].round(2).to_json(),
+            'income_totals': (-date_grouped_income['amount']).round(2).to_json(),
             'expenses': (
                 expenses[['date', 'account', 'amount']].to_json(
                     orient='table', index=False)),
-
-            'account': selected_account,
+            'account_filter': account_filter,
         },
     )
 

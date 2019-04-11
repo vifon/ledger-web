@@ -18,7 +18,7 @@
   <h2>Charts</h2>
 
   <form action="{{ request.path }}" method="GET">
-    <input name="account" type="text" value="{{ account }}" />
+    <input name="account_filter" type="text" value="{{ account_filter }}" />
     <input type="submit" value="Filter Expenses" />
   </form>
 
@@ -48,9 +48,9 @@
   </div>
 
   <script>
-   const plotX = Object.values(JSON.parse("{{ plot_x|escapejs }}"));
-   const expensesY = Object.values(JSON.parse("{{ expenses_y|escapejs }}"));
-   const incomeY = Object.values(JSON.parse("{{ income_y|escapejs }}"));
+   const dates = Object.values(JSON.parse("{{ dates|escapejs }}"));
+   const expensesTotals = Object.values(JSON.parse("{{ expenses_totals|escapejs }}"));
+   const incomeTotals = Object.values(JSON.parse("{{ income_totals|escapejs }}"));
    const expensesFlat = JSON.parse("{{ expenses|escapejs }}").data;
   </script>
   <script src="{% static "charts.js" %}"></script>

@@ -1,17 +1,17 @@
 let timeChart = new Chart('timechart', {
   type: 'line',
   data: {
-    labels: plotX.slice(),
+    labels: dates.slice(),
     datasets: [
       {
         label: 'Expenses',
-        data: expensesY,
+        data: expensesTotals,
         borderColor: 'rgba(255, 100, 100, 0.5)',
         backgroundColor: 'rgba(255, 100, 100, 0.1)'
       },
       {
         label: 'Income',
-        data: incomeY,
+        data: incomeTotals,
         borderColor: 'rgba(50, 200, 50, 1)',
         backgroundColor: 'rgba(50, 200, 50, 0.1)'
       }
@@ -32,26 +32,26 @@ $("#slider-range").slider({
   orientation: "horizontal",
   range: true,
   min: 0,
-  max: plotX.length - 1,
-  values: [0, plotX.length - 1],
+  max: dates.length - 1,
+  values: [0, dates.length - 1],
   step: 1,
   slide: function(event, ui) {
-    $("#range-text1").val(plotX[ui.values[0]]);
-    $("#range-text2").val(plotX[ui.values[1]]);
-    timeChart.data.labels = plotX.slice(
+    $("#range-text1").val(dates[ui.values[0]]);
+    $("#range-text2").val(dates[ui.values[1]]);
+    timeChart.data.labels = dates.slice(
       ui.values[0],
       ui.values[1] + 1
     );
     timeChart.data.datasets.forEach(dataset => {
       switch (dataset.label) {
       case "Expenses":
-        dataset.data = expensesY.slice(
+        dataset.data = expensesTotals.slice(
           ui.values[0],
           ui.values[1] + 1
         );
         break;
       case "Income":
-        dataset.data = incomeY.slice(
+        dataset.data = incomeTotals.slice(
           ui.values[0],
           ui.values[1] + 1
         );
@@ -61,8 +61,8 @@ $("#slider-range").slider({
     timeChart.update();
 
     const expensesInPeriod = sumAccounts(
-      plotX[ui.values[0]],
-      plotX[ui.values[1]]
+      dates[ui.values[0]],
+      dates[ui.values[1]]
     );
     pieChart.data.labels = _.map(expensesInPeriod, _.first);
     pieChart.data.datasets.forEach(
@@ -72,9 +72,9 @@ $("#slider-range").slider({
   }
 });
 $("#range-text1").val(
-  plotX[$("#slider-range").slider("values", 0)]);
+  dates[$("#slider-range").slider("values", 0)]);
 $("#range-text2").val(
-  plotX[$("#slider-range").slider("values", 1)]);
+  dates[$("#slider-range").slider("values", 1)]);
 
 
 const expenses =
@@ -102,8 +102,8 @@ const sumAccounts = function (dateStart, dateEnd) {
     .value();
 }
 const expensesInPeriod = sumAccounts(
-  plotX[$("#slider-range").slider("values", 0)],
-  plotX[$("#slider-range").slider("values", 1)]
+  dates[$("#slider-range").slider("values", 0)],
+  dates[$("#slider-range").slider("values", 1)]
 );
 
 let pieChart = new Chart('piechart', {
