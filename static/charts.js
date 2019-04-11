@@ -28,6 +28,40 @@ let timeChart = new Chart('timechart', {
   }
 });
 
+const updateTimeRange = function (rangeStart, rangeEnd) {
+  timeChart.data.labels = dates.slice(
+    rangeStart,
+    rangeEnd + 1
+  );
+  timeChart.data.datasets.forEach(dataset => {
+    switch (dataset.label) {
+    case "Expenses":
+      dataset.data = expensesTotals.slice(
+        rangeStart,
+        rangeEnd + 1
+      );
+      break;
+    case "Income":
+      dataset.data = incomeTotals.slice(
+        rangeStart,
+        rangeEnd + 1
+      );
+      break;
+    }
+  });
+  timeChart.update();
+
+  const expensesInPeriod = sumAccounts(
+    dates[rangeStart],
+    dates[rangeEnd]
+  );
+  pieChart.data.labels = _.map(expensesInPeriod, _.first);
+  pieChart.data.datasets.forEach(
+    dataset =>
+      dataset.data = _.map(expensesInPeriod, _.last));
+  pieChart.update();
+};
+
 $("#slider-range").slider({
   orientation: "horizontal",
   range: true,
@@ -35,46 +69,30 @@ $("#slider-range").slider({
   max: dates.length - 1,
   values: [0, dates.length - 1],
   step: 1,
-  slide: function(event, ui) {
-    $("#range-text1").val(dates[ui.values[0]]);
-    $("#range-text2").val(dates[ui.values[1]]);
-    timeChart.data.labels = dates.slice(
-      ui.values[0],
-      ui.values[1] + 1
-    );
-    timeChart.data.datasets.forEach(dataset => {
-      switch (dataset.label) {
-      case "Expenses":
-        dataset.data = expensesTotals.slice(
-          ui.values[0],
-          ui.values[1] + 1
-        );
-        break;
-      case "Income":
-        dataset.data = incomeTotals.slice(
-          ui.values[0],
-          ui.values[1] + 1
-        );
-        break;
-      }
-    });
-    timeChart.update();
-
-    const expensesInPeriod = sumAccounts(
-      dates[ui.values[0]],
-      dates[ui.values[1]]
-    );
-    pieChart.data.labels = _.map(expensesInPeriod, _.first);
-    pieChart.data.datasets.forEach(
-      dataset =>
-        dataset.data = _.map(expensesInPeriod, _.last));
-    pieChart.update();
+  slide: function (event, ui) {
+    $("#range-select1").val(ui.values[0]);
+    $("#range-select2").val(ui.values[1]);
+    updateTimeRange(...ui.values);
   }
 });
-$("#range-text1").val(
-  dates[$("#slider-range").slider("values", 0)]);
-$("#range-text2").val(
-  dates[$("#slider-range").slider("values", 1)]);
+
+$("#range-select1").val(
+  $("#slider-range").slider("values", 0));
+$("#range-select2").val(
+  $("#slider-range").slider("values", 1));
+
+$("#range-select1").change(
+  function () {
+    $("#slider-range").slider("values", 0, $(this).val());
+    updateTimeRange(...$("#slider-range").slider("values"));
+  }
+);
+$("#range-select2").change(
+  function () {
+    $("#slider-range").slider("values", 1, $(this).val());
+    updateTimeRange(...$("#slider-range").slider("values"));
+  }
+);
 
 
 const expenses =

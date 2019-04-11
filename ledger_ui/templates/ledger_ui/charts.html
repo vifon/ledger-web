@@ -29,16 +29,28 @@
   <div id="slider-range"></div>
   <div>
     <div style="float: left">
-      <input type="text"
-             id="range-text1"
-             readonly
-             style="border:0; color:#f6931f; font-weight:bold; text-align:left;">
+      <select id="range-select1">
+        {% for date in dates.data %}
+          <option
+            {% if forloop.first %} selected="selected" {% endif %}
+            value="{{ forloop.counter0 }}"
+          >
+            {{ date }}
+          </option>
+        {% endfor %}
+      </select>
     </div>
     <div style="float: right">
-      <input type="text"
-             id="range-text2"
-             readonly
-             style="border:0; color:#f6931f; font-weight:bold; text-align:right;">
+      <select id="range-select2">
+        {% for date in dates.data %}
+          <option
+            {% if forloop.last %} selected="selected" {% endif %}
+            value="{{ forloop.counter0 }}"
+          >
+            {{ date }}
+          </option>
+        {% endfor %}
+      </select>
     </div>
   </div>
   <div style="clear:both"></div>
