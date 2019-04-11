@@ -65,8 +65,9 @@ $("#slider-range").slider({
       plotX[ui.values[1]]
     );
     pieChart.data.labels = _.map(expensesInPeriod, _.first);
-    pieChart.data.datasets.forEach(dataset =>
-                                   dataset.data = _.map(expensesInPeriod, _.last));
+    pieChart.data.datasets.forEach(
+      dataset =>
+        dataset.data = _.map(expensesInPeriod, _.last));
     pieChart.update();
   }
 });
