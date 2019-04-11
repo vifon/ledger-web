@@ -1,6 +1,6 @@
 # Ledger Web
 
-Ledger Web was initially created to bridge the gap between a
+*Ledger Web* was initially created to bridge the gap between a
 smartphone and [Ledger CLI](https://ledger-cli.org/) by exposing a
 HTTP API.  Since then it evolved into a more general web UI for
 Ledger.
@@ -61,14 +61,54 @@ Ledger.
     - Enter your domain and possibly a localhost in `ALLOWED_HOSTS`.
     - Set `STATIC_ROOT`, for example `'/var/www/ledger' + STATIC_URL`
       and run `./manage.py collectstatic`.
-      
+
 7. Set up a WSGI server (for example Gunicorn):
 
         pip install gunicorn
         gunicorn -w 4 -b 127.0.0.1:1234 ledger.wsgi
-        
+
 8. Set up a reverse proxy in a HTTP server, for example Nginx, a
    config file included in `examples/ledger.nginx.conf`.
+
+## HTTP API
+
+*Ledger Web* exposes an HTTP API that is used to add new Ledger
+entries.  It is available under the following HTTP routes:
+
+- `POST /ledger/submit/account_from/<account_from>/account_to/<account_to>/payee/<payee>/amount/<amount>`
+
+  Additionally you need to pass the access token in the request BODY
+  as JSON (under the `token` key).
+
+  For example:
+
+        curl -X POST 'http://localhost:8000/ledger/submit/account_from/Assets:Bank/account_to/Expenses:Food/payee/Pizza/amount/10%20USD' -H "Content-Type: application/json" -d '{"token": "my_secure_token"}'
+
+  Note: This route is likely to be deprecated.
+
+- `POST /ledger/submit/`
+
+  This route accepts the same arguments as the previous one
+  (`account_from`, `account_to`, `payee`, `amount`) but as JSON.
+
+  For example:
+
+        curl -X POST 'http://localhost:8000/ledger/submit/' -H "Content-Type: application/json" -d '{
+            "account_from": "Assets:Bank",
+            "account_to": "Expenses:Food",
+            "payee": "Pizza",
+            "amount": "10 USD",
+            "token": "my_secure_token"
+        }'
+
+### Replacement rules
+
+If the payee submitted via the HTTP API matches one of the regexps in
+the added rules, the rule overrides the data passed in the HTTP
+request.
+
+It can be used to process and/or clean up automated requests on card
+payment (left as an exercise for the user).
 
 ## Copyright
 
