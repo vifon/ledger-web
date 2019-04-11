@@ -94,6 +94,7 @@ a.menu-element:active {
   text-transform: none;
   font-weight: normal;
   background-color: lightgrey;
+  text-align: center;
 }
 .username {
   font-style: italic;
