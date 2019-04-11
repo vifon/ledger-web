@@ -78,26 +78,26 @@ $("#range-text2").val(
 
 const expenses =
       _.chain(expensesFlat)
-      .groupBy('date')
+      .groupBy('account')
       .mapObject(obj =>
                  _.chain(obj)
-                 .groupBy('account')
+                 .groupBy('date')
                  .mapObject(obj => obj[0].amount)
                  .value())
       .value();
 
 const sumAccounts = function (dateStart, dateEnd) {
-  const groups = Object.entries(expenses)
-        .flatMap(([k,v]) => ((dateStart <= k && k <= dateEnd) ? [v] : []));
-  return _.chain(groups)
-    .map(_.pairs)
-    .flatten(true)
-    .groupBy(_.first)
-    .mapObject(x => _.chain(x).map(_.last).reduce((a, b) => a + b).value())
+  return _.chain(expenses)
+    .mapObject(x =>
+               _.chain(x)
+               .pairs()
+               .filter(([k,v]) => (dateStart <= k && k <= dateEnd))
+               .map(_.last)
+               .reduce((a, b) => a + b, 0)
+               .value())
+    .mapObject(x => x.toFixed(2))
     .pairs()
-    .sortBy(_.last)
-    .reverse()
-    .mapObject(([k,v]) => [k, v.toFixed(2)])
+    .sort()
     .value();
 }
 const expensesInPeriod = sumAccounts(
