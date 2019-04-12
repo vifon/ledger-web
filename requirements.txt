@@ -1,2 +1,2 @@
-Django
-pandas
+Django==2.1.7
+pandas==0.24.2
