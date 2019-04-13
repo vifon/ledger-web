@@ -27,6 +27,8 @@ features visibly missing from *Ledger Web*.
   want to risk corrupting the existing data.  The most noticeable
   effect of it is that creating a rule from an entry does not change
   that entry itself, only the future ones like this one.
+- The register view won't show any included files' contents, it only
+  reads the main file.  The other views are free from this limitation.
 - No support for complex entries, for example with more than two
   accounts.  Personally if I need to enter a complex entry with no
   access to *Ledger CLI*, I account it to `Expenses:Uncategorized` and
