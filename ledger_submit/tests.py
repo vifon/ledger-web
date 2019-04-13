@@ -97,6 +97,13 @@ class SubmitTests(TestCase):
             acc_to='Expenses:Food',
         )
         Rule.objects.create(
+            user=self.another_user,
+            payee='AUCHAN WARSZ.*',
+            new_payee='Carrefour LOL',
+            acc_from='',
+            acc_to='Expenses:Not Food',
+        )
+        Rule.objects.create(
             user=self.user,
             payee='Pizza Dominium',
             new_payee='',
