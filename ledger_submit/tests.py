@@ -40,6 +40,7 @@ class SubmitTests(TestCase):
 
     @parameterized.expand([
         (
+            # Modify the payee and the accounts.
             {
                 'payee': 'AUCHAN WARSZAWA',
                 'account_to': 'Expenses:Uncategorized',
@@ -55,21 +56,23 @@ class SubmitTests(TestCase):
             }
         ),
         (
+            # Modify only accounts, don't touch payee.
             {
-                'payee': 'AUCHAN WARSZAWA',
+                'payee': 'Pizza Dominium',
                 'account_to': 'Expenses:Uncategorized',
                 'account_from': 'Liabilities:Credit Card',
-                'amount': '10 PLN',
+                'amount': '20 PLN',
             },
             {
-                'payee': 'Auchan',
-                'account_to': 'Expenses:Food',
+                'payee': 'Pizza Dominium',
+                'account_to': 'Expenses:Restaurants',
                 'account_from': 'Liabilities:Credit Card',
-                'amount': '10.00',
+                'amount': '20.00',
                 'currency': 'PLN',
             }
         ),
         (
+            # No rule matched, don't modify anything.
             {
                 'payee': 'CARREFOUR WARSZAWA',
                 'account_to': 'Expenses:Uncategorized',
@@ -93,6 +96,13 @@ class SubmitTests(TestCase):
                 new_payee='Auchan',
                 acc_from='',
                 acc_to='Expenses:Food',
+            )
+            Rule.objects.create(
+                user=user,
+                payee='Pizza Dominium',
+                new_payee='',
+                acc_from='',
+                acc_to='Expenses:Restaurants',
             )
 
         response = self.client.post(
