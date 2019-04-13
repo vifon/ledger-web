@@ -89,21 +89,20 @@ class SubmitTests(TestCase):
         ),
     ])
     def test_replacements(self, input_data, expected_output):
-        for user in [self.user, self.another_user]:
-            Rule.objects.create(
-                user=user,
-                payee='AUCHAN WARSZ.*',
-                new_payee='Auchan',
-                acc_from='',
-                acc_to='Expenses:Food',
-            )
-            Rule.objects.create(
-                user=user,
-                payee='Pizza Dominium',
-                new_payee='',
-                acc_from='',
-                acc_to='Expenses:Restaurants',
-            )
+        Rule.objects.create(
+            user=self.user,
+            payee='AUCHAN WARSZ.*',
+            new_payee='Auchan',
+            acc_from='',
+            acc_to='Expenses:Food',
+        )
+        Rule.objects.create(
+            user=self.user,
+            payee='Pizza Dominium',
+            new_payee='',
+            acc_from='',
+            acc_to='Expenses:Restaurants',
+        )
 
         response = self.client.post(
             reverse(
