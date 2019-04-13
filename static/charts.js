@@ -98,24 +98,24 @@ $("#range-select2").change(
 const expenses =
       _.chain(expensesFlat)
       .groupBy('account')
-      .mapObject(obj =>
+      .mapValues(obj =>
                  _.chain(obj)
                  .groupBy('date')
-                 .mapObject(obj => obj[0].amount)
+                 .mapValues(obj => obj[0].amount)
                  .value())
       .value();
 
 const sumAccounts = function (dateStart, dateEnd) {
   return _.chain(expenses)
-    .mapObject(x =>
+    .mapValues(x =>
                _.chain(x)
-               .pairs()
+               .toPairs()
                .filter(([k,v]) => (dateStart <= k && k <= dateEnd))
                .map(_.last)
                .reduce((a, b) => a + b, 0)
                .value())
-    .mapObject(x => x.toFixed(2))
-    .pairs()
+    .mapValues(x => x.toFixed(2))
+    .toPairs()
     .sort()
     .value();
 }
