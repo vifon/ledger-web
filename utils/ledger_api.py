@@ -82,6 +82,9 @@ class Entry:
 def accounts(ledger_path):
     return _call(ledger_path, "accounts")
 
+def payees(ledger_path):
+    return _call(ledger_path, "payees")
+
 def currencies(ledger_path):
     return _call(ledger_path, "commodities")
 

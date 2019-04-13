@@ -97,14 +97,16 @@ def charts(request):
 def submit(request):
     ledger_path = request.user.ledgerpath.path
 
-    currencies = ledger_api.currencies(ledger_path)
     accounts = ledger_api.accounts(ledger_path)
+    currencies = ledger_api.currencies(ledger_path)
+    payees = ledger_api.payees(ledger_path)
 
     if request.method == 'POST':
         form = LedgerForm(
             request.POST,
-            currencies=currencies,
             accounts=accounts,
+            currencies=currencies,
+            payees=payees,
         )
         if form.is_valid():
             validated = form.cleaned_data
@@ -118,8 +120,9 @@ def submit(request):
             entry.store(ledger_path)
     else:
         form = LedgerForm(
-            currencies=currencies,
             accounts=accounts,
+            currencies=currencies,
+            payees=payees,
         )
 
     return render(

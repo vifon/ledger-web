@@ -1,6 +1,7 @@
 from django import forms
 from django.conf import settings
 
+from . import fields
 from ledger_submit.models import Rule
 
 
@@ -12,7 +13,7 @@ def account_choices(accounts):
 
 class LedgerForm(forms.Form):
 
-    def __init__(self, *args, currencies, accounts, **kwargs):
+    def __init__(self, *args, currencies, payees, accounts, **kwargs):
         initial_choices = {
             'currency': settings.LEDGER_DEFAULT_CURRENCY,
             'acc_from': settings.LEDGER_DEFAULT_FROM,
@@ -20,6 +21,10 @@ class LedgerForm(forms.Form):
         }
         super().__init__(initial=initial_choices, *args, **kwargs)
         self.currencies = currencies
+        self.fields['payee'].widget = fields.ListTextWidget(
+            name='payees',
+            data_list=payees,
+        )
         self.fields['acc_from'] = forms.ChoiceField(
             label='Account from',
             choices=lambda: account_choices(accounts),
