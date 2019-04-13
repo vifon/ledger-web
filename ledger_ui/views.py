@@ -176,6 +176,7 @@ class RuleViewBase(CreateView):
         kwargs = super().get_form_kwargs()
         ledger_path = self.request.user.ledgerpath.path
         kwargs['accounts'] = ledger_api.accounts(ledger_path)
+        kwargs['payees'] = ledger_api.payees(ledger_path)
         return kwargs
 
     def form_valid(self, form):

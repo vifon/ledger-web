@@ -52,8 +52,12 @@ class RuleModelForm(forms.ModelForm):
         model = Rule
         exclude = ['user']
 
-    def __init__(self, *args, accounts, **kwargs):
+    def __init__(self, *args, accounts, payees, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['new_payee'].widget = fields.ListTextWidget(
+            name='payees',
+            data_list=payees,
+        )
         self.fields['acc_from'] = forms.ChoiceField(
             label='Account from',
             required=False,
