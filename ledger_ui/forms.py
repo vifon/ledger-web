@@ -5,12 +5,6 @@ from . import fields
 from ledger_submit.models import Rule
 
 
-def account_choices(accounts):
-    yield None, "---------"
-    for account in accounts:
-        yield account, account
-
-
 class SubmitForm(forms.Form):
 
     def __init__(self, *args, currencies, payees, accounts, **kwargs):
@@ -24,15 +18,13 @@ class SubmitForm(forms.Form):
             name='payees',
             data_list=payees,
         )
-        self.fields['acc_from'] = forms.ChoiceField(
-            label='Account from',
-            choices=lambda: account_choices(accounts),
+        self.fields['acc_from'].widget = fields.ListTextWidget(
+            name='acc_from',
+            data_list=accounts,
         )
-        self.fields['acc_to'] = forms.ChoiceField(
-            label='Account to',
-            choices=lambda: account_choices(
-                [settings.LEDGER_DEFAULT_TO] + accounts
-            ),
+        self.fields['acc_to'].widget = fields.ListTextWidget(
+            name='acc_to',
+            data_list=accounts,
         )
         self.fields['currency'] = forms.ChoiceField(
             choices=[(x, x) for x in currencies],
@@ -42,6 +34,8 @@ class SubmitForm(forms.Form):
 
     payee = forms.CharField(max_length=512)
     amount = forms.DecimalField(decimal_places=2)
+    acc_from = forms.CharField(label='Account from')
+    acc_to = forms.CharField(label='Account to')
 
     field_order = ['payee', 'amount', 'currency', 'acc_from', 'acc_to']
 
@@ -58,15 +52,11 @@ class RuleModelForm(forms.ModelForm):
             name='payees',
             data_list=payees,
         )
-        self.fields['acc_from'] = forms.ChoiceField(
-            label='Account from',
-            required=False,
-            choices=lambda: account_choices(accounts),
+        self.fields['acc_from'].widget = fields.ListTextWidget(
+            name='acc_from',
+            data_list=accounts,
         )
-        self.fields['acc_to'] = forms.ChoiceField(
-            label='Account to',
-            required=False,
-            choices=lambda: account_choices(
-                [settings.LEDGER_DEFAULT_TO] + accounts
-            ),
+        self.fields['acc_to'].widget = fields.ListTextWidget(
+            name='acc_to',
+            data_list=accounts,
         )
