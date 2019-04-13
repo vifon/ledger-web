@@ -10,7 +10,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 import pandas as pd
 import re
 
-from .forms import LedgerForm, RuleModelForm
+from .forms import SubmitForm, RuleModelForm
 from ledger_submit.models import Rule
 from utils import ledger_api
 
@@ -102,7 +102,7 @@ def submit(request):
     payees = ledger_api.payees(ledger_path)
 
     if request.method == 'POST':
-        form = LedgerForm(
+        form = SubmitForm(
             request.POST,
             accounts=accounts,
             currencies=currencies,
@@ -119,7 +119,7 @@ def submit(request):
             )
             entry.store(ledger_path)
     else:
-        form = LedgerForm(
+        form = SubmitForm(
             accounts=accounts,
             currencies=currencies,
             payees=payees,

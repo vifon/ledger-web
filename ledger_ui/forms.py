@@ -11,7 +11,7 @@ def account_choices(accounts):
         yield account, account
 
 
-class LedgerForm(forms.Form):
+class SubmitForm(forms.Form):
 
     def __init__(self, *args, currencies, payees, accounts, **kwargs):
         initial_choices = {
@@ -20,7 +20,6 @@ class LedgerForm(forms.Form):
             'acc_to': settings.LEDGER_DEFAULT_TO,
         }
         super().__init__(initial=initial_choices, *args, **kwargs)
-        self.currencies = currencies
         self.fields['payee'].widget = fields.ListTextWidget(
             name='payees',
             data_list=payees,
@@ -36,7 +35,7 @@ class LedgerForm(forms.Form):
             ),
         )
         self.fields['currency'] = forms.ChoiceField(
-            choices=[(x, x) for x in self.currencies],
+            choices=[(x, x) for x in currencies],
             required=False,
         )
         self.order_fields(self.field_order)
