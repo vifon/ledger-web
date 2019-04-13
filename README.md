@@ -5,6 +5,37 @@ smartphone and [Ledger CLI](https://ledger-cli.org/) by exposing a
 HTTP API.  Since then it evolved into a more general web UI for
 Ledger.
 
+## Features
+
+- HTTP API for submitting new payment entries.
+- Rules to override the attributes of the entries submitted via the API.
+- A web form for submitting new payment entries.
+- Basic expenses & income charting.
+- A web preview of the basic Ledger data.
+- Support for multiple users with separate ledgers and rules.
+- Almost no JavaScript (only used for charts).
+
+### Non-features
+
+I consider *Ledger Web* a companion to the regular *Ledger CLI*, not a
+replacement, so it tries to add things missing in Ledger (+ some
+convenient goodies) while not reinventing the wheel.  These are some
+features visibly missing from *Ledger Web*.
+
+- There is no support for modifying the ledger file other than
+  appending new entries.  The syntax is flexible enough that I didn't
+  want to risk corrupting the existing data.  The most noticeable
+  effect of it is that creating a rule from an entry does not change
+  that entry itself, only the future ones like this one.
+- No support for complex entries, for example with more than two
+  accounts.  Personally if I need to enter a complex entry with no
+  access to *Ledger CLI*, I account it to `Expenses:Uncategorized` and
+  then refine it at my PC.
+
+### Planned features
+
+- A more useful account list view with balances.
+
 ## Screenshots
 
 ### Charts
