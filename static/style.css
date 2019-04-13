@@ -1,8 +1,7 @@
 body {
   display: block;
   max-width: 800px;
-  margin: 0 auto;
-  margin-top: 10px;
+  margin: 10px auto;
 }
 
 .border {
