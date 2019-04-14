@@ -14,6 +14,7 @@ Ledger.
 - A web preview of the basic Ledger data.
 - Support for multiple users with separate ledgers and rules.
 - A responsive UI suitable for mobile devices.
+- Can act as a basic Progressive Web App (PWA).
 - Almost no JavaScript (only used for charts), works even on a Kindle.
 
 ### Non-features
