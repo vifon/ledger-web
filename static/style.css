@@ -169,19 +169,19 @@ a.menu-login:active {
   margin: 8px;
 }
 
-table {
+table.ledger-table {
   border-collapse: collapse;
 }
-tr:nth-child(odd) {
+.ledger-table tr:nth-child(odd) {
   background-color: #ddd;
 }
-tr:nth-child(even) {
+.ledger-table tr:nth-child(even) {
   background-color: #ccc;
 }
-tr:hover {
+.ledger-table tr:hover {
   background-color: #bfbfbf;
 }
-tr > td {
+.ledger-table tr > td {
   padding: 5px;
   border: 1px solid #aaa;
 }
