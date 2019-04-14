@@ -14,7 +14,7 @@ Ledger.
 - A web preview of the basic Ledger data.
 - Support for multiple users with separate ledgers and rules.
 - A responsive UI suitable for mobile devices.
-- Almost no JavaScript (only used for charts).
+- Almost no JavaScript (only used for charts), works even on a Kindle.
 
 ### Non-features
 
