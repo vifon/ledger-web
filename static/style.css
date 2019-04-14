@@ -169,6 +169,23 @@ a.menu-login:active {
   margin: 8px;
 }
 
+table.rules-table {
+  border-collapse: collapse;
+}
+tr.rule-row:nth-child(odd) {
+  background-color: #ddd;
+}
+tr.rule-row:nth-child(even) {
+  background-color: #ccc;
+}
+tr.rule-row:hover {
+  background-color: #bfbfbf;
+}
+tr.rule-row > td {
+  padding: 5px;
+  border: 1px solid #aaa;
+}
+
 @media screen and (max-width: 700px) {
   .menu-grid {
     grid-template-columns: 1fr 1fr;

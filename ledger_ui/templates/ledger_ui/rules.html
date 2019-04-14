@@ -9,7 +9,7 @@
   <form action="{% url 'ledger_ui:rule' %}">
     <input type="submit" value="New" />
   </form>
-  <table border="1">
+  <table class="rules-table">
     <tr>
       <th>Payee</th>
       <th>New payee</th>
@@ -17,7 +17,7 @@
       <th>Account to</th>
     </tr>
     {% for rule in object_list %}
-      <tr>
+      <tr class="rule-row">
         <td>
           <a href="{% url 'ledger_ui:rule' rule.pk %}">{{ rule.payee }}</a>
         </td>
