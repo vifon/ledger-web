@@ -36,10 +36,6 @@ features visibly missing from *Ledger Web*.
   access to *Ledger CLI*, I account it to `Expenses:Uncategorized` and
   then refine it at my PC.
 
-### Planned features
-
-- A more useful account list view with balances.
-
 ## Screenshots
 
 ### Mobile version

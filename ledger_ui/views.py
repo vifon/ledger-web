@@ -135,15 +135,32 @@ def submit(request):
 @login_required
 def accounts(request):
     ledger_path = request.user.ledgerpath.path
-    accounts = ledger_api.accounts(ledger_path)
+
+    csv = ledger_api.csv(
+        ledger_path,
+    )
+    df = pd.read_csv(
+        csv,
+        header=None,
+        names=[
+            'date', 'code', 'payee', 'account', 'currency', 'amount',
+            'reconciled', 'comment',
+        ],
+        usecols=['account', 'currency', 'amount'],
+    )
+
     search = request.GET.get('search', '').lower()
     if search:
-        accounts = [account for account in accounts if search in account.lower()]
+        df = df[df['account'].str.contains(search, case=False)]
+
+    balance = df.groupby(['account', 'currency']).sum()
+    balance['amount'] = balance['amount'].round(2)
+
     return render(
         request,
         'ledger_ui/accounts.html',
         {
-            'accounts': accounts,
+            'accounts': balance.to_dict()['amount'],
             'search': search,
         },
     )

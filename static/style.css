@@ -169,19 +169,19 @@ a.menu-login:active {
   margin: 8px;
 }
 
-table.rules-table {
+table {
   border-collapse: collapse;
 }
-tr.rule-row:nth-child(odd) {
+tr:nth-child(odd) {
   background-color: #ddd;
 }
-tr.rule-row:nth-child(even) {
+tr:nth-child(even) {
   background-color: #ccc;
 }
-tr.rule-row:hover {
+tr:hover {
   background-color: #bfbfbf;
 }
-tr.rule-row > td {
+tr > td {
   padding: 5px;
   border: 1px solid #aaa;
 }

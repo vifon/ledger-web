@@ -10,9 +10,18 @@
     <input name="search" type="text" value="{{ search }}" />
     <input type="submit" value="Search" />
   </form>
-  <ul>
-    {% for account in accounts %}
-      <li>{{ account }}</li>
+  <table>
+    <tr>
+      <th>Account</th>
+      <th>Balance</th>
+      <th>Currency</th>
+    </tr>
+    {% for key, amount in accounts.items %}
+      <tr>
+        <td>{% ifchanged %}{{ key.0 }}{% endifchanged %}</td>
+        <td style="text-align: right;">{{ amount|floatformat:2 }}</td>
+        <td>{{ key.1 }}</td>
+      </tr>
     {% endfor %}
-  </ul>
+  </table>
 {% endblock %}
