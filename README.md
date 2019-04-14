@@ -1,9 +1,9 @@
 # Ledger Web
 
-*Ledger Web* was initially created to bridge the gap between a
-smartphone and [Ledger CLI](https://ledger-cli.org/) by exposing a
-HTTP API.  Since then it evolved into a more general web UI for
-Ledger.
+*Ledger Web* was [initially](https://github.com/vifon/ledger-web-api)
+created to bridge the gap between a smartphone and [Ledger
+CLI](https://ledger-cli.org/) by exposing a HTTP API.  Since then it
+evolved into a more general web UI for Ledger.
 
 ## Features
 
