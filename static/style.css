@@ -105,7 +105,6 @@ summary.collapsible-menu-button::-webkit-details-marker {
 .menu-element {
   display: block;
   color: inherit;
-  font-weight: bold;
   font-size: x-large;
   font-family: "Roboto Condensed", sans-serif;
   background-color: #bdd;
