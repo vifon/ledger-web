@@ -80,6 +80,10 @@ div.ui-slider-range.ui-widget-header {
   font-weight: bold;
   white-space: nowrap;
 }
+summary.collapsible-menu-button {
+  display: block;
+}
+summary.collapsible-menu-button::details-marker,
 summary.collapsible-menu-button::-webkit-details-marker,
 summary.collapsible-menu-button::-moz-details-marker {
   display: none;
@@ -135,6 +139,7 @@ a.menu-element:active {
 .menu-login {
   grid-area: login;
   background-color: #b00;
+  color: #111;
 }
 a.menu-login:hover {
   background-color: #c00;
