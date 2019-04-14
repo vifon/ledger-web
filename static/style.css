@@ -80,14 +80,6 @@ div.ui-slider-range.ui-widget-header {
   font-weight: bold;
   white-space: nowrap;
 }
-@media screen and (max-width: 700px) {
-  .collapsible-menu {
-    display: block;
-  }
-  .constant-menu {
-    display: none;
-  }
-}
 
 .menu-grid {
   display: grid;
@@ -101,20 +93,6 @@ div.ui-slider-range.ui-widget-header {
   place-items: stretch;
   place-content: stretch;
   padding: 10px;
-}
-@media screen and (max-width: 700px) {
-  .menu-grid {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
-    grid-template-areas:
-      "register register"
-      "charts charts"
-      "accounts accounts"
-      "submit submit"
-      "rules rules"
-      "user login"
-      ;
-  }
 }
 
 .menu-element {
@@ -183,7 +161,28 @@ a.menu-login:active {
   padding: 10px 20px 10px 20px;
   margin: 8px;
 }
-@media screen and (max-width: 500px) {
+
+@media screen and (max-width: 700px) {
+  .menu-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-areas:
+      "register register"
+      "charts charts"
+      "accounts accounts"
+      "submit submit"
+      "rules rules"
+      "user login"
+      ;
+  }
+
+  .collapsible-menu {
+    display: block;
+  }
+  .constant-menu {
+    display: none;
+  }
+
   .entry {
     display: none;
   }
