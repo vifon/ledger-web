@@ -80,6 +80,10 @@ div.ui-slider-range.ui-widget-header {
   font-weight: bold;
   white-space: nowrap;
 }
+.collapsible-menu-button::-webkit-details-marker,
+.collapsible-menu-button::-moz-details-marker {
+  display: none;
+}
 
 .menu-grid {
   display: grid;
