@@ -1,3 +1,5 @@
+@import 'https://fonts.googleapis.com/css?family=Roboto+Condensed';
+
 body {
   display: block;
   max-width: 800px;
@@ -76,8 +78,7 @@ div.ui-slider-range.ui-widget-header {
   cursor: pointer;
   list-style-type: none;
   font-size: 40px;
-  font-family: sans-serif;
-  font-weight: bold;
+  font-family: "Roboto Condensed", sans-serif;
   white-space: nowrap;
 }
 summary.collapsible-menu-button {
@@ -106,7 +107,7 @@ summary.collapsible-menu-button::-webkit-details-marker {
   color: inherit;
   font-weight: bold;
   font-size: x-large;
-  font-family: sans-serif;
+  font-family: "Roboto Condensed", sans-serif;
   background-color: #bdd;
   text-transform: uppercase;
   text-decoration: inherit;
