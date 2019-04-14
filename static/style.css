@@ -51,6 +51,12 @@ div.ui-slider-range.ui-widget-header {
   user-select: none;
 }
 
+.main-menu {
+  font-family: "Roboto Condensed", sans-serif;
+}
+.constant-menu {
+  font-weight: bold;
+}
 @keyframes fadeInDown {
   0% {
     opacity: 0;
@@ -78,7 +84,6 @@ div.ui-slider-range.ui-widget-header {
   cursor: pointer;
   list-style-type: none;
   font-size: 40px;
-  font-family: "Roboto Condensed", sans-serif;
   white-space: nowrap;
 }
 summary.collapsible-menu-button {
@@ -106,7 +111,6 @@ summary.collapsible-menu-button::-webkit-details-marker {
   display: block;
   color: inherit;
   font-size: x-large;
-  font-family: "Roboto Condensed", sans-serif;
   background-color: #bdd;
   text-transform: uppercase;
   text-decoration: inherit;
