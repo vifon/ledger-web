@@ -41,6 +41,10 @@ features visibly missing from *Ledger Web*.
 
 ## Screenshots
 
+### Mobile version
+
+[![](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Charts_mobile.png)](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Charts_mobile.png)
+
 ### Charts
 
 [![](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Charts.png)](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Charts.png)
