@@ -1,15 +1,11 @@
-<div class="border menu-grid">
-  {% if user.is_authenticated %}
-    <div class="menu-element menu-user">
-      User: <span class="username">{{ user }}</span>
-    </div>
-    <a class="menu-element menu-login" href="{% url 'logout' %}">Logout</a>
-  {% else %}
-    <a class="menu-element menu-login" href="{% url 'login' %}">Login</a>
-  {% endif %}
-  <a class="menu-element menu-register" href="{% url 'ledger_ui:register' %}">Register</a>
-  <a class="menu-element menu-charts" href="{% url 'ledger_ui:charts' %}">Charts</a>
-  <a class="menu-element menu-accounts" href="{% url 'ledger_ui:accounts' %}">Accounts</a>
-  <a class="menu-element menu-submit" href="{% url 'ledger_ui:submit' %}">Submit</a>
-  <a class="menu-element menu-rules" href="{% url 'ledger_ui:rules' %}">Rules</a>
+<details class="collapsible-menu" {% if menu_open %}open{% endif %}>
+  <summary class="collapsible-menu-button noselect">
+    Ledger Web
+  </summary>
+  <div class="collapsible-menu-container">
+    {% include './menu_base.html' %}
+  </div>
+</details>
+<div class="constant-menu border">
+  {% include './menu_base.html' %}
 </div>

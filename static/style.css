@@ -2,6 +2,8 @@ body {
   display: block;
   max-width: 800px;
   margin: 10px auto;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .border {
@@ -36,6 +38,55 @@ body {
 
 div.ui-slider-range.ui-widget-header {
   background: skyblue;
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.collapsible-menu[open] > .collapsible-menu-container {
+  animation-name: fadeInDown;
+  animation-duration: 0.5s;
+}
+.collapsible-menu-button {
+  outline: none;
+}
+.collapsible-menu {
+  display: none;
+}
+.collapsible-menu-button:before {
+  content: "☰  ";
+}
+.collapsible-menu-button {
+  cursor: pointer;
+  list-style-type: none;
+  font-size: 40px;
+  font-family: sans;
+  font-weight: bold;
+  white-space: nowrap;
+}
+@media screen and (max-width: 700px) {
+  .collapsible-menu {
+    display: block;
+  }
+  .constant-menu {
+    display: none;
+  }
 }
 
 .menu-grid {
