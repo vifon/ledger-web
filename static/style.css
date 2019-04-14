@@ -176,17 +176,19 @@ a.menu-login:active {
       ;
   }
 
-  .collapsible-menu {
-    display: block;
-  }
-  .constant-menu {
-    display: none;
-  }
-
   .entry {
     display: none;
   }
   .entry-payee {
     display: block;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .collapsible-menu {
+    display: block;
+  }
+  .constant-menu {
+    display: none;
   }
 }
