@@ -57,6 +57,10 @@ features visibly missing from *Ledger Web*.
 
 [![](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Register.png)](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Register.png)
 
+### Ledger Web on Kindle
+
+[![](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Submit_Kindle.png)](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Submit_Kindle.png)
+
 ## Installation
 
 1. Clone the repository and install the dependencies:
