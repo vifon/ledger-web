@@ -13,6 +13,7 @@ Ledger.
 - Basic expenses & income charting.
 - A web preview of the basic Ledger data.
 - Support for multiple users with separate ledgers and rules.
+- A responsive UI suitable for mobile devices.
 - Almost no JavaScript (only used for charts).
 
 ### Non-features
