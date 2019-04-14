@@ -83,9 +83,7 @@ div.ui-slider-range.ui-widget-header {
 summary.collapsible-menu-button {
   display: block;
 }
-summary.collapsible-menu-button::details-marker,
-summary.collapsible-menu-button::-webkit-details-marker,
-summary.collapsible-menu-button::-moz-details-marker {
+summary::-webkit-details-marker {
   display: none;
 }
 
