@@ -17,9 +17,13 @@
       <th>Currency</th>
     </tr>
     {% for key, amount in accounts.items %}
-      <tr>
+      <tr class="{% if amount == 0 %}null-balance{% endif %}
+                 {% if amount < 0 %}negative-balance{% endif %}
+                 ">
         <td>{% ifchanged %}{{ key.0 }}{% endifchanged %}</td>
-        <td style="text-align: right;">{{ amount|floatformat:2 }}</td>
+        <td class="balance">
+          {{ amount|floatformat:2 }}
+        </td>
         <td>{{ key.1 }}</td>
       </tr>
     {% endfor %}
