@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'ledger_ui.apps.LedgerUiConfig',
+    'ledger_query.apps.LedgerQueryConfig',
     'ledger_submit.apps.LedgerSubmitConfig',
     'accounts.apps.AccountsConfig',
     'django.contrib.admin',
