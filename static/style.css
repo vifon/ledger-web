@@ -183,7 +183,7 @@ table.ledger-table {
   background-color: #ccc;
 }
 .ledger-table tr:hover {
-  background-color: #bfbfbf;
+  background-color: #fff6c5;
 }
 .ledger-table tr > td {
   padding: 5px;
