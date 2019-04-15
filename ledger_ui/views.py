@@ -133,7 +133,7 @@ def submit(request):
 
 
 @login_required
-def accounts(request):
+def balance(request):
     ledger_path = request.user.ledgerpath.path
 
     csv = ledger_api.csv(
@@ -158,7 +158,7 @@ def accounts(request):
 
     return render(
         request,
-        'ledger_ui/accounts.html',
+        'ledger_ui/balance.html',
         {
             'accounts': balance.to_dict()['amount'],
             'search': search,

@@ -98,7 +98,7 @@ summary.collapsible-menu-button::-webkit-details-marker {
   grid-template-columns: 1fr 2fr 2fr 1fr;
   grid-template-rows: 1fr 1fr;
   grid-template-areas:
-    "submit register accounts login"
+    "submit register balance login"
     "submit charts rules user"
     ;
   grid-gap: 10px;
@@ -155,8 +155,8 @@ a.menu-login:active {
 .menu-charts {
   grid-area: charts;
 }
-.menu-accounts {
-  grid-area: accounts;
+.menu-balance {
+  grid-area: balance;
 }
 .menu-submit {
   grid-area: submit;
@@ -207,7 +207,7 @@ table.ledger-table {
     grid-template-areas:
       "register register"
       "charts charts"
-      "accounts accounts"
+      "balance balance"
       "submit submit"
       "rules rules"
       "user login"

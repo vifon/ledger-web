@@ -1,11 +1,11 @@
 {% extends "./base.html" %}
 
 {% block title %}
-  {{ block.super }} - Accounts
+  {{ block.super }} - Balance
 {% endblock %}
 
 {% block content %}
-  <h2>Ledger accounts</h2>
+  <h2>Balance</h2>
   <form action="{{ request.path }}" method="GET">
     <input name="search" type="text" value="{{ search }}" />
     <input type="submit" value="Search" />
