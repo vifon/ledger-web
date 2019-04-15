@@ -22,5 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('ledger/ui/', include('ledger_ui.urls')),
     path('ledger/submit/', include('ledger_submit.urls')),
+    path('ledger/query/', include('ledger_query.urls')),
     path('accounts/', include('accounts.urls')),
 ]

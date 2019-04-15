@@ -14,4 +14,43 @@
 
     <input type="submit" value="Submit" />
   </form>
+
+  <div class="rule-preview-container">
+    <input id="preview_button" type="button" value="Preview" />
+    <ul id="rule-preview"></ul>
+  </div>
+
+  <script>
+   document.getElementById('preview_button')
+    .addEventListener(
+      'click',
+      function () {
+        let regexp = document.getElementById('id_payee').value;
+        let req = new XMLHttpRequest();
+        req.open(
+          'GET',
+          "{% url 'ledger_query:transactions' %}?regexp=" + encodeURI(regexp),
+          false
+        );
+        req.onreadystatechange = function (aEvt) {
+          if (req.readyState == 4) {
+            if (req.status == 200) {
+              let target = document.getElementById('rule-preview');
+              while (target.firstChild) {
+                target.removeChild(target.firstChild);
+              }
+
+              let entries = JSON.parse(req.responseText).entries;
+              for (let entry in entries) {
+                let item = document.createElement('li');
+                item.textContent = entries[entry].payee;
+                target.appendChild(item);
+              }
+            }
+          }
+        };
+        req.send(null);
+      }
+    );
+  </script>
 {% endblock %}

@@ -39,6 +39,13 @@ input {
   margin-right: 2em;
 }
 
+.rule-preview-container {
+  margin: 1em;
+  padding: 1em;
+  background-color: #ccc;
+  border-radius: 10px;
+}
+
 .chart-container {
   position: relative;
 }
