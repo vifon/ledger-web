@@ -30,7 +30,7 @@
         req.open(
           'GET',
           "{% url 'ledger_query:transactions' %}?regexp=" + encodeURI(regexp),
-          false
+          true
         );
         req.onreadystatechange = function (aEvt) {
           if (req.readyState == 4) {
