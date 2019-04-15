@@ -43,7 +43,11 @@
               let entries = JSON.parse(req.responseText).entries;
               for (let entry in entries) {
                 let item = document.createElement('li');
-                item.textContent = entries[entry].payee;
+                item.textContent = (
+                  entries[entry].date
+                  + ': '
+                  + entries[entry].payee
+                );
                 target.appendChild(item);
               }
             }
