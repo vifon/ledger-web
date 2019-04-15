@@ -111,6 +111,7 @@ def submit(request):
         if form.is_valid():
             validated = form.cleaned_data
             entry = ledger_api.Entry(
+                date=validated['date'],
                 payee=validated['payee'],
                 account_from=validated['acc_from'],
                 account_to=validated['acc_to'],

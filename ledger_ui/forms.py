@@ -1,6 +1,8 @@
 from django import forms
 from django.conf import settings
 
+import datetime
+
 from . import fields
 from ledger_submit.models import Rule
 
@@ -32,12 +34,13 @@ class SubmitForm(forms.Form):
         )
         self.order_fields(self.field_order)
 
+    date = forms.DateField(initial=datetime.date.today)
     payee = forms.CharField(max_length=512)
     amount = forms.DecimalField(decimal_places=2)
     acc_from = forms.CharField(label='Account from')
     acc_to = forms.CharField(label='Account to')
 
-    field_order = ['payee', 'amount', 'currency', 'acc_from', 'acc_to']
+    field_order = ['date', 'payee', 'amount', 'currency', 'acc_from', 'acc_to']
 
 
 class RuleModelForm(forms.ModelForm):
