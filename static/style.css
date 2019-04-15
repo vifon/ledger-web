@@ -81,8 +81,12 @@ div.ui-slider-range.ui-widget-header {
 .collapsible-menu {
   display: none;
 }
-.collapsible-menu-button:before {
-  content: "☰ ";
+.hamburger {
+  display: inline-block;
+  transition-duration: 0.5s;
+}
+.collapsible-menu[open] .hamburger {
+  transform: rotate(90deg);
 }
 .collapsible-menu-button {
   cursor: pointer;
