@@ -6,6 +6,11 @@ body {
   margin: 10px auto;
   padding-left: 10px;
   padding-right: 10px;
+  font-family: "Roboto Condensed", sans-serif;
+}
+
+input {
+  border-radius: 3px;
 }
 
 .border {
@@ -13,11 +18,11 @@ body {
   padding: 3px;
 }
 
-.column-header {
+.register-header {
   text-align: center;
   border: 2px solid black;
 }
-.column-header:hover {
+.register-header:hover {
   background-color: #aaa;
 }
 
@@ -51,9 +56,6 @@ div.ui-slider-range.ui-widget-header {
   user-select: none;
 }
 
-.main-menu {
-  font-family: "Roboto Condensed", sans-serif;
-}
 .constant-menu {
   font-weight: bold;
 }
@@ -78,7 +80,7 @@ div.ui-slider-range.ui-widget-header {
   display: none;
 }
 .collapsible-menu-button:before {
-  content: "☰  ";
+  content: "☰ ";
 }
 .collapsible-menu-button {
   cursor: pointer;
@@ -119,6 +121,8 @@ summary.collapsible-menu-button::-webkit-details-marker {
 
   display: grid;
   place-content: center;
+
+  border-radius: 10px;
 }
 a.menu-element:hover {
   background-color: #95D9D9;
