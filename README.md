@@ -10,11 +10,11 @@ evolved into a more general web UI for Ledger.
 - HTTP API for submitting new payment entries.
 - Rules to override the attributes of the entries submitted via the API.
 - A web form for submitting new payment entries.
-- Basic expenses & income charting.
+- Expenses & income charting.
 - A web preview of the basic Ledger data.
 - Support for multiple users with separate ledgers and rules.
 - A responsive UI suitable for mobile devices.
-- Can act as a basic Progressive Web App (PWA).
+- Can act as a very basic Progressive Web App (PWA).
 - Almost no JavaScript (only used for charts), works even on a Kindle.
 
 ### Non-features
