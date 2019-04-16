@@ -64,6 +64,7 @@ class Entry:
     def normalize_currency(self):
         conversions = {
             "USD": ("$", ""),
+            "$": ("$", ""),
         }
         if self.currency in conversions:
             pre_currency, self.currency = conversions[self.currency]
