@@ -41,18 +41,24 @@
               }
 
               let entries = JSON.parse(req.responseText).entries;
-              for (let entry in entries.slice(0, 10)) {
+              if (entries.length > 0) {
+                for (let entry in entries.slice(0, 10)) {
+                  let item = document.createElement('li');
+                  item.textContent = (
+                    entries[entry].date
+                    + ': '
+                    + entries[entry].payee
+                  );
+                  target.appendChild(item);
+                }
+                if (entries.length > 10) {
+                  let item = document.createElement('li');
+                  item.textContent = ('...');
+                  target.appendChild(item);
+                }
+              } else {
                 let item = document.createElement('li');
-                item.textContent = (
-                  entries[entry].date
-                  + ': '
-                  + entries[entry].payee
-                );
-                target.appendChild(item);
-              }
-              if (entries.length > 10) {
-                let item = document.createElement('li');
-                item.textContent = ('...');
+                item.textContent = ('[no matches]');
                 target.appendChild(item);
               }
             }
