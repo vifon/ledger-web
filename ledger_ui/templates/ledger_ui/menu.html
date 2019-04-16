@@ -1,6 +1,57 @@
-<details class="main-menu collapsible-menu" {% if menu_open %}open{% endif %}>
+{% load static %}
+
+<script>
+ function onMenu (menu) {
+   let animations;
+
+   if (menu.open) {
+     animation = document.getElementById('hamburger-to-arrow');
+   } else {
+     animation = document.getElementById('arrow-to-hamburger');
+   }
+   animation.beginElement();
+ }
+</script>
+
+<details class="main-menu collapsible-menu" {% if menu_open %}open{% endif %} ontoggle="onMenu(this)">
   <summary class="collapsible-menu-button noselect">
-    <div class="hamburger">☰</div>
+    <svg viewbox="0 0 100 100"
+         height="30"
+         width="30"
+         class="hamburger"
+    >
+      <style>
+       line {
+         stroke: #000;
+         stroke-width: 12;
+         stroke-linecap: round;
+       }
+      </style>
+      <animate id="hamburger-to-arrow" begin="indefinite" />
+      <animate id="arrow-to-hamburger" begin="indefinite" />
+      <line class="hamburger-stroke1" x1="10" y1="20" x2="90" y2="20">
+        <animate attributeName="x1" from="10" to="50" dur="0.5s" begin="hamburger\-to\-arrow.begin" fill="freeze" />
+        <animate attributeName="y1" from="20" to="10" dur="0.5s" begin="hamburger\-to\-arrow.begin" fill="freeze" />
+        <animate attributeName="x2" from="90" to="90" dur="0.5s" begin="hamburger\-to\-arrow.begin" fill="freeze" />
+        <animate attributeName="y2" from="20" to="50" dur="0.5s" begin="hamburger\-to\-arrow.begin" fill="freeze" />
+        <animate attributeName="x1" from="50" to="10" dur="0.5s" begin="arrow\-to\-hamburger.begin" fill="freeze" />
+        <animate attributeName="y1" from="10" to="20" dur="0.5s" begin="arrow\-to\-hamburger.begin" fill="freeze" />
+        <animate attributeName="x2" from="90" to="90" dur="0.5s" begin="arrow\-to\-hamburger.begin" fill="freeze" />
+        <animate attributeName="y2" from="50" to="20" dur="0.5s" begin="arrow\-to\-hamburger.begin" fill="freeze" />
+      </line>
+      <line class="hamburger-stroke2" x1="10" y1="50" x2="90" y2="50" />
+      <line class="hamburger-stroke3" x1="10" y1="80" x2="90" y2="80">
+        <animate attributeName="x1" from="10" to="50" dur="0.5s" begin="hamburger\-to\-arrow.begin" fill="freeze" />
+        <animate attributeName="y1" from="80" to="90" dur="0.5s" begin="hamburger\-to\-arrow.begin" fill="freeze" />
+        <animate attributeName="x2" from="90" to="90" dur="0.5s" begin="hamburger\-to\-arrow.begin" fill="freeze" />
+        <animate attributeName="y2" from="80" to="50" dur="0.5s" begin="hamburger\-to\-arrow.begin" fill="freeze" />
+        <animate attributeName="x1" from="50" to="10" dur="0.5s" begin="arrow\-to\-hamburger.begin" fill="freeze" />
+        <animate attributeName="y1" from="90" to="80" dur="0.5s" begin="arrow\-to\-hamburger.begin" fill="freeze" />
+        <animate attributeName="x2" from="90" to="90" dur="0.5s" begin="arrow\-to\-hamburger.begin" fill="freeze" />
+        <animate attributeName="y2" from="50" to="80" dur="0.5s" begin="arrow\-to\-hamburger.begin" fill="freeze" />
+      </line>
+    </svg>
+
     Ledger Web
   </summary>
   <div class="collapsible-menu-container">

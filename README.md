@@ -15,7 +15,8 @@ evolved into a more general web UI for Ledger.
 - Support for multiple users with separate ledgers and rules.
 - A responsive UI suitable for mobile devices.
 - Can act as a very basic Progressive Web App (PWA).
-- Almost no JavaScript (only used for charts), works even on a Kindle.
+- Almost no JavaScript (only used for charts and eyecandy), works even
+  on a Kindle.
 
 ### Non-features
 
