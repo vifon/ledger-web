@@ -36,6 +36,20 @@ class Entry:
     2019-02-16 McDonald's
         Expenses:Food                              $5.00
         Liabilities:Credit Card
+
+    >>> entry = Entry(
+    ...    payee="McDonald's",
+    ...    account_from="Liabilities:Credit Card",
+    ...    account_to="Expenses:Food",
+    ...    amount="5 $",
+    ...    date="2019-02-16",
+    ... )
+
+    >>> print(entry)
+    <BLANKLINE>
+    2019-02-16 McDonald's
+        Expenses:Food                              $5.00
+        Liabilities:Credit Card
     """
 
     template = """
