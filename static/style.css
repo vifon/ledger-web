@@ -143,6 +143,8 @@ summary.collapsible-menu-button::-webkit-details-marker {
 
   border: 1px solid #555;
   border-radius: 10px;
+
+  transition: background-color 0.3s;
 }
 a.menu-element:hover {
   background-color: #95D9D9;
