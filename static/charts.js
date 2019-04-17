@@ -4,7 +4,7 @@ let timeChart = new Chart('timechart', {
     labels: dates.slice(),
     datasets: [
       {
-        label: 'Expenses',
+        label: expensesFilter,
         data: expensesTotals,
         borderColor: 'rgba(255, 100, 100, 0.5)',
         backgroundColor: 'rgba(255, 100, 100, 0.1)'

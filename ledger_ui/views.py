@@ -59,15 +59,16 @@ def charts(request):
         parse_dates=['date'],
     )
 
-    expenses = df[df['account'].str.contains("^Expenses:")].copy()
     income = df[df['account'].str.contains("^Income:")]
 
     account_filter = request.GET.get('account_filter', '')
     if account_filter:
-        expenses = expenses[expenses['account'].str.contains(
+        expenses = df[df['account'].str.contains(
             account_filter,
             case=False,
-        )]
+        )].copy()
+    else:
+        expenses = df[df['account'].str.contains("^Expenses:")].copy()
 
     date_grouped_expenses = expenses[['date', 'amount']].groupby('date').sum()
     date_grouped_income = income[['date', 'amount']].groupby('date').sum()
