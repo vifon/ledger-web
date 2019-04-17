@@ -21,35 +21,23 @@
          class="hamburger"
     >
       <style>
-       line {
+       path {
          stroke: #000;
          stroke-width: 12;
-         stroke-linecap: round;
+         stroke-linejoin: round;
        }
       </style>
       <animate id="hamburger-to-arrow" begin="indefinite" />
       <animate id="arrow-to-hamburger" begin="indefinite" />
-      <line class="hamburger-stroke1" x1="10" y1="20" x2="90" y2="20">
-        <animate attributeName="x1" from="10" to="50" dur="0.5s" begin="hamburger\-to\-arrow.begin" fill="freeze" />
-        <animate attributeName="y1" from="20" to="10" dur="0.5s" begin="hamburger\-to\-arrow.begin" fill="freeze" />
-        <animate attributeName="x2" from="90" to="90" dur="0.5s" begin="hamburger\-to\-arrow.begin" fill="freeze" />
-        <animate attributeName="y2" from="20" to="50" dur="0.5s" begin="hamburger\-to\-arrow.begin" fill="freeze" />
-        <animate attributeName="x1" from="50" to="10" dur="0.5s" begin="arrow\-to\-hamburger.begin" fill="freeze" />
-        <animate attributeName="y1" from="10" to="20" dur="0.5s" begin="arrow\-to\-hamburger.begin" fill="freeze" />
-        <animate attributeName="x2" from="90" to="90" dur="0.5s" begin="arrow\-to\-hamburger.begin" fill="freeze" />
-        <animate attributeName="y2" from="50" to="20" dur="0.5s" begin="arrow\-to\-hamburger.begin" fill="freeze" />
-      </line>
-      <line class="hamburger-stroke2" x1="10" y1="50" x2="90" y2="50" />
-      <line class="hamburger-stroke3" x1="10" y1="80" x2="90" y2="80">
-        <animate attributeName="x1" from="10" to="50" dur="0.5s" begin="hamburger\-to\-arrow.begin" fill="freeze" />
-        <animate attributeName="y1" from="80" to="90" dur="0.5s" begin="hamburger\-to\-arrow.begin" fill="freeze" />
-        <animate attributeName="x2" from="90" to="90" dur="0.5s" begin="hamburger\-to\-arrow.begin" fill="freeze" />
-        <animate attributeName="y2" from="80" to="50" dur="0.5s" begin="hamburger\-to\-arrow.begin" fill="freeze" />
-        <animate attributeName="x1" from="50" to="10" dur="0.5s" begin="arrow\-to\-hamburger.begin" fill="freeze" />
-        <animate attributeName="y1" from="90" to="80" dur="0.5s" begin="arrow\-to\-hamburger.begin" fill="freeze" />
-        <animate attributeName="x2" from="90" to="90" dur="0.5s" begin="arrow\-to\-hamburger.begin" fill="freeze" />
-        <animate attributeName="y2" from="50" to="80" dur="0.5s" begin="arrow\-to\-hamburger.begin" fill="freeze" />
-      </line>
+      <path class="hamburger-stroke1" d="M10 20 L90 20 Z">
+        <animate attributeName="d" from="M10 20 L90 20 Z" to="M50 10 L90 50 Z" dur="0.5s" begin="hamburger\-to\-arrow.begin" fill="freeze" />
+        <animate attributeName="d" from="M50 10 L90 50 Z" to="M10 20 L90 20 Z" dur="0.5s" begin="arrow\-to\-hamburger.begin" fill="freeze" />
+      </path>
+      <path class="hamburger-stroke2" d="M10 50 L90 50 Z" />
+      <path class="hamburger-stroke3" d="M10 80 L90 80 Z">
+        <animate attributeName="d" from="M10 80 L90 80 Z" to="M50 90 L90 50 Z" dur="0.5s" begin="hamburger\-to\-arrow.begin" fill="freeze" />
+        <animate attributeName="d" from="M50 90 L90 50 Z" to="M10 80 L90 80 Z" dur="0.5s" begin="arrow\-to\-hamburger.begin" fill="freeze" />
+      </path>
     </svg>
 
     Ledger Web
