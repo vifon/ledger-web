@@ -43,6 +43,10 @@ features visibly missing from *Ledger Web*.
 
 [![](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Charts_mobile.png)](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Charts_mobile.png)
 
+### Balance
+
+[![](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Balance.png)](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Balance.png)
+
 ### Charts
 
 [![](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Charts.png)](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Charts.png)
