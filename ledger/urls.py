@@ -29,5 +29,5 @@ urlpatterns = [
     path('sw.js', TemplateView.as_view(
         template_name='worker/sw.js',
         content_type='application/javascript',
-    )),
+    ), name='worker'),
 ]
