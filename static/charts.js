@@ -1,3 +1,5 @@
+"use strict";
+
 let timeChart = new Chart('timechart', {
   type: 'line',
   data: {
