@@ -15,13 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic.base import RedirectView
+from django.views.generic.base import TemplateView
+
+from ledger_ui.views import index
 
 urlpatterns = [
-    path('', RedirectView.as_view(pattern_name='ledger_ui:index')),
+    path('', index),
     path('admin/', admin.site.urls),
     path('ledger/ui/', include('ledger_ui.urls')),
     path('ledger/submit/', include('ledger_submit.urls')),
     path('ledger/query/', include('ledger_query.urls')),
     path('accounts/', include('accounts.urls')),
+    path('sw.js', TemplateView.as_view(
+        template_name='worker/sw.js',
+        content_type='application/javascript',
+    )),
 ]

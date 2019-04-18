@@ -23,6 +23,12 @@
     <meta name="msapplication-config" content="{% static "icons/browserconfig.xml" %}">
     <meta name="theme-color" content="#0e5800">
 
+    <script>
+     if ('serviceWorker' in navigator) {
+       navigator.serviceWorker.register('/sw.js', {scope: '/'});
+     }
+    </script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>
       {% block title %}Ledger{% endblock %}
