@@ -65,6 +65,11 @@ features visibly missing from *Ledger Web*.
 
 ## Installation
 
+*Ledger Web* is designed to be constantly running on a server so it's
+easily accessible from mobile devices.  That being said, it's possible
+to run it on demand locally for example just to analyze the charts.
+The instructions below assume the former case though.
+
 1. Clone the repository and install the dependencies:
 
         git clone https://github.com/vifon/ledger-web
@@ -73,7 +78,8 @@ features visibly missing from *Ledger Web*.
         . .venv/bin/activate
         pip install -r requirements.txt
 
-2. Set up the database.
+2. Set up the database.  SQLite is used by default, it can be changed
+   in `ledger/settings.py`.
 
         ./manage.py makemigrations
         ./manage.py migrate
