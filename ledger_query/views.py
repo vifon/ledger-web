@@ -7,7 +7,6 @@ import re
 from utils import ledger_api
 
 
-@csrf_exempt
 @login_required
 def transactions(request):
     with open(request.user.ledgerpath.path, 'r') as ledger_fd:
