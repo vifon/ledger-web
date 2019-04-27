@@ -2,6 +2,7 @@ from django import forms
 from django.conf import settings
 
 import datetime
+import re
 
 from . import fields
 from ledger_submit.models import Rule
@@ -51,8 +52,12 @@ class RuleModelForm(forms.ModelForm):
 
     def __init__(self, *args, accounts, payees, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['payee'].widget = fields.ListTextWidget(
+            name='payee',
+            data_list=map(re.escape, payees),
+        )
         self.fields['new_payee'].widget = fields.ListTextWidget(
-            name='payees',
+            name='new_payee',
             data_list=payees,
         )
         self.fields['acc_from'].widget = fields.ListTextWidget(
