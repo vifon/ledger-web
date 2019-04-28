@@ -160,6 +160,17 @@ request.
 It can be used to process and/or clean up automated requests on card
 payment (left as an exercise for the user).
 
+### API Timedelta
+
+If the source of your API call (probably a bank one way or another)
+sometimes gets delayed, you may want to set `LEDGER_API_TIMEDELTA` in
+`ledger/settings.py`.  For example: Your bank sends you an SMS when
+you pay with a card, which triggers an API call, but sometimes this
+SMS gets delayed until 8 AM the next day.  If you're unlikely to make
+a real payment that early, you may want to set `LEDGER_API_TIMEDELTA =
+-timedelta(hours=8.5)` so this transaction is still saved with the
+correct date.
+
 ## Copyright
 
 Copyright (C) 2019  Wojciech Siewierski

@@ -1,7 +1,9 @@
+from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
+from datetime import datetime
 import json
 import re
 
@@ -55,11 +57,17 @@ def add_ledger_entry(user, account_from, account_to, payee, amount):
                 break
 
     amount = amount.replace(",", ".").strip()
+
+    date = datetime.now()
+    if settings.LEDGER_API_TIMEDELTA:
+        date += settings.LEDGER_API_TIMEDELTA
+
     entry = ledger_api.Entry(
         payee=payee,
         account_from=account_from,
         account_to=account_to,
         amount=amount,
+        date=date.strftime("%F"),
     )
     entry.store(ledger_path)
     return entry
