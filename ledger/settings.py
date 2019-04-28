@@ -130,8 +130,8 @@ STATICFILES_DIRS = [
 
 LOGIN_REDIRECT_URL = 'ledger_ui:index'
 
-LEDGER_DEFAULT_CURRENCY = 'PLN'
-LEDGER_DEFAULT_FROM = 'Liabilities:Karta kredytowa'
+LEDGER_DEFAULT_CURRENCY = '$'
+LEDGER_DEFAULT_FROM = 'Liabilities:Credit Card'
 LEDGER_DEFAULT_TO = 'Expenses:Uncategorized'
 # LEDGER_API_TIMEDELTA = -timedelta(hours=8.5)
 LEDGER_API_TIMEDELTA = None
