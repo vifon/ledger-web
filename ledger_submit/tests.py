@@ -179,25 +179,93 @@ class SubmitTests(TestCase):
 
 
     @parameterized.expand([
-        ('CARREFOUR EXPRESS WARSZAWA', 'Carrefour Express'),
-        ('CARREFOUR WARSZAWA', 'Carrefour'),
+        (
+            # Replacement rules.
+            (
+                {
+                    'regex': 'CARREFOUR .*',
+                    'replacement': 'Carrefour',
+                },
+                {
+                    'regex': 'CARREFOUR EXPRESS .*',
+                    'replacement': 'Carrefour Express',
+                },
+            ),
+            # Posted payee.
+            'CARREFOUR EXPRESS WARSZAWA',
+            # Effective payee after replacement.
+            'Carrefour Express',
+        ),
+        (
+            # Replacement rules.
+            (
+                {
+                    'regex': 'CARREFOUR EXPRESS .*',
+                    'replacement': 'Carrefour Express',
+                },
+                {
+                    'regex': 'CARREFOUR .*',
+                    'replacement': 'Carrefour',
+                },
+            ),
+            # Posted payee.
+            'CARREFOUR EXPRESS WARSZAWA',
+            # Effective payee after replacement.
+            'Carrefour Express',
+        ),
+        (
+            # Replacement rules.
+            (
+                {
+                    'regex': 'CARREFOUR .*',
+                    'replacement': 'Carrefour',
+                },
+                {
+                    'regex': 'CARREFOUR EXPRESS .*',
+                    'replacement': 'Carrefour Express',
+                },
+            ),
+            # Posted payee.
+            'CARREFOUR WARSZAWA',
+            # Effective payee after replacement.
+            'Carrefour',
+        ),
+        (
+            # Replacement rules.
+            (
+                {
+                    'regex': 'CARREFOUR EXPRESS .*',
+                    'replacement': 'Carrefour Express',
+                },
+                {
+                    'regex': 'CARREFOUR .*',
+                    'replacement': 'Carrefour',
+                },
+            ),
+            # Posted payee.
+            'CARREFOUR WARSZAWA',
+            # Effective payee after replacement.
+            'Carrefour',
+        ),
     ])
-    def test_rule_order(self, payee, effective_payee):
-        # The longest (i.e. with the largest len(payee)) rule should
-        # be checked first, even if we create the shorter one first.
-        # It is assumed the longer the regexp, the more specific it is
-        # if there are multiple matches.
+    def test_rule_order(self, rules, payee, effective_payee):
+        """The longest (i.e. with the largest len(payee)) rule should be
+        checked first, even if we create the shorter one first.  It is
+        assumed the longer the regexp, the more specific it is if
+        there are multiple matches.
+
+        """
         Rule.objects.create(
             user=self.user,
-            payee='CARREFOUR .*',
-            new_payee='Carrefour',
+            payee=rules[0]['regex'],
+            new_payee=rules[0]['replacement'],
             acc_from='',
             acc_to='Expenses:Food',
         )
         Rule.objects.create(
             user=self.user,
-            payee='CARREFOUR EXPRESS .*',
-            new_payee='Carrefour Express',
+            payee=rules[1]['regex'],
+            new_payee=rules[1]['replacement'],
             acc_from='',
             acc_to='Expenses:Food',
         )
