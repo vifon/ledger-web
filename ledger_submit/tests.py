@@ -176,3 +176,44 @@ class SubmitTests(TestCase):
             )
         else:
             self.assertNotIn('error', response_dict)
+
+
+    @parameterized.expand([
+        ('CARREFOUR EXPRESS WARSZAWA', 'Carrefour Express'),
+        ('CARREFOUR WARSZAWA', 'Carrefour'),
+    ])
+    def test_rule_order(self, payee, effective_payee):
+        # The longest (i.e. with the largest len(payee)) rule should
+        # be checked first, even if we create the shorter one first.
+        # It is assumed the longer the regexp, the more specific it is
+        # if there are multiple matches.
+        Rule.objects.create(
+            user=self.user,
+            payee='CARREFOUR .*',
+            new_payee='Carrefour',
+            acc_from='',
+            acc_to='Expenses:Food',
+        )
+        Rule.objects.create(
+            user=self.user,
+            payee='CARREFOUR EXPRESS .*',
+            new_payee='Carrefour Express',
+            acc_from='',
+            acc_to='Expenses:Food',
+        )
+
+        response = self.client.post(
+            reverse('ledger_submit:as_json'),
+            content_type='application/json',
+            data={
+                'token': self.good_token,
+                'payee': payee,
+                'account_to': 'Expenses:Uncategorized',
+                'account_from': 'Liabilities:Credit Card',
+                'amount': '12 PLN',
+            },
+        )
+        response_dict = json.loads(response.content)
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response_dict['payee'], effective_payee)

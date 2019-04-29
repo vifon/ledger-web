@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.db.models.functions import Length
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
@@ -43,7 +44,9 @@ def require_token(view):
 
 def add_ledger_entry(user, account_from, account_to, payee, amount):
     ledger_path = user.ledgerpath.path
-    replacement_rules = Rule.objects.filter(user=user)
+    replacement_rules = (
+        Rule.objects.filter(user=user).order_by(Length('payee').desc())
+    )
     for rule in replacement_rules:
         try:
             match = re.fullmatch(rule.payee, payee)
