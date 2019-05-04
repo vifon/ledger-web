@@ -101,6 +101,13 @@ summary.collapsible-menu-button::-webkit-details-marker {
   display: none;
 }
 
+#hamburger {
+  outline: none;
+}
+#hamburger::-moz-focus-inner {
+  border: none;
+}
+
 .menu-grid {
   display: grid;
   grid-template-columns: 1fr 2fr 2fr 1fr;
