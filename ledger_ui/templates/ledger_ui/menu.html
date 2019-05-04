@@ -1,44 +1,21 @@
 {% load static %}
 
+<link href="{% static "hamburgers.css" %}" rel="stylesheet">
+
 <script>
  function onMenu (menu) {
-   let animations;
-
-   if (menu.open) {
-     animation = document.getElementById('hamburger-to-arrow');
-   } else {
-     animation = document.getElementById('arrow-to-hamburger');
-   }
-   animation.beginElement();
+   const hamburger = document.getElementById('hamburger');
+   hamburger.classList.toggle('is-active');
  }
 </script>
 
 <details class="main-menu collapsible-menu" {% if menu_open %}open{% endif %} ontoggle="onMenu(this)">
   <summary class="collapsible-menu-button noselect">
-    <svg viewbox="0 0 100 100"
-         height="30"
-         width="30"
-         class="hamburger"
-    >
-      <style>
-       path {
-         stroke: #000;
-         stroke-width: 12;
-         stroke-linejoin: round;
-       }
-      </style>
-      <animate id="hamburger-to-arrow" begin="indefinite" />
-      <animate id="arrow-to-hamburger" begin="indefinite" />
-      <path class="hamburger-stroke1" d="M10 20 L90 20 Z">
-        <animate attributeName="d" from="M10 20 L90 20 Z" to="M50 10 L90 50 Z" dur="0.5s" begin="hamburger\-to\-arrow.begin" fill="freeze" />
-        <animate attributeName="d" from="M50 10 L90 50 Z" to="M10 20 L90 20 Z" dur="0.5s" begin="arrow\-to\-hamburger.begin" fill="freeze" />
-      </path>
-      <path class="hamburger-stroke2" d="M10 50 L90 50 Z" />
-      <path class="hamburger-stroke3" d="M10 80 L90 80 Z">
-        <animate attributeName="d" from="M10 80 L90 80 Z" to="M50 90 L90 50 Z" dur="0.5s" begin="hamburger\-to\-arrow.begin" fill="freeze" />
-        <animate attributeName="d" from="M50 90 L90 50 Z" to="M10 80 L90 80 Z" dur="0.5s" begin="arrow\-to\-hamburger.begin" fill="freeze" />
-      </path>
-    </svg>
+    <button id="hamburger" class="hamburger hamburger--arrowalt" type="button">
+      <span class="hamburger-box">
+        <span class="hamburger-inner"></span>
+      </span>
+    </button>
 
     Ledger Web
   </summary>

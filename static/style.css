@@ -88,19 +88,6 @@ div.ui-slider-range.ui-widget-header {
 .collapsible-menu {
   display: none;
 }
-@keyframes hamburgerRotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(180deg); }
-}
-.hamburger {
-  display: inline-block;
-  transition-duration: 0.8s;
-  animation-duration: 0.8s;
-}
-.collapsible-menu[open] .hamburger {
-  animation-name: hamburgerRotate;
-  transform: rotate(180deg);
-}
 .collapsible-menu-button {
   cursor: pointer;
   list-style-type: none;
