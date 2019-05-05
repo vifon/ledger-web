@@ -9,7 +9,10 @@
  }
 </script>
 
-<details class="main-menu collapsible-menu" {% if menu_open %}open{% endif %} ontoggle="onMenu(this)">
+<details class="main-menu collapsible-menu"
+         {% if menu_open %}open{% endif %}
+         ontoggle="onMenu(this)"
+>
   <summary class="collapsible-menu-button noselect">
     <button id="hamburger" class="hamburger hamburger--arrowalt" type="button">
       <span class="hamburger-box">
