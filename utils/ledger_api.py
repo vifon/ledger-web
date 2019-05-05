@@ -114,6 +114,14 @@ class Journal:
     def last(self):
         return self.last_data[self.path]
 
+    def can_revert(self):
+        with open(self.path, 'r') as ledger_file:
+            current_end = ledger_file.seek(0, 2)
+        try:
+            return current_end == self.last().new_position
+        except KeyError:
+            return False
+
     def revert(self):
         try:
             last = self.last()
