@@ -42,7 +42,7 @@ def require_token(view):
     return inner
 
 
-def add_ledger_entry(user, account_from, account_to, payee, amount):
+def add_ledger_entry(user, account_from, account_to, payee, amount, currency=None, date=None):
     ledger_path = user.ledgerpath.path
     replacement_rules = (
         Rule.objects.filter(user=user).order_by(Length('payee').desc())
@@ -61,16 +61,19 @@ def add_ledger_entry(user, account_from, account_to, payee, amount):
 
     amount = amount.replace(",", ".").strip()
 
-    date = datetime.now()
-    if settings.LEDGER_API_TIMEDELTA:
-        date += settings.LEDGER_API_TIMEDELTA
+    if date is None:
+        date = datetime.now()
+        if settings.LEDGER_API_TIMEDELTA:
+            date += settings.LEDGER_API_TIMEDELTA
+        date = date.strftime("%F")
 
     entry = ledger_api.Entry(
         payee=payee,
         account_from=account_from,
         account_to=account_to,
         amount=amount,
-        date=date.strftime("%F"),
+        currency=currency,
+        date=date,
     )
     entry.store(ledger_path)
     return entry

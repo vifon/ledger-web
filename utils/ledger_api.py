@@ -65,9 +65,8 @@ class Entry:
         self.date = kwargs.get('date', time.strftime("%F"))
         self.spacing = ""
 
-        try:
-            self.currency = kwargs['currency']
-        except KeyError:
+        self.currency = kwargs.get('currency')
+        if self.currency is None:
             self.currency = kwargs['amount'].split()[1]
             self.amount = "{:.2f}".format(float(kwargs['amount'].split()[0]))
         else:
