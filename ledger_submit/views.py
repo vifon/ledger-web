@@ -75,7 +75,7 @@ def add_ledger_entry(user, account_from, account_to, payee, amount, currency=Non
         currency=currency,
         date=date,
     )
-    entry.store(ledger_path)
+    ledger_api.Journal(ledger_path).append(entry)
     return entry
 
 

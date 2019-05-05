@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from collections import namedtuple
 import io
 import re
 import subprocess
@@ -88,15 +89,47 @@ class Entry:
     def __str__(self):
         return self.template.format(**vars(self))
 
-    def store(self, ledger_path):
-        with open(ledger_path, 'a') as ledger_file:
-            print(self, file=ledger_file)
-
 
 class Journal:
 
+    class CannotRevert(Exception):
+        pass
+
+    LastData = namedtuple(
+        'LastData',
+        [
+            'entry',
+            'position',
+            'new_position',
+        ],
+    )
+    last_data = {}
+
     def __init__(self, ledger_path):
         self.path = ledger_path
+
+    def last(self):
+        return self.last_data[self.path]
+
+    def revert(self):
+        try:
+            last = self.last()
+        except KeyError:
+            raise Journal.CannotRevert()
+        with open(self.path, 'a') as ledger_file:
+            if last.new_position != ledger_file.tell():
+                raise Journal.CannotRevert()
+            ledger_file.truncate(last.position)
+
+    def append(self, entry):
+        with open(self.path, 'a') as ledger_file:
+            position_before = ledger_file.tell()
+            print(entry, file=ledger_file)
+            self.last_data[self.path] = Journal.LastData(
+                entry=entry,
+                position=position_before,
+                new_position=ledger_file.tell(),
+            )
 
     def accounts(self):
         return self._call("accounts")

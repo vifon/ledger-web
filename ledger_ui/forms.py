@@ -46,12 +46,22 @@ class SubmitForm(forms.Form):
 
 class RuleModelForm(forms.ModelForm):
 
+    amend = forms.BooleanField(
+        initial=False,
+        required=False,
+        label='Apply to last entry',
+    )
+
     class Meta:
         model = Rule
         exclude = ['user']
 
-    def __init__(self, *args, accounts, payees, **kwargs):
+    def __init__(self, *args, accounts, payees, last_entry=None, **kwargs):
         super().__init__(*args, **kwargs)
+
+        if last_entry is None:
+            self.fields['amend'].widget.attrs['disabled'] = True
+
         self.fields['payee'].widget = fields.ListTextWidget(
             name='payee',
             data_list=map(re.escape, payees),

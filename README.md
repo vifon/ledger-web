@@ -25,11 +25,9 @@ replacement, so it tries to add things missing in Ledger (+ some
 convenient goodies) while not reinventing the wheel.  These are some
 features visibly missing from *Ledger Web*.
 
-- There is no support for modifying the ledger file other than
-  appending new entries.  The syntax is flexible enough that I didn't
-  want to risk corrupting the existing data.  The most noticeable
-  effect of it is that creating a rule from an entry does not change
-  that entry itself, only the future ones like this one.
+- There is only a limited support for modifying the ledger file other
+  than appending new entries.  It's possible to apply a created rule
+  to the very last added entry but that's it.
 - The register view won't show any included files' contents, it only
   reads the main file.  The other views are free from this limitation.
 - No support for complex entries, for example with more than two

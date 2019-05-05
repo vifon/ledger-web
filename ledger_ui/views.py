@@ -12,6 +12,7 @@ import re
 
 from .forms import SubmitForm, RuleModelForm
 from ledger_submit.models import Rule
+from ledger_submit.views import add_ledger_entry
 from utils import ledger_api
 
 
@@ -96,10 +97,11 @@ def charts(request):
 @login_required
 def submit(request):
     ledger_path = request.user.ledgerpath.path
+    journal = ledger_api.Journal(ledger_path)
 
-    accounts = ledger_api.Journal(ledger_path).accounts()
-    currencies = ledger_api.Journal(ledger_path).currencies()
-    payees = ledger_api.Journal(ledger_path).payees()
+    accounts = journal.accounts()
+    currencies = journal.currencies()
+    payees = journal.payees()
 
     if request.method == 'POST':
         form = SubmitForm(
@@ -118,7 +120,7 @@ def submit(request):
                 amount=validated['amount'],
                 currency=validated['currency'],
             )
-            entry.store(ledger_path)
+            journal.append(entry)
     else:
         form = SubmitForm(
             accounts=accounts,
@@ -191,12 +193,37 @@ class RuleViewBase(CreateView):
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         ledger_path = self.request.user.ledgerpath.path
-        kwargs['accounts'] = ledger_api.Journal(ledger_path).accounts()
-        kwargs['payees'] = ledger_api.Journal(ledger_path).payees()
+        journal = ledger_api.Journal(ledger_path)
+        try:
+            kwargs['last_entry'] = journal.last().entry
+        except KeyError:
+            pass
+        kwargs['accounts'] = journal.accounts()
+        kwargs['payees'] = journal.payees()
         return kwargs
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+
+        if form.data['amend']:
+            ledger_path = form.instance.user.ledgerpath.path
+            journal = ledger_api.Journal(ledger_path)
+            try:
+                last_entry = journal.last().entry
+            except KeyError:
+                pass
+            else:
+                journal.revert()
+                add_ledger_entry(
+                    user=form.instance.user,
+                    account_from=last_entry.account_from,
+                    account_to=last_entry.account_to,
+                    payee=last_entry.payee,
+                    amount=last_entry.amount,
+                    currency=last_entry.currency,
+                    date=last_entry.date,
+                )
+
         return super().form_valid(form)
 
 
@@ -214,6 +241,12 @@ class RuleCreateView(RuleViewBase, CreateView):
             kwargs['initial']['payee'] = re.escape(self.request.GET['payee'])
         except KeyError:
             pass
+        else:
+            try:
+                if kwargs['last_entry'].payee == kwargs['initial']['payee']:
+                    kwargs['initial']['amend'] = True
+            except KeyError:
+                pass
         return kwargs
 
 
