@@ -55,7 +55,7 @@ class Entry:
 
     template = """
 {date} {payee}
-    {account_to:<34s}  {amount:>12}{spacing}{currency}
+    {account_to:<34s}  {pp_amount:>12}{pp_currency}
     {account_from}
 """.rstrip()
 
@@ -64,7 +64,6 @@ class Entry:
         self.account_from = kwargs['account_from']
         self.account_to = kwargs['account_to']
         self.date = kwargs.get('date', time.strftime("%F"))
-        self.spacing = ""
 
         self.currency = kwargs.get('currency')
         if self.currency is None:
@@ -81,10 +80,14 @@ class Entry:
             "$": ("$", ""),
         }
         if self.currency in conversions:
-            pre_currency, self.currency = conversions[self.currency]
-            self.amount = "{}{}".format(pre_currency, self.amount)
-        if self.currency:
-            self.spacing = " "
+            pre_currency, self.pp_currency = conversions[self.currency]
+            self.pp_amount = "{}{}".format(pre_currency, self.amount)
+        else:
+            self.pp_amount = self.amount
+            self.pp_currency = self.currency
+
+        if self.pp_currency:
+            self.pp_currency = " " + self.pp_currency
 
     def __str__(self):
         return self.template.format(**vars(self))
