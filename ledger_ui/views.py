@@ -43,8 +43,7 @@ def register(request):
 def charts(request):
     ledger_path = request.user.ledgerpath.path
 
-    csv = ledger_api.csv(
-        ledger_path,
+    csv = ledger_api.Journal(ledger_path).csv(
         '--monthly',
         '-X', settings.LEDGER_DEFAULT_CURRENCY,
     )
@@ -98,9 +97,9 @@ def charts(request):
 def submit(request):
     ledger_path = request.user.ledgerpath.path
 
-    accounts = ledger_api.accounts(ledger_path)
-    currencies = ledger_api.currencies(ledger_path)
-    payees = ledger_api.payees(ledger_path)
+    accounts = ledger_api.Journal(ledger_path).accounts()
+    currencies = ledger_api.Journal(ledger_path).currencies()
+    payees = ledger_api.Journal(ledger_path).payees()
 
     if request.method == 'POST':
         form = SubmitForm(
@@ -138,9 +137,7 @@ def submit(request):
 def balance(request):
     ledger_path = request.user.ledgerpath.path
 
-    csv = ledger_api.csv(
-        ledger_path,
-    )
+    csv = ledger_api.Journal(ledger_path).csv()
     df = pd.read_csv(
         csv,
         header=None,
@@ -194,8 +191,8 @@ class RuleViewBase(CreateView):
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         ledger_path = self.request.user.ledgerpath.path
-        kwargs['accounts'] = ledger_api.accounts(ledger_path)
-        kwargs['payees'] = ledger_api.payees(ledger_path)
+        kwargs['accounts'] = ledger_api.Journal(ledger_path).accounts()
+        kwargs['payees'] = ledger_api.Journal(ledger_path).payees()
         return kwargs
 
     def form_valid(self, form):

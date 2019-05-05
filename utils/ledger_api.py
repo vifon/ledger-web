@@ -93,24 +93,29 @@ class Entry:
             print(self, file=ledger_file)
 
 
-def accounts(ledger_path):
-    return _call(ledger_path, "accounts")
+class Journal:
 
-def payees(ledger_path):
-    return _call(ledger_path, "payees")
+    def __init__(self, ledger_path):
+        self.path = ledger_path
 
-def currencies(ledger_path):
-    return _call(ledger_path, "commodities")
+    def accounts(self):
+        return self._call("accounts")
 
-def csv(ledger_path, *args):
-    return io.StringIO("\n".join(_call(ledger_path, "csv", *args)))
+    def payees(self):
+        return self._call("payees")
 
-def _call(ledger_path, *args):
-    output = subprocess.check_output(
-        ["ledger", "-f", ledger_path] + list(args),
-        universal_newlines=True
-    )
-    return output.strip().split("\n")
+    def currencies(self):
+        return self._call("commodities")
+
+    def csv(self, *args):
+        return io.StringIO("\n".join(self._call("csv", *args)))
+
+    def _call(self, *args):
+        output = subprocess.check_output(
+            ["ledger", "-f", self.path] + list(args),
+            universal_newlines=True
+        )
+        return output.strip().split("\n")
 
 
 def read_entries(fd):
