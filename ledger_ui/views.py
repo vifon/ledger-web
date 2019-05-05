@@ -224,9 +224,3 @@ class RuleCreateView(RuleViewBase, CreateView):
 class RuleDeleteView(UserCheckMixin, DeleteView):
     model = Rule
     success_url = reverse_lazy('ledger_ui:rules')
-
-    def get_object(self, *args, **kwargs):
-        obj = super().get_object(*args, **kwargs)
-        if not obj.user == self.request.user:
-            raise Http404
-        return obj
