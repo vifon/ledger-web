@@ -213,21 +213,16 @@ class RuleViewBase(CreateView):
             except KeyError:
                 pass
             else:
-                try:
-                    journal.revert()
-                except ledger_api.Journal.CannotRevert:
-                    # TODO: Handle the exception properly.
-                    pass
-                else:
-                    add_ledger_entry(
-                        user=form.instance.user,
-                        account_from=last_entry.account_from,
-                        account_to=last_entry.account_to,
-                        payee=last_entry.payee,
-                        amount=last_entry.amount,
-                        currency=last_entry.currency,
-                        date=last_entry.date,
-                    )
+                journal.revert()
+                add_ledger_entry(
+                    user=form.instance.user,
+                    account_from=last_entry.account_from,
+                    account_to=last_entry.account_to,
+                    payee=last_entry.payee,
+                    amount=last_entry.amount,
+                    currency=last_entry.currency,
+                    date=last_entry.date,
+                )
 
         return ret
 
