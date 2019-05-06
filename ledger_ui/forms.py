@@ -1,5 +1,6 @@
 from django import forms
 from django.conf import settings
+from django.utils.translation import gettext as _
 
 import datetime
 import re
@@ -56,8 +57,10 @@ class RuleModelForm(forms.ModelForm):
         model = Rule
         exclude = ['user']
 
-    def __init__(self, *args, accounts, payees, last_entry=None, **kwargs):
+    def __init__(self, *args, accounts, payees, user, last_entry=None, **kwargs):
         super().__init__(*args, **kwargs)
+
+        self.user = user
 
         if last_entry is None:
             self.fields['amend'].disabled = True
@@ -78,3 +81,21 @@ class RuleModelForm(forms.ModelForm):
             name='acc_to',
             data_list=accounts,
         )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        payee = cleaned_data['payee']
+        user = self.user
+        try:
+            Rule.objects.get(
+                payee=payee,
+                user=user,
+            )
+        except Rule.DoesNotExist:
+            pass
+        else:
+            raise forms.ValidationError(
+                _("Non-unique data: payee=%(payee)s, user=%(user)s"),
+                params={'payee': payee, 'user': user},
+                code='invalid',
+            )

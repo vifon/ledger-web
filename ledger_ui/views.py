@@ -198,6 +198,7 @@ class RuleViewBase(CreateView):
             kwargs['last_entry'] = journal.last().entry
         kwargs['accounts'] = journal.accounts()
         kwargs['payees'] = journal.payees()
+        kwargs['user'] = self.request.user
         return kwargs
 
     def form_valid(self, form):
