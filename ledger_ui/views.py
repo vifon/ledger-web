@@ -203,7 +203,7 @@ class RuleViewBase(CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
 
-        if form.data['amend']:
+        if form.data.get('amend'):
             ledger_path = form.instance.user.ledgerpath.path
             journal = ledger_api.Journal(ledger_path)
             try:
