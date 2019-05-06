@@ -109,7 +109,8 @@ class RuleModelForm(forms.ModelForm):
             )
 
         if self.data.get('amend') and not self.journal.can_revert():
-            errors.append(
+            self.add_error(
+                'amend',
                 forms.ValidationError(
                     _("Amend not possible."),
                     code='integrity',
