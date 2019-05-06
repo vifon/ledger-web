@@ -60,7 +60,7 @@ class RuleModelForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         if last_entry is None:
-            self.fields['amend'].widget.attrs['disabled'] = True
+            self.fields['amend'].disabled = True
 
         self.fields['payee'].widget = fields.ListTextWidget(
             name='payee',
