@@ -242,8 +242,9 @@ class RuleCreateView(RuleViewBase, CreateView):
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         try:
-            kwargs['initial']['payee'] = re.escape(self.request.GET['payee'])
-            if kwargs['last_entry'].payee == kwargs['initial']['payee']:
+            payee = self.request.GET['payee']
+            kwargs['initial']['payee'] = re.escape(payee)
+            if kwargs['last_entry'].payee == payee:
                 kwargs['initial']['amend'] = True
         except KeyError:
             pass
