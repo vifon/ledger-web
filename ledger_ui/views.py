@@ -204,6 +204,8 @@ class RuleViewBase(CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
 
+        ret = super().form_valid(form)
+
         if form.data.get('amend'):
             ledger_path = form.instance.user.ledgerpath.path
             journal = ledger_api.Journal(ledger_path)
@@ -228,7 +230,7 @@ class RuleViewBase(CreateView):
                         date=last_entry.date,
                     )
 
-        return super().form_valid(form)
+        return ret
 
 
 @method_decorator(login_required, name='dispatch')
