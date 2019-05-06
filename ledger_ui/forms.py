@@ -87,7 +87,9 @@ class RuleModelForm(forms.ModelForm):
         payee = cleaned_data['payee']
         user = self.user
         try:
-            Rule.objects.get(
+            Rule.objects.exclude(
+                pk=self.instance.pk,
+            ).get(
                 payee=payee,
                 user=user,
             )
