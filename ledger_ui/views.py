@@ -194,8 +194,7 @@ class RuleViewBase(CreateView):
         kwargs = super().get_form_kwargs()
         ledger_path = self.request.user.ledgerpath.path
         journal = ledger_api.Journal(ledger_path)
-        if journal.can_revert():
-            kwargs['last_entry'] = journal.last().entry
+        kwargs['journal'] = journal
         kwargs['accounts'] = journal.accounts()
         kwargs['payees'] = journal.payees()
         kwargs['user'] = self.request.user
@@ -246,7 +245,8 @@ class RuleCreateView(RuleViewBase, CreateView):
         try:
             payee = self.request.GET['payee']
             kwargs['initial']['payee'] = re.escape(payee)
-            if kwargs['last_entry'].payee == payee:
+            if kwargs['journal'].can_revert() \
+               and kwargs['journal'].last().entry.payee == payee:
                 kwargs['initial']['amend'] = True
         except KeyError:
             pass

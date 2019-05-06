@@ -57,12 +57,14 @@ class RuleModelForm(forms.ModelForm):
         model = Rule
         exclude = ['user']
 
-    def __init__(self, *args, accounts, payees, user, last_entry=None, **kwargs):
+    def __init__(self, *args, accounts, payees, user, journal, **kwargs):
         super().__init__(*args, **kwargs)
 
+        # Store for later use in self.clean()
         self.user = user
+        self.journal = journal
 
-        if last_entry is None:
+        if not journal.can_revert():
             self.fields['amend'].disabled = True
 
         self.fields['payee'].widget = fields.ListTextWidget(
@@ -83,7 +85,9 @@ class RuleModelForm(forms.ModelForm):
         )
 
     def clean(self):
+        errors = []
         cleaned_data = super().clean()
+
         payee = cleaned_data['payee']
         user = self.user
         try:
@@ -96,8 +100,21 @@ class RuleModelForm(forms.ModelForm):
         except Rule.DoesNotExist:
             pass
         else:
-            raise forms.ValidationError(
-                _("Non-unique data: payee=%(payee)s, user=%(user)s"),
-                params={'payee': payee, 'user': user},
-                code='invalid',
+            errors.append(
+                forms.ValidationError(
+                    _("Non-unique data: payee=%(payee)s, user=%(user)s."),
+                    params={'payee': payee, 'user': user},
+                    code='invalid',
+                )
             )
+
+        if self.data.get('amend') and not self.journal.can_revert():
+            errors.append(
+                forms.ValidationError(
+                    _("Amend not possible."),
+                    code='integrity',
+                )
+            )
+
+        if errors:
+            raise forms.ValidationError(errors)
