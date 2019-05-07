@@ -32,7 +32,9 @@
   </head>
   <body>
     {% include './menu.html' %}
-    {% block content %}{% endblock %}
+    <main>
+      {% block content %}{% endblock %}
+    </main>
     <hr class="footer" />
     <footer>
       <a href="https://github.com/vifon/ledger-web">Ledger Web</a>

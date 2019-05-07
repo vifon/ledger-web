@@ -1,4 +1,4 @@
-<div class="menu-grid">
+<nav class="menu-grid">
   {% if user.is_authenticated %}
     <div class="menu-element menu-user">
       User: <span class="username">{{ user }}</span>
@@ -12,4 +12,4 @@
   <a class="menu-element menu-balance" href="{% url 'ledger_ui:balance' %}">Balance</a>
   <a class="menu-element menu-submit" href="{% url 'ledger_ui:submit' %}">Submit</a>
   <a class="menu-element menu-rules" href="{% url 'ledger_ui:rules' %}">Rules</a>
-</div>
+</nav>
