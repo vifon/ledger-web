@@ -26,6 +26,24 @@ input {
   background-color: #aaa;
 }
 
+footer {
+  color: rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+hr.footer {
+  color: lightgrey;
+  margin-top: 1em;
+}
+
+footer a {
+  color: inherit;
+  text-decoration: inherit;
+}
+footer a:hover {
+  color: #6495ed;
+  text-decoration: underline;
+}
+
 .plain-link {
   color: inherit;
   text-decoration: inherit;
@@ -247,6 +265,9 @@ table.ledger-table {
     display: block;
   }
   .constant-menu {
+    display: none;
+  }
+  footer {
     display: none;
   }
 }
