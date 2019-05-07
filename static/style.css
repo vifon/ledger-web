@@ -267,7 +267,7 @@ table.ledger-table {
   .constant-menu {
     display: none;
   }
-  footer {
+  .footer {
     display: none;
   }
 }
