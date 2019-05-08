@@ -25,7 +25,7 @@ def index(request):
 
 @login_required
 def register(request):
-    with open(request.user.ledgerpath.path, 'r') as ledger_fd:
+    with open(request.user.ledger_path.path, 'r') as ledger_fd:
         entries = list(ledger_api.read_entries(ledger_fd))
     reversed_sort = request.GET.get('reverse', 'true').lower() not in ['false', '0']
     if reversed_sort:
@@ -42,7 +42,7 @@ def register(request):
 
 @login_required
 def charts(request):
-    ledger_path = request.user.ledgerpath.path
+    ledger_path = request.user.ledger_path.path
 
     csv = ledger_api.Journal(ledger_path).csv(
         '--monthly',
@@ -96,7 +96,7 @@ def charts(request):
 
 @login_required
 def submit(request):
-    ledger_path = request.user.ledgerpath.path
+    ledger_path = request.user.ledger_path.path
     journal = ledger_api.Journal(ledger_path)
 
     accounts = journal.accounts()
@@ -137,7 +137,7 @@ def submit(request):
 
 @login_required
 def balance(request):
-    ledger_path = request.user.ledgerpath.path
+    ledger_path = request.user.ledger_path.path
 
     csv = ledger_api.Journal(ledger_path).csv()
     df = pd.read_csv(
@@ -192,7 +192,7 @@ class RuleViewBase(CreateView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        ledger_path = self.request.user.ledgerpath.path
+        ledger_path = self.request.user.ledger_path.path
         journal = ledger_api.Journal(ledger_path)
         kwargs['journal'] = journal
         kwargs['accounts'] = journal.accounts()
@@ -206,7 +206,7 @@ class RuleViewBase(CreateView):
         ret = super().form_valid(form)
 
         if form.data.get('amend'):
-            ledger_path = form.instance.user.ledgerpath.path
+            ledger_path = form.instance.user.ledger_path.path
             journal = ledger_api.Journal(ledger_path)
             try:
                 last_entry = journal.last()

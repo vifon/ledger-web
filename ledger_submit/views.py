@@ -43,7 +43,7 @@ def require_token(view):
 
 
 def add_ledger_entry(user, account_from, account_to, payee, amount, currency=None, date=None):
-    ledger_path = user.ledgerpath.path
+    ledger_path = user.ledger_path.path
     replacement_rules = (
         Rule.objects.filter(user=user).order_by(Length('payee').desc())
     )

@@ -7,6 +7,7 @@ class LedgerPath(models.Model):
         User,
         on_delete=models.CASCADE,
         primary_key=True,
+        related_name="ledger_path",
     )
     path = models.CharField(max_length=1024)
 

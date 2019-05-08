@@ -9,7 +9,7 @@ from utils import ledger_api
 
 @login_required
 def transactions(request):
-    with open(request.user.ledgerpath.path, 'r') as ledger_fd:
+    with open(request.user.ledger_path.path, 'r') as ledger_fd:
         entries = list(ledger_api.read_entries(ledger_fd))
 
     transaction_regexp = request.GET.get('regexp')
