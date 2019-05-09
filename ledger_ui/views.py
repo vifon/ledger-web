@@ -184,7 +184,7 @@ class RuleIndexView(generic.ListView):
     template_name = 'ledger_ui/rules.html'
 
     def get_queryset(self):
-        return Rule.objects.filter(user=self.request.user)
+        return Rule.objects.filter(user=self.request.user).order_by('payee')
 
 
 class UserCheckMixin:
