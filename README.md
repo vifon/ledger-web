@@ -49,7 +49,7 @@ features visibly missing from *Ledger Web*.
 
 [![](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Charts.png)](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Charts.png)
 
-### API replacement rules
+### Replacement rules
 
 [![](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Rules.png)](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Rules.png)
 
