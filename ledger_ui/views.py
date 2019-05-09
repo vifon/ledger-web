@@ -8,9 +8,11 @@ from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 import pandas as pd
+import pickle
 import re
 
 from .forms import SubmitForm, RuleModelForm
+from .models import Undo
 from ledger_submit.models import Rule
 from ledger_submit.views import add_ledger_entry
 from utils import ledger_api
@@ -120,7 +122,16 @@ def submit(request):
                 amount=validated['amount'],
                 currency=validated['currency'],
             )
-            journal.append(entry)
+            old, new = journal.append(entry)
+            Undo.objects.update_or_create(
+                pk=request.user.id,
+                defaults={
+                    'last_entry': pickle.dumps(entry),
+                    'old_position': old,
+                    'new_position': new,
+                },
+            )
+
     else:
         form = SubmitForm(
             accounts=accounts,
@@ -194,7 +205,6 @@ class RuleViewBase(CreateView):
         kwargs = super().get_form_kwargs()
         ledger_path = self.request.user.ledger_path.path
         journal = ledger_api.Journal(ledger_path)
-        kwargs['journal'] = journal
         kwargs['accounts'] = journal.accounts()
         kwargs['payees'] = journal.payees()
         kwargs['user'] = self.request.user
@@ -209,11 +219,15 @@ class RuleViewBase(CreateView):
             ledger_path = form.instance.user.ledger_path.path
             journal = ledger_api.Journal(ledger_path)
             try:
-                last_entry = journal.last()
-            except KeyError:
+                undo = Undo.objects.get(pk=form.instance.user)
+            except Undo.DoesNotExist:
                 pass
             else:
-                journal.revert()
+                journal.revert(
+                    undo.old_position,
+                    undo.new_position,
+                )
+                last_entry = pickle.loads(undo.last_entry)
                 add_ledger_entry(
                     user=form.instance.user,
                     account_from=last_entry.account_from,
@@ -240,10 +254,11 @@ class RuleCreateView(RuleViewBase, CreateView):
         try:
             payee = self.request.GET['payee']
             kwargs['initial']['payee'] = re.escape(payee)
-            if kwargs['journal'].can_revert() \
-               and kwargs['journal'].last().payee == payee:
+            undo = Undo.objects.get(pk=kwargs['user'])
+            if undo.can_revert() \
+               and pickle.loads(undo.last_entry).payee == payee:
                 kwargs['initial']['amend'] = True
-        except KeyError:
+        except (KeyError, Undo.DoesNotExist):
             pass
         return kwargs
 

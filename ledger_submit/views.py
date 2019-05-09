@@ -6,9 +6,11 @@ from django.views.decorators.http import require_POST
 
 from datetime import datetime
 import json
+import pickle
 import re
 
 from .models import Rule, Token
+from ledger_ui.models import Undo
 from utils import ledger_api
 
 
@@ -75,7 +77,15 @@ def add_ledger_entry(user, account_from, account_to, payee, amount, currency=Non
         currency=currency,
         date=date,
     )
-    ledger_api.Journal(ledger_path).append(entry)
+    old, new = ledger_api.Journal(ledger_path).append(entry)
+    Undo.objects.update_or_create(
+        pk=user.id,
+        defaults={
+            'last_entry': pickle.dumps(entry),
+            'old_position': old,
+            'new_position': new,
+        },
+    )
     return entry
 
 

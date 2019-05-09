@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from collections import namedtuple
 import io
 import re
 import subprocess
@@ -98,49 +97,21 @@ class Journal:
     class CannotRevert(Exception):
         pass
 
-    LastData = namedtuple(
-        'LastData',
-        [
-            'entry',
-            'position',
-            'new_position',
-        ],
-    )
-    last_data = {}
-
     def __init__(self, ledger_path):
         self.path = ledger_path
 
-    def last(self):
-        return self.last_data[self.path].entry
-
-    def can_revert(self):
-        with open(self.path, 'r') as ledger_file:
-            current_end = ledger_file.seek(0, 2)
-        try:
-            return current_end == self.last_data[self.path].new_position
-        except KeyError:
-            return False
-
-    def revert(self):
-        try:
-            last = self.last_data[self.path]
-        except KeyError:
-            raise Journal.CannotRevert()
+    def revert(self, old_position, new_position):
         with open(self.path, 'a') as ledger_file:
-            if last.new_position != ledger_file.tell():
+            if new_position != ledger_file.tell():
                 raise Journal.CannotRevert()
-            ledger_file.truncate(last.position)
+            ledger_file.truncate(old_position)
 
     def append(self, entry):
         with open(self.path, 'a') as ledger_file:
-            position_before = ledger_file.tell()
+            old_position = ledger_file.tell()
             print(entry, file=ledger_file)
-            self.last_data[self.path] = Journal.LastData(
-                entry=entry,
-                position=position_before,
-                new_position=ledger_file.tell(),
-            )
+            new_position = ledger_file.tell()
+        return old_position, new_position
 
     def accounts(self):
         return self._call("accounts")

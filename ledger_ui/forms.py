@@ -6,6 +6,7 @@ import datetime
 import re
 
 from . import fields
+from .models import Undo
 from ledger_submit.models import Rule
 
 
@@ -50,6 +51,7 @@ class RuleModelForm(forms.ModelForm):
     amend = forms.BooleanField(
         initial=False,
         required=False,
+        disabled=True,
         label='Apply to last entry',
     )
 
@@ -57,15 +59,18 @@ class RuleModelForm(forms.ModelForm):
         model = Rule
         exclude = ['user']
 
-    def __init__(self, *args, accounts, payees, user, journal, **kwargs):
+    def __init__(self, *args, accounts, payees, user, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # Store for later use in self.clean()
         self.user = user
-        self.journal = journal
 
-        if not journal.can_revert():
-            self.fields['amend'].disabled = True
+        try:
+            undo = Undo.objects.get(pk=user)
+        except Undo.DoesNotExist:
+            pass
+        else:
+            if undo.can_revert():
+                self.fields['amend'].disabled = False
 
         self.fields['payee'].widget = fields.ListTextWidget(
             name='payee',
@@ -108,7 +113,8 @@ class RuleModelForm(forms.ModelForm):
                 )
             )
 
-        if self.data.get('amend') and not self.journal.can_revert():
+        undo = Undo.objects.get(pk=self.user)
+        if self.data.get('amend') and not undo.can_revert():
             self.add_error(
                 'amend',
                 forms.ValidationError(
