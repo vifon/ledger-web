@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+import pickle
+
 
 class LedgerPath(models.Model):
     user = models.OneToOneField(
@@ -29,4 +31,13 @@ class Undo(models.Model):
     def can_revert(self):
         with open(self.user.ledger_path.path, 'r') as ledger_file:
             current_end = ledger_file.seek(0, 2)
-        return current_end == self.new_position
+            if current_end != self.new_position:
+                return False
+
+            ledger_file.seek(self.old_position)
+            stored_entry = str(pickle.loads(self.last_entry))
+            actual_entry = ledger_file.read().rstrip()
+            if stored_entry != actual_entry:
+                return False
+
+        return True

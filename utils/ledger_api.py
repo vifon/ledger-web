@@ -100,10 +100,15 @@ class Journal:
     def __init__(self, ledger_path):
         self.path = ledger_path
 
-    def revert(self, old_position, new_position):
-        with open(self.path, 'a') as ledger_file:
+    def revert(self, last_entry, old_position, new_position):
+        with open(self.path, 'a+') as ledger_file:
             if new_position != ledger_file.tell():
                 raise Journal.CannotRevert()
+
+            ledger_file.seek(old_position)
+            if ledger_file.read().rstrip() != str(last_entry):
+                raise Journal.CannotRevert()
+
             ledger_file.truncate(old_position)
 
     def append(self, entry):

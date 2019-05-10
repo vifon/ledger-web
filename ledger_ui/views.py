@@ -223,11 +223,12 @@ class RuleViewBase(CreateView):
             except Undo.DoesNotExist:
                 pass
             else:
+                last_entry = pickle.loads(undo.last_entry)
                 journal.revert(
+                    last_entry,
                     undo.old_position,
                     undo.new_position,
                 )
-                last_entry = pickle.loads(undo.last_entry)
                 add_ledger_entry(
                     user=form.instance.user,
                     account_from=last_entry.account_from,
