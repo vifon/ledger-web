@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.db.models.functions import Length
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -64,10 +63,7 @@ def add_ledger_entry(user, account_from, account_to, payee, amount, currency=Non
     amount = amount.replace(",", ".").strip()
 
     if date is None:
-        date = datetime.now()
-        if settings.LEDGER_API_TIMEDELTA:
-            date += settings.LEDGER_API_TIMEDELTA
-        date = date.strftime("%F")
+        date = datetime.now().strftime("%F")
 
     entry = ledger_api.Entry(
         payee=payee,
