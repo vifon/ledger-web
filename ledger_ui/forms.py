@@ -37,6 +37,11 @@ class SubmitForm(forms.Form):
         )
         self.order_fields(self.field_order)
 
+    amend = forms.BooleanField(
+        initial=False,
+        required=False,
+        widget=forms.HiddenInput(),
+    )
     date = forms.DateField(initial=datetime.date.today)
     payee = forms.CharField(max_length=512)
     amount = forms.DecimalField(decimal_places=2)

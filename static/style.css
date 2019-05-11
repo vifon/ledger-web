@@ -26,6 +26,27 @@ input {
   background-color: #aaa;
 }
 
+.container {
+  position: relative;
+}
+
+.entry {
+  margin-left: 1px;
+  margin-right: 1px;
+}
+
+.amend {
+  position: absolute;
+  right: 100%;
+  margin: 1px;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  background-color: #1e90ff;
+  color: white;
+  font-size: medium;
+}
+
 footer {
   color: rgba(0, 0, 0, 0.4);
   text-align: center;

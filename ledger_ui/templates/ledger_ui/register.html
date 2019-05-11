@@ -13,22 +13,30 @@
 
   <div class="list-container">
     {% for entry in entries %}
-      <div class="entry">
-        <a class="plain-link"
-           href="{% url 'ledger_ui:rule' %}?payee={{ entry.payee }}"
-        >
-          <pre class="border">{{ entry.body }}</pre>
-        </a>
-      </div>
-      <div class="entry-payee">
-        <a class="plain-link"
-           href="{% url 'ledger_ui:rule' %}?payee={{ entry.payee }}"
-        >
-          <div class="border entry-payee-button">
-            {{ entry.date }}:
-            {{ entry.payee }}
-          </div>
-        </a>
+      <div class="container">
+        {% if can_revert and forloop.first %}
+          <form action="{% url 'ledger_ui:submit' %}" method="GET">
+            <input class="amend" type="submit" value="⟲" title="Amend" />
+            <input name="amend" type="hidden" value="true" />
+          </form>
+        {% endif %}
+        <div class="entry">
+          <a class="plain-link"
+             href="{% url 'ledger_ui:rule' %}?payee={{ entry.payee }}"
+          >
+            <pre class="border">{{ entry.body }}</pre>
+          </a>
+        </div>
+        <div class="entry-payee">
+          <a class="plain-link"
+             href="{% url 'ledger_ui:rule' %}?payee={{ entry.payee }}"
+          >
+            <div class="border entry-payee-button">
+              {{ entry.date }}:
+              {{ entry.payee }}
+            </div>
+          </a>
+        </div>
       </div>
     {% endfor %}
   </div>

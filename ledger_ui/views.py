@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import generic
@@ -32,12 +32,21 @@ def register(request):
     reversed_sort = request.GET.get('reverse', 'true').lower() not in ['false', '0']
     if reversed_sort:
         entries = reversed(entries)
+
+    try:
+        undo = Undo.objects.get(pk=request.user)
+    except Undo.DoesNotExist:
+        can_revert = False
+    else:
+        can_revert = undo.can_revert()
+
     return render(
         request,
         'ledger_ui/register.html',
         {
             'entries': entries,
             'reverse': reversed_sort,
+            'can_revert': can_revert,
         },
     )
 
@@ -122,6 +131,16 @@ def submit(request):
                 amount=validated['amount'],
                 currency=validated['currency'],
             )
+
+            if validated['amend']:
+                undo = get_object_or_404(Undo, pk=request.user)
+                last_entry = pickle.loads(undo.last_entry)
+                journal.revert(
+                    last_entry,
+                    undo.old_position,
+                    undo.new_position,
+                )
+
             old, new = journal.append(entry)
             Undo.objects.update_or_create(
                 pk=request.user.id,
@@ -131,13 +150,34 @@ def submit(request):
                     'new_position': new,
                 },
             )
+            return redirect('ledger_ui:register')
 
     else:
-        form = SubmitForm(
-            accounts=accounts,
-            currencies=currencies,
-            payees=payees,
-        )
+        common_args = {
+            'accounts': accounts,
+            'currencies': currencies,
+            'payees': payees,
+        }
+
+        amend = request.GET.get('amend', 'false').lower() not in ['false', '0']
+        if amend:
+            last_entry = pickle.loads(
+                get_object_or_404(Undo, pk=request.user).last_entry
+            )
+            form = SubmitForm(
+                {
+                    'date': last_entry.date,
+                    'payee': last_entry.payee,
+                    'amount': last_entry.amount,
+                    'currency': last_entry.currency,
+                    'acc_from': last_entry.account_from,
+                    'acc_to': last_entry.account_to,
+                    'amend': True,
+                },
+                **common_args,
+            )
+        else:
+            form = SubmitForm(**common_args)
 
     return render(
         request,
