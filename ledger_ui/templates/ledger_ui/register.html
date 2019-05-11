@@ -20,23 +20,15 @@
             <input name="amend" type="hidden" value="true" />
           </form>
         {% endif %}
-        <div class="entry">
-          <a class="plain-link"
-             href="{% url 'ledger_ui:rule' %}?payee={{ entry.payee }}"
-          >
-            <pre class="border">{{ entry.body }}</pre>
-          </a>
-        </div>
-        <div class="entry-payee">
-          <a class="plain-link"
-             href="{% url 'ledger_ui:rule' %}?payee={{ entry.payee }}"
-          >
-            <div class="border entry-payee-button">
-              {{ entry.date }}:
-              {{ entry.payee }}
-            </div>
-          </a>
-        </div>
+        <a class="plain-link"
+           href="{% url 'ledger_ui:rule' %}?payee={{ entry.payee }}"
+        >
+          <pre class="border entry-full">{{ entry.body }}</pre>
+          <div class="border entry-mini">
+            {{ entry.date }}:
+            {{ entry.payee }}
+          </div>
+        </a>
       </div>
     {% endfor %}
   </div>

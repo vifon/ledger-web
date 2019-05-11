@@ -30,7 +30,7 @@ input {
   position: relative;
 }
 
-.entry {
+.entry-full {
   margin-left: 1px;
   margin-right: 1px;
 }
@@ -224,10 +224,8 @@ a.menu-login:active {
   grid-area: rules;
 }
 
-.entry-payee {
+.entry-mini {
   display: none;
-}
-.entry-payee-button {
   padding: 10px 20px 10px 20px;
   margin: 8px;
 }
@@ -273,10 +271,10 @@ table.ledger-table {
       ;
   }
 
-  .entry {
+  .entry-full {
     display: none;
   }
-  .entry-payee {
+  .entry-mini {
     display: block;
   }
 }
