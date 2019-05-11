@@ -35,16 +35,27 @@ input {
   margin-right: 1px;
 }
 
-.amend {
+.entry-buttons {
   position: absolute;
   right: 100%;
   margin: 1px;
+}
+.entry-button {
   border: none;
   text-decoration: none;
   cursor: pointer;
+  height: 20px;
+  margin-bottom: 1px;
+}
+.amend {
   background-color: #1e90ff;
   color: white;
   font-size: medium;
+}
+.revert {
+  background-color: red;
+  color: white;
+  top: 24px;
 }
 
 footer {

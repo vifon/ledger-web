@@ -15,10 +15,17 @@
     {% for entry in entries %}
       <div class="container">
         {% if can_revert and forloop.first %}
-          <form action="{% url 'ledger_ui:submit' %}" method="GET">
-            <input class="amend" type="submit" value="⟲" title="Amend" />
-            <input name="amend" type="hidden" value="true" />
-          </form>
+          <div class="entry-buttons">
+            <form action="{% url 'ledger_ui:submit' %}" method="GET">
+              <input class="entry-button amend" type="submit" value="⟲" title="Amend" />
+              <input name="amend" type="hidden" value="true" />
+            </form>
+            <form action="{% url 'ledger_ui:register' %}" method="POST">
+              {% csrf_token %}
+              <input class="entry-button revert" type="submit" value="🗙" title="Revert" />
+              <input name="revert" type="hidden" value="true" />
+            </form>
+          </div>
         {% endif %}
         <a class="plain-link"
            href="{% url 'ledger_ui:rule' %}?payee={{ entry.payee }}"

@@ -27,6 +27,20 @@ def index(request):
 
 @login_required
 def register(request):
+    if request.method == 'POST':
+        if request.POST.get('revert'):
+            ledger_path = request.user.ledger_path.path
+            journal = ledger_api.Journal(ledger_path)
+
+            undo = get_object_or_404(Undo, pk=request.user)
+            last_entry = pickle.loads(undo.last_entry)
+
+            journal.revert(
+                last_entry,
+                undo.old_position,
+                undo.new_position,
+            )
+
     with open(request.user.ledger_path.path, 'r') as ledger_fd:
         entries = list(ledger_api.read_entries(ledger_fd))
     reversed_sort = request.GET.get('reverse', 'true').lower() not in ['false', '0']
