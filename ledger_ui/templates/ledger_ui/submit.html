@@ -11,6 +11,19 @@
     <table>
       {{ form.as_table }}
     </table>
-    <input name="" type="submit" value="Submit" />
+    {% if form.amend.value %}
+      <input name="" type="submit" value="Amend" />
+    {% else %}
+      <input name="" type="submit" value="Submit" />
+    {% endif %}
   </form>
+  {% if form.amend.value %}
+    <form action="{% url 'ledger_ui:register' %}" method="POST">
+      {% csrf_token %}
+      <input type="submit" value="Revert"
+             onclick="return confirm('Really delete this entry?');"
+      />
+      <input name="revert" type="hidden" value="true" />
+    </form>
+  {% endif %}
 {% endblock %}

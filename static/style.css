@@ -44,18 +44,15 @@ input {
   border: none;
   text-decoration: none;
   cursor: pointer;
-  height: 20px;
   margin-bottom: 1px;
+  padding: 2px;
+  height: 24px;
+  width: 24px;
 }
 .amend {
-  background-color: #1e90ff;
-  color: white;
-  font-size: medium;
-}
-.revert {
-  background-color: red;
-  color: white;
-  top: 24px;
+  background-color:  #1e90ff;
+  background-size: cover;
+  background-position: center;
 }
 
 footer {
