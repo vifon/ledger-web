@@ -35,11 +35,18 @@ def register(request):
             undo = get_object_or_404(Undo, pk=request.user)
             last_entry = pickle.loads(undo.last_entry)
 
-            journal.revert(
-                last_entry,
-                undo.old_position,
-                undo.new_position,
-            )
+            try:
+                journal.revert(
+                    last_entry,
+                    undo.old_position,
+                    undo.new_position,
+                )
+            except journal.CannotRevert:
+                return render(
+                    request,
+                    'ledger_ui/error/cannot_revert.html',
+                    status=409,
+                )
 
     with open(request.user.ledger_path.path, 'r') as ledger_fd:
         entries = list(ledger_api.read_entries(ledger_fd))
@@ -149,11 +156,18 @@ def submit(request):
             if validated['amend']:
                 undo = get_object_or_404(Undo, pk=request.user)
                 last_entry = pickle.loads(undo.last_entry)
-                journal.revert(
-                    last_entry,
-                    undo.old_position,
-                    undo.new_position,
-                )
+                try:
+                    journal.revert(
+                        last_entry,
+                        undo.old_position,
+                        undo.new_position,
+                    )
+                except journal.CannotRevert:
+                    return render(
+                        request,
+                        'ledger_ui/error/cannot_revert.html',
+                        status=409,
+                    )
 
             old, new = journal.append(entry)
             Undo.objects.update_or_create(
@@ -278,11 +292,18 @@ class RuleViewBase(CreateView):
                 pass
             else:
                 last_entry = pickle.loads(undo.last_entry)
-                journal.revert(
-                    last_entry,
-                    undo.old_position,
-                    undo.new_position,
-                )
+                try:
+                    journal.revert(
+                        last_entry,
+                        undo.old_position,
+                        undo.new_position,
+                    )
+                except journal.CannotRevert:
+                    return render(
+                        request,
+                        'ledger_ui/error/cannot_revert.html',
+                        status=409,
+                    )
                 add_ledger_entry(
                     user=form.instance.user,
                     account_from=last_entry.account_from,
