@@ -13,7 +13,7 @@ def transactions(request):
         entries = list(ledger_api.read_entries(ledger_fd))
 
     transaction_regexp = request.GET.get('regexp')
-    if transaction_regexp:
+    if transaction_regexp is not None:
         entries = [
             entry for entry in entries
             if re.fullmatch(transaction_regexp, entry['payee'])
