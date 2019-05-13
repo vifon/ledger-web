@@ -96,16 +96,16 @@ footer a:hover {
 }
 
 .card {
-  background: #fff;
+  background-color: #fff;
   border-radius: 5px;
   margin: 1rem 5px;
   padding: 1rem;
   position: relative;
-  transition: background 0.3s;
+  transition: background-color 0.3s;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 .card:hover {
-  background: #fafafa;
+  background-color: #fafafa;
 }
 
 .list-container {
@@ -126,7 +126,7 @@ footer a:hover {
 }
 
 div.ui-slider-range.ui-widget-header {
-  background: skyblue;
+  background-color: skyblue;
 }
 
 .noselect {
