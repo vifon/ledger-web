@@ -144,16 +144,16 @@ def read_entries(fd):
             r'(\d{4}-\d{2}-\d{2})(?: [!*])?\s+(.*)', entry_lines[0]
         )
         return {
-            'body': "".join(entry_lines),
+            'body': "\n".join(entry_lines),
             'date': match.group(1),
             'payee': match.group(2),
         }
 
     entry = []
-    for line in fd:
+    for line in map(str.rstrip, fd):
         if entry:
             # In the middle of parsing an entry.
-            if line == "\n":
+            if line == "":
                 # End of an entry.
                 yield prepare_entry(entry)
                 entry = []
@@ -165,7 +165,8 @@ def read_entries(fd):
             if re.match(r'\d{4}-\d{2}-\d{2} ', line):
                 # A beginning of a next entry.
                 entry.append(line)
-    yield prepare_entry(entry)
+    if entry:
+        yield prepare_entry(entry)
 
 
 if __name__ == '__main__':
