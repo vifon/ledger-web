@@ -29,19 +29,25 @@ input {
 }
 
 .entry-full {
-  margin-left: 1px;
-  margin-right: 1px;
+}
+.entry-mini {
+  display: none;
 }
 
-.entry-buttons {
+.entry-buttons-container {
   position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  right: 100%;
+  left: -30px;
   height: 100%;
-  margin: 1px;
+}
+.entry-buttons {
+  background-color: #ddd;
+  padding: 5px;
+  width: 32px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 .entry-button {
   border: none;
@@ -250,12 +256,6 @@ a.menu-login:active {
 }
 .menu-rules {
   grid-area: rules;
-}
-
-.entry-mini {
-  display: none;
-  padding: 10px 20px 10px 20px;
-  margin: 8px;
 }
 
 table.ledger-table {
