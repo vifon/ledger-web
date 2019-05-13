@@ -10,7 +10,7 @@ from utils import ledger_api
 @login_required
 def transactions(request):
     with open(request.user.ledger_path.path, 'r') as ledger_fd:
-        entries = list(ledger_api.read_entries(ledger_fd))
+        entries = reversed(list(ledger_api.read_entries(ledger_fd)))
 
     transaction_regexp = request.GET.get('regexp')
     if transaction_regexp is not None:
