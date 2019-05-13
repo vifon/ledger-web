@@ -37,14 +37,18 @@ input {
 
 .entry-buttons {
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   right: 100%;
+  height: 100%;
   margin: 1px;
 }
 .entry-button {
   border: none;
   text-decoration: none;
   cursor: pointer;
-  margin-bottom: 1px;
   padding: 2px;
   height: 24px;
   width: 24px;
