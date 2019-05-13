@@ -22,8 +22,8 @@
         <a class="plain-link"
            href="{% url 'ledger_ui:rule' %}?payee={{ entry.payee }}"
         >
-          <pre class="border entry-full">{{ entry.body }}</pre>
-          <div class="border entry-mini">
+          <pre class="card entry-full">{{ entry.body }}</pre>
+          <div class="card entry-mini">
             {{ entry.date }}:
             {{ entry.payee }}
           </div>
