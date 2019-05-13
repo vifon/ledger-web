@@ -16,9 +16,10 @@ input {
 
 .register-header {
   text-align: center;
-  border: 2px solid black;
+  border: 2px solid lightgrey;
   background-color: #eee;
   transition: background-color 0.3s;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 .register-header:hover {
   background-color: #ddd;
