@@ -116,8 +116,9 @@ footer a:hover {
 .rule-preview-container {
   margin: 1em;
   padding: 1em;
-  background-color: #ccc;
+  background-color: #ddd;
   border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 .chart-container {
