@@ -16,25 +16,27 @@
   <div class="list-container">
     {% for entry in entries %}
       <div class="container">
-        {% if can_revert and forloop.first %}
-          <div class="entry-buttons">
-            <form action="{% url 'ledger_ui:submit' %}" method="GET">
-              <input class="entry-button amend"
-                     type="submit" value="" title="Amend"
-                     style="background-image: url('{% static 'images/amend.png' %}');"
-              />
-              <input name="amend" type="hidden" value="true" />
-            </form>
-            <form action="{% url 'ledger_ui:register' %}" method="POST">
-              {% csrf_token %}
-              <input class="entry-button revert"
-                     type="submit" value="" title="Revert"
-                     style="background-image: url('{% static 'images/revert.png' %}');"
-                     onclick="return confirm('Really delete this entry?');"
-              />
-              <input name="revert" type="hidden" value="true" />
-            </form>
-          </div>
+        {% if can_revert %}
+          {% if reverse and forloop.first or not reverse and forloop.last %}
+            <div class="entry-buttons">
+              <form action="{% url 'ledger_ui:submit' %}" method="GET">
+                <input class="entry-button amend"
+                       type="submit" value="" title="Amend"
+                       style="background-image: url('{% static 'images/amend.png' %}');"
+                />
+                <input name="amend" type="hidden" value="true" />
+              </form>
+              <form action="{% url 'ledger_ui:register' %}" method="POST">
+                {% csrf_token %}
+                <input class="entry-button revert"
+                       type="submit" value="" title="Revert"
+                       style="background-image: url('{% static 'images/revert.png' %}');"
+                       onclick="return confirm('Really delete this entry?');"
+                />
+                <input name="revert" type="hidden" value="true" />
+              </form>
+            </div>
+          {% endif %}
         {% endif %}
         <a class="plain-link"
            href="{% url 'ledger_ui:rule' %}?payee={{ entry.payee }}"
