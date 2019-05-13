@@ -54,10 +54,16 @@ input {
   height: 24px;
   width: 24px;
 }
-.amend {
-  background-color:  #1e90ff;
+.amend,
+.revert {
   background-size: cover;
   background-position: center;
+}
+.amend {
+  background-color:  #1e90ff;
+}
+.revert {
+  background-color: red;
 }
 
 footer {

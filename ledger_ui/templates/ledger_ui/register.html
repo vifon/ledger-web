@@ -25,6 +25,15 @@
               />
               <input name="amend" type="hidden" value="true" />
             </form>
+            <form action="{% url 'ledger_ui:register' %}" method="POST">
+              {% csrf_token %}
+              <input class="entry-button revert"
+                     type="submit" value="" title="Revert"
+                     style="background-image: url('{% static 'images/revert.png' %}');"
+                     onclick="return confirm('Really delete this entry?');"
+              />
+              <input name="revert" type="hidden" value="true" />
+            </form>
           </div>
         {% endif %}
         <a class="plain-link"
