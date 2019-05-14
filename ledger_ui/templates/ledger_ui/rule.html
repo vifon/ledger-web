@@ -29,7 +29,9 @@
         let req = new XMLHttpRequest();
         req.open(
           'GET',
-          "{% url 'ledger_query:transactions' %}?regexp=" + encodeURI(regexp),
+          "{% url 'ledger_query:transactions' %}?regexp="
+          + encodeURI(regexp)
+          + "&count=11",
           true
         );
         req.onreadystatechange = function (aEvt) {
