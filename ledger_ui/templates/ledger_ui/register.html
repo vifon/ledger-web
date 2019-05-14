@@ -6,13 +6,13 @@
 
 {% block content %}
   <a class="plain-link"
-     href="{{ request.path }}?reverse={{ reverse | yesno:"False,True" }}{% if all %}&all={{ all }}{% endif %}"
+     href="{{ request.path }}?reverse={{ reverse | yesno:"False,True" }}{% if count != count_step %}&count={{ count }}{% endif %}"
   >
     <h1 class="register-header">Ledger entries {{ reverse | yesno:"↑,↓" }}</h1>
   </a>
 
   <div class="list-container">
-    {% if not reverse and not all %}
+    {% if not reverse and count != 'all' %}
       {% include "./components/show_all.html" %}
     {% endif %}
     {% for entry in entries %}
@@ -33,7 +33,7 @@
         </a>
       </div>
     {% endfor %}
-    {% if reverse and not all %}
+    {% if reverse and count != 'all' %}
       {% include "./components/show_all.html" %}
     {% endif %}
   </div>

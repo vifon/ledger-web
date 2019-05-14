@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -52,11 +52,19 @@ def register(request):
     with open(request.user.ledger_path.path, 'r') as ledger_fd:
         entries = list(ledger_api.read_entries(ledger_fd))
 
-    show_all = request.GET.get('all', 'false').lower() not in ['false', '0']
-    if len(entries) <= settings.LEDGER_ENTRY_COUNT:
-        show_all = True
-    if not show_all:
-        entries = entries[-settings.LEDGER_ENTRY_COUNT:]
+    count = request.GET.get('count', settings.LEDGER_ENTRY_COUNT)
+    try:
+        count = int(count)
+    except ValueError:
+        if count is not None and count != 'all':
+            return HttpResponse(
+                '<h1>Unprocessable Entity</h1> Bad count.',
+                status=422,
+            )
+    if count != 'all' and len(entries) <= count:
+        count = 'all'
+    if count != 'all':
+        entries = entries[-count:]
 
     reversed_sort = request.GET.get('reverse', 'true').lower() not in ['false', '0']
     if reversed_sort:
@@ -75,7 +83,8 @@ def register(request):
         {
             'entries': entries,
             'reverse': reversed_sort,
-            'all': show_all,
+            'count': count,
+            'count_step': settings.LEDGER_ENTRY_COUNT,
             'can_revert': can_revert,
         },
     )
