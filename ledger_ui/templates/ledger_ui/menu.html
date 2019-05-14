@@ -7,7 +7,7 @@
  }
 </script>
 
-<details class="collapsible-menu"
+<details class="collapsible-menu-container"
          {% if menu_open %}open{% endif %}
          ontoggle="onMenu(this)"
 >
@@ -20,7 +20,7 @@
 
     Ledger Web
   </summary>
-  <div class="collapsible-menu-container">
+  <div class="collapsible-menu">
     {% include './components/menu_base.html' %}
   </div>
 </details>

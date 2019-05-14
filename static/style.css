@@ -157,14 +157,14 @@ div.ui-slider-range.ui-widget-header {
     transform: translateX(0);
   }
 }
-.collapsible-menu[open] > .collapsible-menu-container {
+.collapsible-menu-container[open] > .collapsible-menu {
   animation-name: menuFadeIn;
   animation-duration: 0.5s;
 }
 .collapsible-menu-button {
   outline: none;
 }
-.collapsible-menu {
+.collapsible-menu-container {
   display: none;
 }
 .collapsible-menu-button {
@@ -314,7 +314,7 @@ table.ledger-table {
 }
 
 @media only screen and (max-width: 768px) {
-  .collapsible-menu {
+  .collapsible-menu-container {
     display: block;
   }
   .constant-menu {
