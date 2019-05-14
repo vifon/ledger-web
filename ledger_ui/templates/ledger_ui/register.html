@@ -6,12 +6,15 @@
 
 {% block content %}
   <a class="plain-link"
-     href="{{ request.path }}?reverse={{ reverse | yesno:"False,True" }}"
+     href="{{ request.path }}?reverse={{ reverse | yesno:"False,True" }}{% if all %}&all={{ all }}{% endif %}"
   >
     <h1 class="register-header">Ledger entries {{ reverse | yesno:"↑,↓" }}</h1>
   </a>
 
   <div class="list-container">
+    {% if not reverse and not all %}
+      {% include "./show_all.html" %}
+    {% endif %}
     {% for entry in entries %}
       <div class="container">
         {% if can_revert %}
@@ -30,5 +33,8 @@
         </a>
       </div>
     {% endfor %}
+    {% if reverse and not all %}
+      {% include "./show_all.html" %}
+    {% endif %}
   </div>
 {% endblock %}

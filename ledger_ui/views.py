@@ -7,6 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
+import itertools
 import pandas as pd
 import pickle
 import re
@@ -50,6 +51,13 @@ def register(request):
 
     with open(request.user.ledger_path.path, 'r') as ledger_fd:
         entries = list(ledger_api.read_entries(ledger_fd))
+
+    show_all = request.GET.get('all', 'false').lower() not in ['false', '0']
+    if len(entries) <= 20:
+        show_all = True
+    if not show_all:
+        entries = entries[-20:]
+
     reversed_sort = request.GET.get('reverse', 'true').lower() not in ['false', '0']
     if reversed_sort:
         entries = reversed(entries)
@@ -67,6 +75,7 @@ def register(request):
         {
             'entries': entries,
             'reverse': reversed_sort,
+            'all': show_all,
             'can_revert': can_revert,
         },
     )
