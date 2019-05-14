@@ -129,6 +129,7 @@ STATICFILES_DIRS = [
 
 LOGIN_REDIRECT_URL = 'ledger_ui:index'
 
+LEDGER_ENTRY_COUNT = 20
 LEDGER_DEFAULT_CURRENCY = '$'
 LEDGER_DEFAULT_FROM = 'Liabilities:Credit Card'
 LEDGER_DEFAULT_TO = 'Expenses:Uncategorized'

@@ -53,10 +53,10 @@ def register(request):
         entries = list(ledger_api.read_entries(ledger_fd))
 
     show_all = request.GET.get('all', 'false').lower() not in ['false', '0']
-    if len(entries) <= 20:
+    if len(entries) <= settings.LEDGER_ENTRY_COUNT:
         show_all = True
     if not show_all:
-        entries = entries[-20:]
+        entries = entries[-settings.LEDGER_ENTRY_COUNT:]
 
     reversed_sort = request.GET.get('reverse', 'true').lower() not in ['false', '0']
     if reversed_sort:

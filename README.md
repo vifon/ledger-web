@@ -98,7 +98,7 @@ The instructions below assume the former case though.
    generate it yourself, for example with `pwgen 256 1`.
 
 4. Customize `ledger/settings.py`, specifically you may be interested
-   in the last 3 options.
+   in the options starting with `LEDGER_` at the end of this file.
 
 5. Check that everything works at http://localhost:8000/
 
