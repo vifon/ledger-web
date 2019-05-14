@@ -13,13 +13,13 @@
 
   <div class="list-container">
     {% if not reverse and not all %}
-      {% include "./show_all.html" %}
+      {% include "./components/show_all.html" %}
     {% endif %}
     {% for entry in entries %}
       <div class="container">
         {% if can_revert %}
           {% if reverse and forloop.first or not reverse and forloop.last %}
-            {% include "./entry_buttons.html" %}
+            {% include "./components/entry_buttons.html" %}
           {% endif %}
         {% endif %}
         <a class="plain-link"
@@ -34,7 +34,7 @@
       </div>
     {% endfor %}
     {% if reverse and not all %}
-      {% include "./show_all.html" %}
+      {% include "./components/show_all.html" %}
     {% endif %}
   </div>
 {% endblock %}
