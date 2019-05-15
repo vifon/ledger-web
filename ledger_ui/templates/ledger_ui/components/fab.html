@@ -15,9 +15,9 @@
      const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
      const dy = scrollTop - lastScrollTop;
      if (dy < 0) {
-       button.classList.remove("visible");
+       button.classList.remove("hidden");
      } else if (dy > 0) {
-       button.classList.add("visible");
+       button.classList.add("hidden");
      } else {
        /* Horizontal scrolling. */
      }
