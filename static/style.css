@@ -165,6 +165,32 @@ footer a:hover {
   background-color: #44f;
 }
 
+.rules-mobile {
+  display: none;
+}
+.rules-mobile details[open] > .rule-details {
+  animation-name: menuFadeIn;
+  animation-duration: 0.3s;
+}
+.rule-details {
+  display: block;
+}
+.rule-details .card {
+  margin-left: 2rem;
+  margin-right: 2rem;
+}
+summary.rule-details-summary {
+  display: block;
+  cursor: pointer;
+  outline: none;
+}
+summary.rule-details-summary::-webkit-details-marker {
+  display: none;
+}
+.rule-details dt {
+  font-weight: bold;
+}
+
 .rule-preview-container {
   margin: 1em;
   padding: 1em;
@@ -374,7 +400,10 @@ table.ledger-table {
   .material-button-container {
     display: block;
   }
-  .rule-new {
+  .rules-desktop {
     display: none;
+  }
+  .rules-mobile {
+    display: block;
   }
 }

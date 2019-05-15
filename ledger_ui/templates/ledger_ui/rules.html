@@ -5,34 +5,65 @@
 {% endblock %}
 
 {% block content %}
-  <h2>Rules</h2>
-  <form class="rule-new" action="{% url 'ledger_ui:rule' %}">
-    <input type="submit" value="New" />
-  </form>
-  <table class="ledger-table">
-    <tr>
-      <th>Payee</th>
-      <th>New payee</th>
-      <th>Account from</th>
-      <th>Account to</th>
-    </tr>
-    {% for rule in object_list %}
-      <tr class="rule-row">
-        <td>
-          <a href="{% url 'ledger_ui:rule' rule.pk %}">{{ rule.payee }}</a>
-        </td>
-        <td> {{ rule.new_payee }} </td>
-        <td> {{ rule.acc_from }} </td>
-        <td> {{ rule.acc_to }} </td>
-        <td>
-          <form action="{% url 'ledger_ui:rule_delete' rule.pk %}" method="post">
-            {% csrf_token %}
-            <input type="submit" value="Delete" />
-          </form>
-        </td>
+  <div class="rules-desktop">
+    <h2>Rules</h2>
+    <form action="{% url 'ledger_ui:rule' %}">
+      <input type="submit" value="New" />
+    </form>
+    <table class="ledger-table">
+      <tr>
+        <th>Payee</th>
+        <th>New payee</th>
+        <th>Account from</th>
+        <th>Account to</th>
       </tr>
+      {% for rule in object_list %}
+        <tr class="rule-row">
+          <td>
+            <a href="{% url 'ledger_ui:rule' rule.pk %}">{{ rule.payee }}</a>
+          </td>
+          <td> {{ rule.new_payee }} </td>
+          <td> {{ rule.acc_from }} </td>
+          <td> {{ rule.acc_to }} </td>
+          <td>
+            <form action="{% url 'ledger_ui:rule_delete' rule.pk %}" method="post">
+              {% csrf_token %}
+              <input type="submit" value="Delete"
+                     onclick="return confirm('Really delete this rule?');"
+              />
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <div class="rules-mobile list-container">
+    <h2>Rules</h2>
+    {% for rule in object_list %}
+      <details>
+        <summary class="rule-details-summary card noselect">
+          {{ rule.payee }}
+        </summary>
+        <a class="plain-link rule-details" href="{% url 'ledger_ui:rule' rule.pk %}">
+          <dl class="card">
+            {% if rule.new_payee %}
+              <dt>New payee</dt>
+              <dd>{{ rule.new_payee }}</dd>
+            {% endif %}
+            {% if rule.acc_from %}
+              <dt>Account from</dt>
+              <dd>{{ rule.acc_from }}</dd>
+            {% endif %}
+            {% if rule.acc_to %}
+              <dt>Account to:</dt>
+              <dd>{{ rule.acc_to }}</dd>
+            {% endif %}
+          </dl>
+        </a>
+      </details>
     {% endfor %}
-  </table>
+  </div>
 
   {% url 'ledger_ui:rule' as fab_target %}
   {% include "./components/fab.html" with button_id="rules-fab" target=fab_target %}
