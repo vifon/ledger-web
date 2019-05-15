@@ -13,10 +13,13 @@
    function (e) {
      const button = document.getElementById("{{ button_id }}");
      const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-     if (scrollTop - lastScrollTop < 0) {
+     const dy = scrollTop - lastScrollTop;
+     if (dy < 0) {
        button.classList.remove("visible");
-     } else {
+     } else if (dy > 0) {
        button.classList.add("visible");
+     } else {
+       /* Horizontal scrolling. */
      }
      lastScrollTop = scrollTop;
    },
