@@ -158,6 +158,13 @@ footer a:hover {
   margin-right: 2em;
 }
 
+#rules-fab .material-button:hover {
+  background-color: #33f;
+}
+#rules-fab .material-button:active {
+  background-color: #44f;
+}
+
 .rule-preview-container {
   margin: 1em;
   padding: 1em;
@@ -366,5 +373,8 @@ table.ledger-table {
   }
   .material-button-container {
     display: block;
+  }
+  .rule-new {
+    display: none;
   }
 }

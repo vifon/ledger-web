@@ -6,7 +6,7 @@
 
 {% block content %}
   <h2>Rules</h2>
-  <form action="{% url 'ledger_ui:rule' %}">
+  <form class="rule-new" action="{% url 'ledger_ui:rule' %}">
     <input type="submit" value="New" />
   </form>
   <table class="ledger-table">
@@ -33,4 +33,7 @@
       </tr>
     {% endfor %}
   </table>
+
+  {% url 'ledger_ui:rule' as fab_target %}
+  {% include "./components/fab.html" with button_id="rules-fab" target=fab_target %}
 {% endblock %}
