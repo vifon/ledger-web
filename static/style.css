@@ -235,9 +235,6 @@ div.ui-slider-range.ui-widget-header {
   animation-name: menuFadeIn;
   animation-duration: 0.5s;
 }
-.collapsible-menu-button {
-  outline: none;
-}
 .collapsible-menu-container {
   display: none;
 }
@@ -246,6 +243,7 @@ div.ui-slider-range.ui-widget-header {
   list-style-type: none;
   font-size: 40px;
   white-space: nowrap;
+  outline: none;
 }
 summary.collapsible-menu-button {
   display: block;
