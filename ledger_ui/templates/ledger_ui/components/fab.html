@@ -1,0 +1,25 @@
+{% load static %}
+
+<div id="{{ button_id }}" class="material-button-container">
+  <a href="{{ target }}">
+    <img class="material-button" src="{% static 'images/add.png' %}" />
+  </a>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
+<script>
+ let lastScrollTop = 0;
+ window.onscroll = _.throttle(
+   function (e) {
+     const button = document.getElementById("{{ button_id }}");
+     const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+     if (scrollTop - lastScrollTop < 0) {
+       button.classList.remove("visible");
+     } else {
+       button.classList.add("visible");
+     }
+     lastScrollTop = scrollTop;
+   },
+   100
+ );
+</script>

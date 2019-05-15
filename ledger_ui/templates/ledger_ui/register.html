@@ -36,5 +36,8 @@
     {% if reverse and count != 'all' %}
       {% include "./components/show_all.html" %}
     {% endif %}
+
+    {% url "ledger_ui:submit" as fab_target %}
+    {% include "./components/fab.html" with button_id="submit-fab" target=fab_target %}
   </div>
 {% endblock %}

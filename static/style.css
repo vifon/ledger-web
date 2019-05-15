@@ -75,6 +75,47 @@ input {
   background-color: red;
 }
 
+.material-button-container {
+  display: none;
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  transition: bottom 0.3s ease-in-out;
+  z-index: 1;
+}
+.material-button-container a {
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.material-button-container,
+.material-button {
+  border-radius: 50%;
+}
+.material-button {
+  width: 16px;
+  height: 16px;
+  background-color: #111;
+  transition:
+    background-color 0.3s,
+    width 0.3s ease-in-out,
+    height 0.3s ease-in-out,
+    padding 0.3s ease-in-out,
+    margin 0.3s ease-in-out;
+  padding: 22px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+.material-button-container.visible {
+  bottom: -100px;
+}
+
+#submit-fab .material-button:hover {
+  background-color: #292;
+}
+#submit-fab .material-button:active {
+  background-color: #2a2;
+}
+
+
 footer {
   color: rgba(0, 0, 0, 0.4);
   text-align: center;
@@ -322,5 +363,8 @@ table.ledger-table {
   }
   .footer {
     display: none;
+  }
+  .material-button-container {
+    display: block;
   }
 }
