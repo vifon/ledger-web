@@ -14,12 +14,14 @@
 
     <input type="submit" value="Submit" />
   </form>
-  <form action="{% url 'ledger_ui:rule_delete' form.instance.pk %}" method="post">
-    {% csrf_token %}
-    <input type="submit" value="Delete"
-           onclick="return confirm('Really delete this rule?');"
-    />
-  </form>
+  {% if form.instance.pk is not None %}
+    <form action="{% url 'ledger_ui:rule_delete' form.instance.pk %}" method="post">
+      {% csrf_token %}
+      <input type="submit" value="Delete"
+             onclick="return confirm('Really delete this rule?');"
+      />
+    </form>
+  {% endif %}
 
   <div class="rule-preview-container">
     <input id="preview-button" type="button" value="Preview" />
