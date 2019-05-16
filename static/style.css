@@ -14,6 +14,16 @@ input {
   border-radius: 3px;
 }
 
+summary {
+  display: block;
+  cursor: pointer;
+  outline: none;
+  list-style-type: none;
+}
+summary::-webkit-details-marker {
+  display: none;
+}
+
 .register-header {
   text-align: center;
   border: 2px solid lightgrey;
@@ -179,14 +189,6 @@ footer a:hover {
   margin-left: 2rem;
   margin-right: 2rem;
 }
-summary.rule-details-summary {
-  display: block;
-  cursor: pointer;
-  outline: none;
-}
-summary.rule-details-summary::-webkit-details-marker {
-  display: none;
-}
 .rule-details dt {
   font-weight: bold;
 }
@@ -239,19 +241,9 @@ div.ui-slider-range.ui-widget-header {
   display: none;
 }
 .collapsible-menu-button {
-  cursor: pointer;
-  list-style-type: none;
   font-size: 40px;
   white-space: nowrap;
-  outline: none;
 }
-summary.collapsible-menu-button {
-  display: block;
-}
-summary.collapsible-menu-button::-webkit-details-marker {
-  display: none;
-}
-
 #hamburger {
   outline: none;
 }
