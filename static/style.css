@@ -167,6 +167,10 @@ footer a:hover {
 .card:hover {
   background-color: #fafafa;
 }
+pre.card {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 .subcard {
   display: block;
   margin-left: 2rem;
