@@ -26,11 +26,18 @@
            href="{% url 'ledger_ui:rule' %}?payee={{ entry.payee }}"
         >
           <pre class="card entry-full">{{ entry.body }}</pre>
-          <div class="card entry-mini">
+        </a>
+        <details class="entry-mini">
+          <summary class="card">
             {{ entry.date }}:
             {{ entry.payee }}
-          </div>
-        </a>
+          </summary>
+          <a class="plain-link subcard"
+             href="{% url 'ledger_ui:rule' %}?payee={{ entry.payee }}"
+          >
+            <pre class="card">{{ entry.body }}</pre>
+          </a>
+        </details>
       </div>
     {% endfor %}
     {% if reverse and count != 'all' %}

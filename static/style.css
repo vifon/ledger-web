@@ -23,6 +23,10 @@ summary {
 summary::-webkit-details-marker {
   display: none;
 }
+details[open] > .subcard {
+  animation-name: menuFadeIn;
+  animation-duration: 0.3s;
+}
 
 .register-header {
   text-align: center;
@@ -151,6 +155,7 @@ footer a:hover {
 }
 
 .card {
+  display: block;
   background-color: #fff;
   border-radius: 5px;
   margin: 1rem 5px;
@@ -162,6 +167,12 @@ footer a:hover {
 .card:hover {
   background-color: #fafafa;
 }
+.subcard {
+  display: block;
+  margin-left: 2rem;
+  margin-right: 2rem;
+}
+
 
 .list-container {
   margin-left: 2em;
@@ -177,17 +188,6 @@ footer a:hover {
 
 .rules-mobile {
   display: none;
-}
-.rules-mobile details[open] > .rule-details {
-  animation-name: menuFadeIn;
-  animation-duration: 0.3s;
-}
-.rule-details {
-  display: block;
-}
-.rule-details .card {
-  margin-left: 2rem;
-  margin-right: 2rem;
 }
 .rule-details dt {
   font-weight: bold;

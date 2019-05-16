@@ -45,7 +45,7 @@
         <summary class="rule-details-summary card noselect">
           {{ rule.payee }}
         </summary>
-        <a class="plain-link rule-details" href="{% url 'ledger_ui:rule' rule.pk %}">
+        <a class="plain-link rule-details subcard" href="{% url 'ledger_ui:rule' rule.pk %}">
           <dl class="card">
             {% if rule.new_payee %}
               <dt>New payee</dt>
