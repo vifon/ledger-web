@@ -53,9 +53,13 @@ features visibly missing from *Ledger Web*.
 
 [![](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Rules.png)](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Rules.png)
 
+[![](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Rules_mobile.png)](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Rules_mobile.png)
+
 ### Ledger register
 
 [![](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Register.png)](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Register.png)
+
+[![](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Register_mobile.png)](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Register_mobile.png)
 
 ### Ledger Web on Kindle
 
