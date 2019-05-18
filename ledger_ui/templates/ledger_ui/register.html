@@ -22,10 +22,10 @@
             {% include "./components/entry_buttons.html" %}
           {% endif %}
         {% endif %}
-        <a class="plain-link"
+        <a class="plain-link entry-full"
            href="{% url 'ledger_ui:rule' %}?payee={{ entry.payee }}"
         >
-          <pre class="card entry-full">{{ entry.body }}</pre>
+          <pre class="card">{{ entry.body }}</pre>
         </a>
         <details class="entry-mini">
           <summary class="card">
