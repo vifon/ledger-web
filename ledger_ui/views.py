@@ -108,6 +108,11 @@ def charts(request):
         usecols=['date', 'payee', 'account', 'amount'],
         parse_dates=['date'],
     )
+    if len(df) == 0:
+        return render(
+            request,
+            'ledger_ui/charts.html',
+        )
 
     income = df[df['account'].str.contains("^Income:")]
 
@@ -123,10 +128,7 @@ def charts(request):
     date_grouped_expenses = expenses[['date', 'amount']].groupby('date').sum()
     date_grouped_income = income[['date', 'amount']].groupby('date').sum()
 
-    try:
-        date_range = pd.date_range(df['date'].min(), df['date'].max(), freq='MS')
-    except ValueError:
-        date_range = pd.DatetimeIndex([])
+    date_range = pd.date_range(df['date'].min(), df['date'].max(), freq='MS')
     date_grouped_expenses = date_grouped_expenses.reindex(date_range, fill_value=0)
     date_grouped_income = date_grouped_income.reindex(date_range, fill_value=0)
 
