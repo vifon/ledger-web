@@ -256,6 +256,16 @@ def balance(request):
     if search:
         df = df[df['account'].str.contains(search, case=False)]
 
+    if len(df) == 0:
+        return render(
+            request,
+            'ledger_ui/balance.html',
+            {
+                'accounts': [],
+                'search': search,
+            },
+        )
+
     balance = df.groupby(['account', 'currency']).sum()
     balance['amount'] = balance['amount'].round(2)
 
