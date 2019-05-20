@@ -43,22 +43,32 @@ def require_token(view):
     return inner
 
 
-def add_ledger_entry(user, account_from, account_to, payee, amount, currency=None, date=None):
+def add_ledger_entry(
+        user,
+        account_from,
+        account_to,
+        payee,
+        amount,
+        currency=None,
+        date=None,
+        skip_rules=False,
+):
     ledger_path = user.ledger_path.path
-    replacement_rules = (
-        Rule.objects.filter(user=user).order_by(Length('payee').desc())
-    )
-    for rule in replacement_rules:
-        try:
-            match = re.fullmatch(rule.payee, payee)
-        except re.error:
-            pass
-        else:
-            if match:
-                payee = rule.new_payee or payee
-                account_from = rule.acc_from or account_from
-                account_to = rule.acc_to or account_to
-                break
+    if not skip_rules:
+        replacement_rules = (
+            Rule.objects.filter(user=user).order_by(Length('payee').desc())
+        )
+        for rule in replacement_rules:
+            try:
+                match = re.fullmatch(rule.payee, payee)
+            except re.error:
+                pass
+            else:
+                if match:
+                    payee = rule.new_payee or payee
+                    account_from = rule.acc_from or account_from
+                    account_to = rule.acc_to or account_to
+                    break
 
     amount = amount.replace(",", ".").strip()
 
@@ -114,7 +124,11 @@ def submit_as_json(request):
         'account_from': params['account_from'],
         'account_to': params['account_to'],
     }
-    entry = add_ledger_entry(user=request.user, **ledger_data)
+    entry = add_ledger_entry(
+        user=request.user,
+        skip_rules=params.get('skip_rules', False),
+        **ledger_data,
+    )
     return JsonResponse(
         {
             'payee': entry.payee,

@@ -56,6 +56,25 @@ class SubmitTests(TestCase):
             }
         ),
         (
+            # Forcibly skip processing the rules.
+            {
+                'payee': 'AUCHAN WARSZAWA',
+                'account_to': 'Expenses:Uncategorized',
+                'account_from': 'Liabilities:Credit Card',
+                'amount': '10 PLN',
+                'skip_rules': True,
+            },
+            {
+                'payee': 'AUCHAN WARSZAWA',
+                'account_to': 'Expenses:Uncategorized',
+                'account_from': 'Liabilities:Credit Card',
+                'amount': '10.00',
+                'currency': 'PLN',
+            },
+            # The as_url route doesn't support `skip_rules'.
+            True,
+        ),
+        (
             # Modify only accounts, don't touch payee.
             {
                 'payee': 'Pizza Dominium',
@@ -88,7 +107,7 @@ class SubmitTests(TestCase):
             }
         ),
     ])
-    def test_replacements(self, input_data, expected_output):
+    def test_replacements(self, input_data, expected_output, skip_url=False):
         Rule.objects.create(
             user=self.user,
             payee='AUCHAN WARSZ.*',
@@ -111,24 +130,25 @@ class SubmitTests(TestCase):
             acc_to='Expenses:Restaurants',
         )
 
-        response = self.client.post(
-            reverse(
-                'ledger_submit:as_url',
-                args=[input_data[key] for key in [
-                    'account_from',
-                    'account_to',
-                    'payee',
-                    'amount',
-                ]]
-            ),
-            content_type='application/json',
-            data={'token': self.good_token},
-        )
-        self.assertEqual(response.status_code, 201)
-        self.assertJSONEqual(
-            response.content,
-            expected_output,
-        )
+        if not skip_url:
+            response = self.client.post(
+                reverse(
+                    'ledger_submit:as_url',
+                    args=[input_data[key] for key in [
+                        'account_from',
+                        'account_to',
+                        'payee',
+                        'amount',
+                    ]]
+                ),
+                content_type='application/json',
+                data={'token': self.good_token},
+            )
+            self.assertEqual(response.status_code, 201)
+            self.assertJSONEqual(
+                response.content,
+                expected_output,
+            )
 
         response = self.client.post(
             reverse('ledger_submit:as_json'),

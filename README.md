@@ -142,6 +142,9 @@ entries.  It is available under the following HTTP routes:
 
   This route accepts the same arguments as the previous one
   (`account_from`, `account_to`, `payee`, `amount`) but as JSON.
+  Additionally there is an optional boolean argument `skip_rules` that
+  causes the transaction to be submitted verbatim with no rules
+  applied to it.
 
   For example:
 
