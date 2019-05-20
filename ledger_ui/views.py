@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.db.models.functions import Lower
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -285,7 +286,9 @@ class RuleIndexView(generic.ListView):
     template_name = 'ledger_ui/rules.html'
 
     def get_queryset(self):
-        return Rule.objects.filter(user=self.request.user).order_by('payee')
+        return Rule.objects.filter(
+            user=self.request.user
+        ).order_by(Lower('payee'))
 
 
 class UserCheckMixin:
