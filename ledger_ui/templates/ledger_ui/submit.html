@@ -5,7 +5,11 @@
 {% endblock %}
 
 {% block content %}
-  <h2>New transaction</h2>
+  {% if form.amend.value %}
+    <h2>Edit transaction</h2>
+  {% else %}
+    <h2>New transaction</h2>
+  {% endif %}
   <form action="{{ request.path }}" method="post">
     {% csrf_token %}
     <table>
@@ -20,7 +24,7 @@
   {% if form.amend.value %}
     <form action="{% url 'ledger_ui:register' %}" method="POST">
       {% csrf_token %}
-      <input type="submit" value="Revert"
+      <input type="submit" value="Delete"
              onclick="return confirm('Really delete this entry?');"
       />
       <input name="revert" type="hidden" value="true" />
