@@ -72,6 +72,22 @@ easily accessible from mobile devices.  That being said, it's possible
 to run it on demand locally for example just to analyze the charts.
 The instructions below assume the former case though.
 
+### Docker
+
+There is a Docker image available thought it's work-in-progress.  You
+can start it with:
+
+```
+docker run -e USERNAME=user -e PASSWORD=change_me -p 8080:5000 vifon/ledger-web
+```
+
+*Ledger Web* should be running on port 8080 now.
+
+Keep in mind that it's work-in-progress and currently keeps all the
+data inside the container, so currently it mostly serves as a preview.
+
+### Manual installation
+
 1. Clone the repository and install the dependencies:
 
         git clone https://github.com/vifon/ledger-web

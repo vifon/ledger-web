@@ -1,0 +1,36 @@
+# -*- conf -*-
+
+server {
+    listen 5000;
+    root /var/www/ledger-web;
+
+    location / {
+        proxy_pass http://unix:/tmp/ledger-web.sock;
+        proxy_redirect off;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location /static/ {
+        gzip on;
+        gzip_min_length 1000;
+        gzip_proxied    expired no-cache no-store private auth;
+        gzip_types      text/plain application/xml;
+
+        expires 1d;
+        add_header Cache-Control "public";
+        add_header Strict-Transport-Security "max-age=31536000";
+
+        location ~* \.(?:html)$ {
+            expires 1d;
+        }
+
+        location ~* \.(?:css|js)$ {
+            expires 1y;
+            access_log off;
+        }
+    }
+}

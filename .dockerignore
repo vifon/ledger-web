@@ -1,0 +1,14 @@
+*
+!accounts/
+!ledger/
+!ledger_query/
+!ledger_submit/
+!ledger_ui/
+!static/
+!utils/
+!manage.py
+!Makefile
+!scripts/
+!requirements.txt
+!configs/
+*/README.md
