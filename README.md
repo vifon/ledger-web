@@ -106,7 +106,10 @@ The instructions below assume the former case though.
 
 5. Check that everything works at http://localhost:8000/
 
-6. Enable the production mode in `ledger/settings.py`:
+6. Enable the production mode in `ledger/settings.py`.
+
+   Either run `make prod` (see the output of `make` for the optional
+   arguments) or follow these steps:
 
     - Set `DEBUG = False`.
     - Generate a new `SECRET_KEY`, for example with [this snippet](https://gist.github.com/sandervm/2b15775012685553f0e2).
