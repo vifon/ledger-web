@@ -1,6 +1,6 @@
 FROM ubuntu:bionic
 
-RUN adduser app
+RUN adduser --disabled-password --gecos '' app
 
 ADD requirements.txt /home/app
 
@@ -9,6 +9,7 @@ RUN apt-get -y update \
       build-essential \
       python3-minimal \
       python3-pip \
+      python3-psycopg2 \
       nginx \
       supervisor \
       ledger \
@@ -17,15 +18,18 @@ RUN apt-get -y update \
  && pip3 install gunicorn
 
 ADD . /home/app/ledger-web/
+
+WORKDIR /home/app/ledger-web/
+
+ADD docker/configs/etc/ /etc/
+
 RUN chown -R app:app /home/app/ledger-web/ \
  && install -d -o app -g app /var/www/ledger-web/
-
-ADD configs/ /etc/
-
 USER app
-WORKDIR /home/app/ledger-web/
-RUN make prod
+RUN make prod && make use_postgres
 USER root
+
+ENV LC_ALL C.UTF-8
 
 EXPOSE 5000
 

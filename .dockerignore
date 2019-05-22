@@ -10,5 +10,5 @@
 !Makefile
 !scripts/
 !requirements.txt
-!configs/
+!docker/configs/
 */README.md

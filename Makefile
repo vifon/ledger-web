@@ -9,12 +9,18 @@ all:
 	@ echo "Usage:"
 	@ echo '  make prod STATIC_ROOT=/var/www/ledger-web/static/ ALLOWED_HOSTS="foo.example.com bar.example.com"'
 	@ echo '  make admin_account USERNAME=root PASSWORD=something_safe LEDGER_PATH=$$HOME/ledger.dat'
+	@ echo '  make use_postgres'
 
 prod:
 	./scripts/prepare_prod.pl ledger/settings.py
-	python3 ./manage.py migrate
 	mkdir -p $(STATIC_ROOT)
 	python3 ./manage.py collectstatic --no-input
+
+db:
+	python3 ./manage.py migrate
+
+use_postgres:
+	./scripts/switch_to_postgres.pl ledger/settings.py
 
 admin_account:
 	touch $(LEDGER_PATH)

@@ -74,17 +74,24 @@ The instructions below assume the former case though.
 
 ### Docker
 
-There is a Docker image available thought it's work-in-progress.  You
-can start it with:
+There is a **experimental** Docker image available.  To use it, run:
 
 ```
-docker run -e USERNAME=user -e PASSWORD=change_me -p 8080:5000 vifon/ledger-web
+docker run --name ledger-db -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+docker run --name ledger-web \
+  -e USERNAME=user \
+  -e PASSWORD=change_me \
+  -e POSTGRES_PASSWORD=mysecretpassword \
+  -v /path/to/ledger.dat:/home/app/ledger.dat \
+  -p 8080:5000 --link ledger-db:db -d vifon/ledger-web
 ```
+
+...substituting the passwords of 
 
 *Ledger Web* should be running on port 8080 now.
 
-Keep in mind that it's work-in-progress and currently keeps all the
-data inside the container, so currently it mostly serves as a preview.
+You may need to tweak the permissions of your Ledger file.  Setting
+the owner UID to 1000 should do as a quick fix.
 
 ### Manual installation
 
