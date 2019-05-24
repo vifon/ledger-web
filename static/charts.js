@@ -53,9 +53,11 @@ const updateTimeRange = function (rangeStart, rangeEnd) {
   });
   timeChart.update();
 
-  const expensesInPeriod = sumAccounts(
-    dates[rangeStart],
-    dates[rangeEnd]
+  const expensesInPeriod = sortExpenses(
+    sumAccounts(
+      dates[rangeStart],
+      dates[rangeEnd]
+    )
   );
   pieChart.data.labels = _.map(expensesInPeriod, _.first);
   pieChart.data.datasets.forEach(
@@ -83,19 +85,36 @@ $("#range-select1").val(
 $("#range-select2").val(
   $("#slider-range").slider("values", 1));
 
+const updateCharts = function () {
+  updateTimeRange(...$("#slider-range").slider("values"));
+};
+document.querySelectorAll('input[name="chart-sort"]').forEach(
+  x => x.addEventListener('click', updateCharts)
+);
+
 $("#range-select1").change(
   function () {
     $("#slider-range").slider("values", 0, $(this).val());
-    updateTimeRange(...$("#slider-range").slider("values"));
+    updateCharts();
   }
 );
 $("#range-select2").change(
   function () {
     $("#slider-range").slider("values", 1, $(this).val());
-    updateTimeRange(...$("#slider-range").slider("values"));
+    updateCharts();
   }
 );
 
+const sortExpenses = function (expensesInPeriod) {
+  const order = document.querySelector('input[name="chart-sort"]:checked').value;
+  if (order == 'value') {
+    return expensesInPeriod.sort(
+      (a, b) => _.last(b) - _.last(a)
+    );
+  } else if (order == 'label') {
+    return expensesInPeriod;
+  }
+}
 
 const expenses =
       _.chain(expensesFlat)
@@ -121,9 +140,11 @@ const sumAccounts = function (dateStart, dateEnd) {
     .sort()
     .value();
 }
-const expensesInPeriod = sumAccounts(
-  dates[$("#slider-range").slider("values", 0)],
-  dates[$("#slider-range").slider("values", 1)]
+const expensesInPeriod = sortExpenses(
+  sumAccounts(
+    dates[$("#slider-range").slider("values", 0)],
+    dates[$("#slider-range").slider("values", 1)]
+  )
 );
 
 let pieChart = new Chart('piechart', {

@@ -208,6 +208,11 @@ pre.card {
 .chart-container {
   position: relative;
 }
+.chart-separator {
+  color: lightgrey;
+  margin-top: 1em;
+}
+
 
 div.ui-slider-range.ui-widget-header {
   background-color: skyblue;
