@@ -97,6 +97,9 @@ class Journal:
     class CannotRevert(Exception):
         pass
 
+    class LedgerCliError(Exception):
+        pass
+
     def __init__(self, ledger_path):
         self.path = ledger_path
 
@@ -131,10 +134,15 @@ class Journal:
         return io.StringIO("\n".join(self._call("csv", *args)))
 
     def _call(self, *args):
-        output = subprocess.check_output(
-            ["ledger", "-f", self.path] + list(args),
-            universal_newlines=True
-        )
+        try:
+            output = subprocess.check_output(
+                ["ledger", "-f", self.path] + list(args),
+                universal_newlines=True,
+                stderr=subprocess.PIPE,
+            )
+        except subprocess.CalledProcessError as e:
+            raise Journal.LedgerCliError() from e
+
         return output.strip().split("\n")
 
 
