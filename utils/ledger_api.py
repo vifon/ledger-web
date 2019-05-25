@@ -159,20 +159,20 @@ class Journal:
         entry = []
         with open(self.path, 'r') as ledger_file:
             for line in map(str.rstrip, ledger_file):
-                if entry:
-                    # In the middle of parsing an entry.
-                    if line == "":
-                        # End of an entry.
-                        yield prepare_entry(entry)
-                        entry = []
-                    else:
-                        # Let's parse some more of it.
-                        entry.append(line)
-                else:
-                    # Skipping the empty space between entries.
+                if not entry:
+                    # Skipping the empty space and non-entries between entries.
                     if re.match(r'\d{4}-\d{2}-\d{2} ', line):
                         # A beginning of a next entry.
                         entry.append(line)
+                else:
+                    # In the middle of parsing an entry.
+                    if line:
+                        # Let's parse some more of it.
+                        entry.append(line)
+                    else:
+                        # End of an entry.
+                        yield prepare_entry(entry)
+                        entry = []
             if entry:
                 yield prepare_entry(entry)
 
