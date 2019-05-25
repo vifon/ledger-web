@@ -5,7 +5,6 @@ from django.views.decorators.http import require_POST
 
 from datetime import datetime
 import json
-import pickle
 import re
 
 from .models import Rule, Token
@@ -87,7 +86,7 @@ def add_ledger_entry(
     Undo.objects.update_or_create(
         pk=user.id,
         defaults={
-            'last_entry': pickle.dumps(entry),
+            'last_entry': entry,
             'old_position': old,
             'new_position': new,
         },

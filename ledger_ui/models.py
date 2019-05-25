@@ -24,20 +24,14 @@ class Undo(models.Model):
         primary_key=True,
     )
 
-    last_entry = models.BinaryField()
+    last_entry_pickle = models.BinaryField()
     old_position = models.PositiveIntegerField()
     new_position = models.PositiveIntegerField()
 
-    def can_revert(self):
-        with open(self.user.ledger_path.path, 'r') as ledger_file:
-            current_end = ledger_file.seek(0, 2)
-            if current_end != self.new_position:
-                return False
+    @property
+    def last_entry(self):
+        return pickle.loads(self.last_entry_pickle)
 
-            ledger_file.seek(self.old_position)
-            stored_entry = str(pickle.loads(self.last_entry))
-            actual_entry = ledger_file.read().rstrip()
-            if stored_entry != actual_entry:
-                return False
-
-        return True
+    @last_entry.setter
+    def last_entry(self, entry):
+        self.last_entry_pickle = pickle.dumps(entry)

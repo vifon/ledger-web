@@ -8,6 +8,7 @@ import re
 from . import fields
 from .models import Undo
 from ledger_submit.models import Rule
+from utils import ledger_api
 
 
 class SubmitForm(forms.Form):
@@ -64,17 +65,19 @@ class RuleModelForm(forms.ModelForm):
         model = Rule
         exclude = ['user']
 
-    def __init__(self, *args, accounts, payees, user, **kwargs):
+    def __init__(self, *args, accounts, payees, user, journal, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.user = user
+        self.journal = journal
 
         try:
             undo = Undo.objects.get(pk=user)
         except Undo.DoesNotExist:
             pass
         else:
-            if undo.can_revert():
+            self.journal.last_data = undo
+            if self.journal.can_revert():
                 self.fields['amend'].disabled = False
 
         self.fields['payee'].widget = fields.ListTextWidget(
@@ -123,7 +126,7 @@ class RuleModelForm(forms.ModelForm):
         except Undo.DoesNotExist:
             pass
         else:
-            if self.data.get('amend') and not undo.can_revert():
+            if self.data.get('amend') and not self.journal.can_revert():
                 self.add_error(
                     'amend',
                     forms.ValidationError(

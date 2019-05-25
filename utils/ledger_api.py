@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from collections import namedtuple
 import io
 import re
 import subprocess
@@ -100,19 +101,51 @@ class Journal:
     class LedgerCliError(Exception):
         pass
 
-    def __init__(self, ledger_path):
+    # Not used but let's keep it as documentation of the expected
+    # fields of the passed objects.
+    LastData = namedtuple(
+        'LastData',
+        [
+            'last_entry',
+            'old_position',
+            'new_position',
+        ],
+    )
+
+    def __init__(self, ledger_path, last_data=None):
         self.path = ledger_path
+        self.last_data = last_data
 
-    def revert(self, last_entry, old_position, new_position):
+    def can_revert(self):
+        if self.last_data is None:
+            return False
+
+        with open(self.path, 'r') as ledger_file:
+            current_end = ledger_file.seek(0, 2)
+            if current_end != self.last_data.new_position:
+                return False
+
+            ledger_file.seek(self.last_data.old_position)
+            stored_entry = str(self.last_data.last_entry)
+            actual_entry = ledger_file.read().rstrip()
+            if stored_entry != actual_entry:
+                return False
+
+        return True
+
+    def revert(self):
+        if self.last_data is None:
+            raise Journal.CannotRevert()
+
         with open(self.path, 'a+') as ledger_file:
-            if new_position != ledger_file.tell():
+            if self.last_data.new_position != ledger_file.tell():
                 raise Journal.CannotRevert()
 
-            ledger_file.seek(old_position)
-            if ledger_file.read().rstrip() != str(last_entry):
+            ledger_file.seek(self.last_data.old_position)
+            if ledger_file.read().rstrip() != str(self.last_data.last_entry):
                 raise Journal.CannotRevert()
 
-            ledger_file.truncate(old_position)
+            ledger_file.truncate(self.last_data.old_position)
 
     def append(self, entry):
         with open(self.path, 'a') as ledger_file:

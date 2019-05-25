@@ -10,7 +10,6 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 import itertools
 import pandas as pd
-import pickle
 import re
 
 from .forms import SubmitForm, RuleModelForm
@@ -31,18 +30,13 @@ def index(request):
 def register(request):
     if request.method == 'POST':
         if request.POST.get('revert'):
-            ledger_path = request.user.ledger_path.path
-            journal = ledger_api.Journal(ledger_path)
-
             undo = get_object_or_404(Undo, pk=request.user)
-            last_entry = pickle.loads(undo.last_entry)
+
+            ledger_path = request.user.ledger_path.path
+            journal = ledger_api.Journal(ledger_path, undo)
 
             try:
-                journal.revert(
-                    last_entry,
-                    undo.old_position,
-                    undo.new_position,
-                )
+                journal.revert()
             except journal.CannotRevert:
                 return render(
                     request,
@@ -70,12 +64,14 @@ def register(request):
     if reversed_sort:
         entries = reversed(entries)
 
+    ledger_path = request.user.ledger_path.path
+    journal = ledger_api.Journal(ledger_path)
     try:
         undo = Undo.objects.get(pk=request.user)
     except Undo.DoesNotExist:
         can_revert = False
     else:
-        can_revert = undo.can_revert()
+        journal.last_data = undo
 
     return render(
         request,
@@ -85,7 +81,7 @@ def register(request):
             'reverse': reversed_sort,
             'count': count,
             'count_step': settings.LEDGER_ENTRY_COUNT,
-            'can_revert': can_revert,
+            'can_revert': journal.can_revert(),
         },
     )
 
@@ -178,13 +174,10 @@ def submit(request):
 
             if validated['amend']:
                 undo = get_object_or_404(Undo, pk=request.user)
-                last_entry = pickle.loads(undo.last_entry)
+                journal.last_data = undo
+
                 try:
-                    journal.revert(
-                        last_entry,
-                        undo.old_position,
-                        undo.new_position,
-                    )
+                    journal.revert()
                 except journal.CannotRevert:
                     return render(
                         request,
@@ -196,7 +189,7 @@ def submit(request):
             Undo.objects.update_or_create(
                 pk=request.user.id,
                 defaults={
-                    'last_entry': pickle.dumps(entry),
+                    'last_entry': entry,
                     'old_position': old,
                     'new_position': new,
                 },
@@ -212,9 +205,7 @@ def submit(request):
 
         amend = request.GET.get('amend', 'false').lower() not in ['false', '0']
         if amend:
-            last_entry = pickle.loads(
-                get_object_or_404(Undo, pk=request.user).last_entry
-            )
+            last_entry = get_object_or_404(Undo, pk=request.user).last_entry
             form = SubmitForm(
                 {
                     'date': last_entry.date,
@@ -308,6 +299,7 @@ class RuleViewBase(CreateView):
         kwargs = super().get_form_kwargs()
         ledger_path = self.request.user.ledger_path.path
         journal = ledger_api.Journal(ledger_path)
+        kwargs['journal'] = journal
         kwargs['accounts'] = journal.accounts()
         kwargs['payees'] = journal.payees()
         kwargs['user'] = self.request.user
@@ -319,20 +311,17 @@ class RuleViewBase(CreateView):
         ret = super().form_valid(form)
 
         if form.data.get('amend'):
-            ledger_path = form.instance.user.ledger_path.path
-            journal = ledger_api.Journal(ledger_path)
             try:
                 undo = Undo.objects.get(pk=form.instance.user)
             except Undo.DoesNotExist:
                 pass
             else:
-                last_entry = pickle.loads(undo.last_entry)
+                ledger_path = form.instance.user.ledger_path.path
+                journal = ledger_api.Journal(ledger_path, undo)
+
+                last_entry = undo.last_entry
                 try:
-                    journal.revert(
-                        last_entry,
-                        undo.old_position,
-                        undo.new_position,
-                    )
+                    journal.revert()
                 except journal.CannotRevert:
                     return render(
                         request,
@@ -365,9 +354,14 @@ class RuleCreateView(RuleViewBase, CreateView):
         try:
             payee = self.request.GET['payee']
             kwargs['initial']['payee'] = re.escape(payee)
-            undo = Undo.objects.get(pk=kwargs['user'])
-            if undo.can_revert() \
-               and pickle.loads(undo.last_entry).payee == payee:
+
+            user = self.request.user
+            undo = Undo.objects.get(pk=user)
+            ledger_path = user.ledger_path.path
+            journal = ledger_api.Journal(ledger_path, undo)
+
+            if journal.can_revert() \
+               and undo.last_entry.payee == payee:
                 kwargs['initial']['amend'] = True
         except (KeyError, Undo.DoesNotExist):
             pass
