@@ -50,8 +50,7 @@ def register(request):
                     status=409,
                 )
 
-    with open(request.user.ledger_path.path, 'r') as ledger_fd:
-        entries = list(ledger_api.read_entries(ledger_fd))
+    entries = list(ledger_api.Journal(request.user.ledger_path.path))
 
     count = request.GET.get('count', settings.LEDGER_ENTRY_COUNT)
     try:

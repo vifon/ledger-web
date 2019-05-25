@@ -145,36 +145,36 @@ class Journal:
 
         return output.strip().split("\n")
 
+    def __iter__(self):
+        def prepare_entry(entry_lines):
+            match = re.match(
+                r'(\d{4}-\d{2}-\d{2})(?: [!*])?\s+(.*)', entry_lines[0]
+            )
+            return {
+                'body': "\n".join(entry_lines),
+                'date': match.group(1),
+                'payee': match.group(2),
+            }
 
-def read_entries(fd):
-    def prepare_entry(entry_lines):
-        match = re.match(
-            r'(\d{4}-\d{2}-\d{2})(?: [!*])?\s+(.*)', entry_lines[0]
-        )
-        return {
-            'body': "\n".join(entry_lines),
-            'date': match.group(1),
-            'payee': match.group(2),
-        }
-
-    entry = []
-    for line in map(str.rstrip, fd):
-        if entry:
-            # In the middle of parsing an entry.
-            if line == "":
-                # End of an entry.
+        entry = []
+        with open(self.path, 'r') as ledger_file:
+            for line in map(str.rstrip, ledger_file):
+                if entry:
+                    # In the middle of parsing an entry.
+                    if line == "":
+                        # End of an entry.
+                        yield prepare_entry(entry)
+                        entry = []
+                    else:
+                        # Let's parse some more of it.
+                        entry.append(line)
+                else:
+                    # Skipping the empty space between entries.
+                    if re.match(r'\d{4}-\d{2}-\d{2} ', line):
+                        # A beginning of a next entry.
+                        entry.append(line)
+            if entry:
                 yield prepare_entry(entry)
-                entry = []
-            else:
-                # Let's parse some more of it.
-                entry.append(line)
-        else:
-            # Skipping the empty space between entries.
-            if re.match(r'\d{4}-\d{2}-\d{2} ', line):
-                # A beginning of a next entry.
-                entry.append(line)
-    if entry:
-        yield prepare_entry(entry)
 
 
 if __name__ == '__main__':
