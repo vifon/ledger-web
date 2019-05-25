@@ -30,10 +30,6 @@ let timeChart = new Chart('timechart', {
   }
 });
 
-const showAllPiechartLabels = function () {
-  pieChart.getDatasetMeta(0).data.forEach(x => x.hidden = false);
-}
-
 const updateTimeRange = function (rangeStart, rangeEnd) {
   timeChart.data.labels = dates.slice(
     rangeStart,
@@ -57,21 +53,28 @@ const updateTimeRange = function (rangeStart, rangeEnd) {
   });
   timeChart.update();
 
+  const oldLabels = pieChart.data.labels;
+  const pieChartMetadata = pieChart.getDatasetMeta(0).data;
+
+  let metaByLabel = {};
+  oldLabels.forEach((label, idx) => metaByLabel[label] = {
+    hidden: pieChartMetadata[idx].hidden
+  });
+
   const expensesInPeriod = sortExpenses(
     sumAccounts(
       dates[rangeStart],
       dates[rangeEnd]
     )
   );
-  const oldLabels = pieChart.data.labels;
   const newLabels = _.map(expensesInPeriod, _.first);
   pieChart.data.labels = newLabels;
-  if (!_.isEqual(oldLabels, newLabels)) {
-    showAllPiechartLabels();
-  }
-  pieChart.data.datasets.forEach(
-    dataset =>
-      dataset.data = _.map(expensesInPeriod, _.last));
+  pieChart.data.datasets[0].data = _.map(expensesInPeriod, _.last);
+
+  newLabels.forEach(
+    (label, idx) => pieChartMetadata[idx].hidden = metaByLabel[label].hidden
+  );
+
   pieChart.update();
 };
 
