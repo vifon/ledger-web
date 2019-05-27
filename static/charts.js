@@ -30,6 +30,19 @@ let timeChart = new Chart('timechart', {
   },
   options: {
     scales: {
+      xAxes: [{
+        type: 'time',
+        distribution: 'series',
+        ticks: {
+          source: 'labels'
+        },
+        time: {
+          unit: 'month',
+          displayFormats: {
+            month: 'YYYY-MM'
+          }
+        }
+      }],
       yAxes: [
         {
           id: 'income-expenses',
@@ -59,31 +72,9 @@ let timeChart = new Chart('timechart', {
 });
 
 const updateTimeRange = function (rangeStart, rangeEnd) {
-  timeChart.data.labels = dates.slice(
-    rangeStart,
-    rangeEnd + 1
-  );
-  timeChart.data.datasets.forEach(dataset => {
-    switch (dataset.label) {
-    case "Expenses":
-      dataset.data = expensesTotals.slice(
-        rangeStart,
-        rangeEnd + 1
-      );
-      break;
-    case "Income":
-      dataset.data = incomeTotals.slice(
-        rangeStart,
-        rangeEnd + 1
-      );
-      break;
-    case "Assets":
-      dataset.data = assets.slice(
-        rangeStart,
-        rangeEnd + 1
-      );
-      break;
-    }
+  timeChart.options.scales.xAxes.forEach(axis => {
+    axis.time.min = dates[rangeStart];
+    axis.time.max = dates[rangeEnd];
   });
   timeChart.update();
 
