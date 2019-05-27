@@ -84,6 +84,7 @@
    const dates = djangoExtract('dates').data;
    const expensesTotals = Object.values(JSON.parse("{{ expenses_totals|escapejs }}"));
    const incomeTotals = Object.values(JSON.parse("{{ income_totals|escapejs }}"));
+   const assets = Object.values(JSON.parse("{{ assets|escapejs }}"));
    const expensesFlat = JSON.parse("{{ expenses|escapejs }}").data;
    const expensesFilter = "{{ account_filter|escapejs }}" || 'Expenses';
   </script>

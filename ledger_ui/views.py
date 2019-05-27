@@ -110,6 +110,7 @@ def charts(request):
             'ledger_ui/charts.html',
         )
 
+    assets = df[df['account'].str.contains("^Assets:")]
     income = df[df['account'].str.contains("^Income:")]
 
     account_filter = request.GET.get('account_filter', '')
@@ -121,13 +122,16 @@ def charts(request):
     else:
         expenses = df[df['account'].str.contains("^Expenses:")].copy()
 
+    date_grouped_assets = assets[['date', 'amount']].groupby('date').sum()
     date_grouped_expenses = expenses[['date', 'amount']].groupby('date').sum()
     date_grouped_income = income[['date', 'amount']].groupby('date').sum()
 
     date_range = pd.date_range(df['date'].min(), df['date'].max(), freq='MS')
+    date_grouped_assets = date_grouped_assets.reindex(date_range, fill_value=0)
     date_grouped_expenses = date_grouped_expenses.reindex(date_range, fill_value=0)
     date_grouped_income = date_grouped_income.reindex(date_range, fill_value=0)
 
+    date_grouped_assets['amount'] = date_grouped_assets['amount'].cumsum()
     expenses['date'] = expenses['date'].dt.strftime("%Y-%m")
 
     return render(
@@ -140,6 +144,7 @@ def charts(request):
             'expenses': (
                 expenses[['date', 'account', 'amount']].to_json(
                     orient='table', index=False)),
+            'assets': date_grouped_assets['amount'].round(2).to_json(),
             'account_filter': account_filter,
         },
     )

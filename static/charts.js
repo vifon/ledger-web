@@ -8,24 +8,52 @@ let timeChart = new Chart('timechart', {
       {
         label: expensesFilter,
         data: expensesTotals,
+        yAxisID: 'income-expenses',
         borderColor: 'rgba(255, 100, 100, 0.5)',
         backgroundColor: 'rgba(255, 100, 100, 0.1)'
       },
       {
         label: 'Income',
         data: incomeTotals,
+        yAxisID: 'income-expenses',
         borderColor: 'rgba(50, 200, 50, 1)',
         backgroundColor: 'rgba(50, 200, 50, 0.1)'
+      },
+      {
+        label: 'Assets',
+        data: assets,
+        yAxisID: 'assets',
+        borderColor: 'rgba(255, 155, 0, 0.2)',
+        backgroundColor: 'rgba(255, 155, 0, 0.05)',
       }
     ]
   },
   options: {
     scales: {
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
+      yAxes: [
+        {
+          id: 'income-expenses',
+          position: 'left',
+          ticks: {
+            beginAtZero: true
+          },
+          scaleLabel: {
+            display: true,
+            labelString: 'Expenses & Income'
+          }
+        },
+        {
+          id: 'assets',
+          position: 'right',
+          gridLines: {
+            display: false
+          },
+          scaleLabel: {
+            display: true,
+            labelString: 'Assets'
+          }
         }
-      }]
+      ]
     }
   }
 });
