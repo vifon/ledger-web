@@ -77,6 +77,12 @@ const updateTimeRange = function (rangeStart, rangeEnd) {
         rangeEnd + 1
       );
       break;
+    case "Assets":
+      dataset.data = assets.slice(
+        rangeStart,
+        rangeEnd + 1
+      );
+      break;
     }
   });
   timeChart.update();
