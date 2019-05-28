@@ -124,19 +124,14 @@ class RuleModelForm(forms.ModelForm):
                 )
             )
 
-        try:
-            undo = Undo.objects.get(pk=self.user)
-        except Undo.DoesNotExist:
-            pass
-        else:
-            if self.data.get('amend') and not self.journal.can_revert():
-                self.add_error(
-                    'amend',
-                    forms.ValidationError(
-                        _("Amend not possible."),
-                        code='integrity',
-                    )
+        if self.data.get('amend') and not self.journal.can_revert():
+            self.add_error(
+                'amend',
+                forms.ValidationError(
+                    _("Amend not possible."),
+                    code='integrity',
                 )
+            )
 
         if errors:
             raise forms.ValidationError(errors)

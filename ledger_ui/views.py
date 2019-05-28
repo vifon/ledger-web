@@ -8,7 +8,6 @@ from django.utils.decorators import method_decorator
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-import itertools
 import pandas as pd
 import re
 
@@ -69,7 +68,7 @@ def register(request):
     try:
         undo = Undo.objects.get(pk=request.user)
     except Undo.DoesNotExist:
-        can_revert = False
+        pass
     else:
         journal.last_data = undo
 
@@ -329,7 +328,7 @@ class RuleViewBase(CreateView):
                     journal.revert()
                 except journal.CannotRevert:
                     return render(
-                        request,
+                        self.request,
                         'ledger_ui/error/cannot_revert.html',
                         status=409,
                     )
