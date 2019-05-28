@@ -7,14 +7,25 @@ import subprocess
 import time
 
 
+EntryAccount = namedtuple(
+    'EntryAccount',
+    [
+        'name',
+        'amount',
+        'currency',
+    ],
+)
+
+
 class Entry:
     """A single Ledger entry.
 
     >>> entry = Entry(
     ...    payee="Burger King",
-    ...    account_from="Liabilities:Credit Card",
-    ...    account_to="Expenses:Food",
-    ...    amount="19.99 PLN",
+    ...    accounts=[
+    ...      ("Expenses:Food", "19.99 PLN"),
+    ...      ("Liabilities:Credit Card",),
+    ...    ],
     ...    date="2019-02-15",
     ... )
 
@@ -26,9 +37,10 @@ class Entry:
 
     >>> entry = Entry(
     ...    payee="McDonald's",
-    ...    account_from="Liabilities:Credit Card",
-    ...    account_to="Expenses:Food",
-    ...    amount="5 USD",
+    ...    accounts=[
+    ...      ("Expenses:Food", "5 USD"),
+    ...      ("Liabilities:Credit Card",),
+    ...    ],
     ...    date="2019-02-16",
     ... )
 
@@ -40,9 +52,10 @@ class Entry:
 
     >>> entry = Entry(
     ...    payee="McDonald's",
-    ...    account_from="Liabilities:Credit Card",
-    ...    account_to="Expenses:Food",
-    ...    amount="5 $",
+    ...    accounts=[
+    ...      ("Expenses:Food", "5 $"),
+    ...      ("Liabilities:Credit Card",),
+    ...    ],
     ...    date="2019-02-16",
     ... )
 
@@ -51,46 +64,111 @@ class Entry:
     2019-02-16 McDonald's
         Expenses:Food                              $5.00
         Liabilities:Credit Card
-    """
 
-    template = """
-{date} {payee}
-    {account_to:<34s}  {pp_amount:>12}{pp_currency}
-    {account_from}
-""".rstrip()
+    >>> entry = Entry(
+    ...    payee="McDonald's",
+    ...    accounts=[
+    ...      ("Expenses:Food", "5", "$"),
+    ...      ("Assets:Loans:John", "5 USD"),
+    ...      ("Liabilities:Credit Card",),
+    ...    ],
+    ...    date="2019-02-16",
+    ... )
+
+    >>> print(entry)
+    <BLANKLINE>
+    2019-02-16 McDonald's
+        Expenses:Food                              $5.00
+        Assets:Loans:John                          $5.00
+        Liabilities:Credit Card
+    """
 
     def __init__(self, **kwargs):
         self.payee = kwargs['payee']
-        self.account_from = kwargs['account_from']
-        self.account_to = kwargs['account_to']
         self.date = kwargs.get('date', time.strftime("%F"))
 
-        self.currency = kwargs.get('currency')
-        if self.currency is None:
-            self.currency = kwargs['amount'].split()[1]
-            self.amount = "{:.2f}".format(float(kwargs['amount'].split()[0]))
-        else:
-            self.amount = "{:.2f}".format(float(kwargs['amount']))
+        self.accounts = []
+        for account in kwargs['accounts']:
+            try:
+                # We got either the 3-argument form...
+                name, amount, currency = account
+            except ValueError:
+                # ...or the 2-argument form with currency merged with amount...
+                try:
+                    name, amount = account
+                except ValueError:
+                    # ...or the single-argument form with no amount or currency.
+                    name, = account
+                    amount = None
+                    currency = None
+                else:
+                    # We definitely got the 2-argument form, let's
+                    # split it into amount and currency or just
+                    # amount.
+                    amount, _, currency = amount.partition(' ')
+            finally:
+                # amount may be None if we got the 1-argument form.
+                if amount is not None:
+                    amount = "{:.2f}".format(float(amount))
+            self.accounts.append(EntryAccount(
+                name=name,
+                amount=amount,
+                currency=currency,
+            ))
 
-        self.normalize_currency()
-
-    def normalize_currency(self):
-        conversions = {
-            "USD": ("$", ""),
-            "$": ("$", ""),
+    currency_conversions = {
+        'USD': {
+            'symbol': '$',
+            'position': 'left',
+        },
+        '$': {
+            'symbol': '$',
+            'position': 'left',
+        },
+        '': {
+            'symbol': '',
+            'position': 'left',
         }
-        if self.currency in conversions:
-            pre_currency, self.pp_currency = conversions[self.currency]
-            self.pp_amount = "{}{}".format(pre_currency, self.amount)
-        else:
-            self.pp_amount = self.amount
-            self.pp_currency = self.currency
+    }
 
-        if self.pp_currency:
-            self.pp_currency = " " + self.pp_currency
+    @classmethod
+    def normalize_currency(cls, currency):
+        rule = cls.currency_conversions.get(currency, '')
+        if rule:
+            return rule
+        else:
+            return {
+                'symbol': currency,
+                'position': 'right',
+            }
 
     def __str__(self):
-        return self.template.format(**vars(self))
+        output = ['']
+        output.append('{date} {payee}'.format(**vars(self)))
+        for account in self.accounts:
+            currency = self.normalize_currency(account.currency)
+            if account.amount is None:
+                template = '    {account}'
+            else:
+                if currency['position'] == 'left':
+                    account = account._replace(
+                        amount="{currency}{amount}".format(
+                            currency=currency['symbol'],
+                            amount=account.amount,
+                        ),
+                    )
+                    template = '    {account:<34s}  {amount:>12}'
+                else:
+                    template = '    {account:<34s}  {amount:>12} {currency}'
+
+            output.append(
+                template.format(
+                    account=account.name,
+                    currency=currency['symbol'],
+                    amount=account.amount,
+                )
+            )
+        return "\n".join(output)
 
 
 class Journal:

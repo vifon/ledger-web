@@ -1,5 +1,6 @@
 from django import forms
 from django.conf import settings
+from django.forms import formset_factory, BaseFormSet
 from django.utils.translation import gettext as _
 
 import datetime
@@ -8,33 +9,67 @@ import re
 from . import fields
 from .models import Undo
 from ledger_submit.models import Rule
-from utils import ledger_api
+
+
+class AccountForm(forms.Form):
+
+    name = forms.CharField(widget=fields.ListTextWidget(
+        name='accounts',
+        data_list=None,
+    ))
+    amount = forms.DecimalField(decimal_places=2, required=False)
+    currency = forms.CharField(widget=fields.ListTextWidget(
+        name='currencies',
+        data_list=None,
+        attrs={
+            'tabindex': -1,
+            'size': 5,
+        },
+    ))
+
+    field_order = ['name', 'amount', 'currency']
+
+    def __init__(self, *args, **kwargs):
+        initial_choices = {
+            'currency': settings.LEDGER_DEFAULT_CURRENCY,
+        }
+        initial_choices.update(kwargs.pop('initial', {}))
+        super().__init__(*args, initial=initial_choices, **kwargs)
+
+
+class BaseAccountFormSet(BaseFormSet):
+
+    def clean(self):
+        if any(self.errors):
+            return
+
+        missing_amount_count = [
+            form.cleaned_data.get('amount')
+            for form in self.forms
+        ].count(None)
+        if missing_amount_count > 1:
+            raise forms.ValidationError(
+                _("Only one account can have the amount omitted.")
+            )
+
+
+AccountFormSet = formset_factory(
+    AccountForm,
+    formset=BaseAccountFormSet,
+    min_num=2,
+    extra=0,
+    validate_min=True,
+)
 
 
 class SubmitForm(forms.Form):
 
-    def __init__(self, *args, currencies, payees, accounts, **kwargs):
-        initial_choices = {
-            'currency': settings.LEDGER_DEFAULT_CURRENCY,
-            'acc_from': settings.LEDGER_DEFAULT_FROM,
-            'acc_to': settings.LEDGER_DEFAULT_TO,
-        }
-        super().__init__(initial=initial_choices, *args, **kwargs)
+    def __init__(self, *args, payees, **kwargs):
+        super().__init__(*args, **kwargs)
         self.fields['payee'].widget = fields.ListTextWidget(
             name='payees',
             data_list=payees,
-        )
-        self.fields['acc_from'].widget = fields.ListTextWidget(
-            name='acc_from',
-            data_list=accounts,
-        )
-        self.fields['acc_to'].widget = fields.ListTextWidget(
-            name='acc_to',
-            data_list=accounts,
-        )
-        self.fields['currency'] = forms.ChoiceField(
-            choices=[(x, x) for x in currencies],
-            required=False,
+            attrs={'autofocus': ''},
         )
         self.order_fields(self.field_order)
 
@@ -48,11 +83,8 @@ class SubmitForm(forms.Form):
     )
     date = forms.DateField(initial=datetime.date.today)
     payee = forms.CharField(max_length=512)
-    amount = forms.DecimalField(decimal_places=2)
-    acc_from = forms.CharField(label='Account from')
-    acc_to = forms.CharField(label='Account to')
 
-    field_order = ['date', 'payee', 'amount', 'currency', 'acc_from', 'acc_to']
+    field_order = ['date', 'payee']
 
 
 class RuleModelForm(forms.ModelForm):

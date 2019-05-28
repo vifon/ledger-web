@@ -1,7 +1,9 @@
 {% include 'django/forms/widgets/text.html' %}
 
-<datalist id="list__{{ data_list_id }}">
-  {% for item in data_list %}
-    <option value="{{ item }}"></option>
-  {% endfor %}
-</datalist>
+{% if data_list %}
+  <datalist id="list__{{ data_list_id }}">
+    {% for item in data_list %}
+      <option value="{{ item }}"></option>
+    {% endfor %}
+  </datalist>
+{% endif %}

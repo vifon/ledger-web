@@ -10,11 +10,64 @@
   {% else %}
     <h2>New transaction</h2>
   {% endif %}
+
+  {% if ledger_errors %}
+    <details class="error-msg">
+      <summary>
+        <p>
+        Working in degraded mode, no completion available.  The Ledger
+        journal seems to contain errors.
+        </p>
+        <b>Click for details</b>
+      </summary>
+      <div class="error-details">
+        {% include "./error/ledger_error.html" with exception=ledger_errors %}
+      </div>
+    </details>
+  {% endif %}
+
   <form action="{{ request.path }}" method="post">
+    <input style="display: none;" name="" type="submit"
+           value="[Enter key handler]" />
+
     {% csrf_token %}
     <table>
       {{ form.as_table }}
     </table>
+
+    {{ formset.management_form }}
+    <fieldset>
+      {{ formset.non_form_errors }}
+      <legend>Accounts</legend>
+      <div id="account-formset">
+        {% for f in formset %}
+          <div class="transaction-account-form">
+            {{ f }}
+            <button tabindex="-1" onclick="deleteAccount(this, event)">Delete</button>
+          </div>
+        {% endfor %}
+      </div>
+      <button onclick="addAccount(this, event)">Add</button>
+    </fieldset>
+
+    <div style="display: none;">
+      <div class="transaction-account-form" id="empty_form">
+        {{ formset.empty_form }}
+        <button tabindex="-1" onclick="deleteAccount(this, event)">Delete</button>
+      </div>
+    </div>
+
+    <datalist id="list__accounts">
+      {% for account in accounts %}
+        <option value="{{ account }}"></option>
+      {% endfor %}
+    </datalist>
+    <datalist id="list__currencies">
+      {% for currency in currencies %}
+        <option value="{{ currency }}"></option>
+      {% endfor %}
+    </datalist>
+
     {% if form.amend.value %}
       <input name="" type="submit" value="Amend" />
     {% else %}
@@ -30,4 +83,34 @@
       <input name="revert" type="hidden" value="true" />
     </form>
   {% endif %}
+
+  <script>
+   document.getElementById("id_form-TOTAL_FORMS").value =
+     document.getElementById("account-formset").childElementCount;
+
+   const deleteAccount = function (button, event) {
+     event.preventDefault();
+
+     let totalEl = document.getElementById("id_form-TOTAL_FORMS");
+     if (totalEl.value < 2) {
+       return false;
+     }
+
+     button.parentElement.remove();
+     --totalEl.value;
+   };
+   const addAccount = function (button, event) {
+     event.preventDefault();
+
+     let newForm = document.getElementById("empty_form").cloneNode(true);
+     newForm.removeAttribute("id");
+
+     newForm.innerHTML = newForm.innerHTML.replace(
+       /__prefix__/g,
+       document.getElementById("id_form-TOTAL_FORMS").value++
+     );
+
+     document.getElementById("account-formset").appendChild(newForm);
+   };
+  </script>
 {% endblock %}

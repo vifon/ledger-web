@@ -11,7 +11,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 import pandas as pd
 import re
 
-from .forms import SubmitForm, RuleModelForm
+from .forms import SubmitForm, RuleModelForm, AccountFormSet
 from .models import Undo
 from ledger_submit.models import Rule
 from ledger_submit.views import add_ledger_entry
@@ -153,27 +153,34 @@ def charts(request):
 def submit(request):
     ledger_path = request.user.ledger_path.path
     journal = ledger_api.Journal(ledger_path)
+    ledger_errors = False
 
-    accounts = journal.accounts()
-    currencies = journal.currencies()
-    payees = journal.payees()
+    try:
+        accounts = journal.accounts()
+        currencies = journal.currencies()
+        payees = journal.payees()
+    except journal.LedgerCliError as e:
+        accounts = currencies = payees = []
+        ledger_errors = e.__cause__
 
     if request.method == 'POST':
         form = SubmitForm(
             request.POST,
-            accounts=accounts,
-            currencies=currencies,
             payees=payees,
         )
-        if form.is_valid():
+        formset = AccountFormSet(
+            request.POST,
+        )
+        if form.is_valid() and formset.is_valid():
             validated = form.cleaned_data
             entry = ledger_api.Entry(
                 date=validated['date'],
                 payee=validated['payee'],
-                account_from=validated['acc_from'],
-                account_to=validated['acc_to'],
-                amount=validated['amount'],
-                currency=validated['currency'],
+                accounts=[
+                    (account['name'], account['amount'], account['currency'])
+                    for account in formset.cleaned_data
+                    if account.get('name')
+                ],
             )
 
             if validated['amend']:
@@ -201,12 +208,6 @@ def submit(request):
             return redirect('ledger_ui:register')
 
     else:
-        common_args = {
-            'accounts': accounts,
-            'currencies': currencies,
-            'payees': payees,
-        }
-
         amend = request.GET.get('amend', 'false').lower() not in ['false', '0']
         if amend:
             last_entry = get_object_or_404(Undo, pk=request.user).last_entry
@@ -214,21 +215,35 @@ def submit(request):
                 {
                     'date': last_entry.date,
                     'payee': last_entry.payee,
-                    'amount': last_entry.amount,
-                    'currency': last_entry.currency,
-                    'acc_from': last_entry.account_from,
-                    'acc_to': last_entry.account_to,
                     'amend': True,
                 },
-                **common_args,
+                payees=payees,
+            )
+            formset = AccountFormSet(
+                initial=[
+                    account._asdict()
+                    for account in last_entry.accounts
+                ],
             )
         else:
-            form = SubmitForm(**common_args)
+            form = SubmitForm(payees=payees)
+            formset = AccountFormSet(
+                initial=[
+                    {'name': settings.LEDGER_DEFAULT_TO},
+                    {'name': settings.LEDGER_DEFAULT_FROM},
+                ]
+            )
 
     return render(
         request,
         'ledger_ui/submit.html',
-        {'form': form},
+        {
+            'form': form,
+            'formset': formset,
+            'accounts': accounts,
+            'currencies': currencies,
+            'ledger_errors': ledger_errors,
+        },
     )
 
 
@@ -334,11 +349,11 @@ class RuleViewBase(CreateView):
                     )
                 add_ledger_entry(
                     user=form.instance.user,
-                    account_from=last_entry.account_from,
-                    account_to=last_entry.account_to,
+                    account_from=last_entry.accounts[-1].name,
+                    account_to=last_entry.accounts[0].name,
                     payee=last_entry.payee,
-                    amount=last_entry.amount,
-                    currency=last_entry.currency,
+                    amount=last_entry.accounts[0].amount,
+                    currency=last_entry.accounts[0].currency,
                     date=last_entry.date,
                 )
 

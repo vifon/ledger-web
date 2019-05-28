@@ -76,10 +76,14 @@ def add_ledger_entry(
 
     entry = ledger_api.Entry(
         payee=payee,
-        account_from=account_from,
-        account_to=account_to,
-        amount=amount,
-        currency=currency,
+        accounts=[
+            (
+                (account_to, amount, currency)
+                if currency is not None
+                else (account_to, amount)
+            ),
+            (account_from,)
+        ],
         date=date,
     )
     old, new = ledger_api.Journal(ledger_path).append(entry)
@@ -103,10 +107,10 @@ def submit_as_url(request, account_from, account_to, payee, amount):
     return JsonResponse(
         {
             'payee': entry.payee,
-            'amount': entry.amount,
-            'currency': entry.currency,
-            'account_from': entry.account_from,
-            'account_to': entry.account_to,
+            'amount': entry.accounts[0].amount,
+            'currency': entry.accounts[0].currency,
+            'account_from': entry.accounts[1].name,
+            'account_to': entry.accounts[0].name,
         },
         status=201,
     )
@@ -131,10 +135,10 @@ def submit_as_json(request):
     return JsonResponse(
         {
             'payee': entry.payee,
-            'amount': entry.amount,
-            'currency': entry.currency,
-            'account_from': entry.account_from,
-            'account_to': entry.account_to,
+            'amount': entry.accounts[0].amount,
+            'currency': entry.accounts[0].currency,
+            'account_from': entry.accounts[1].name,
+            'account_to': entry.accounts[0].name,
         },
         status=201,
     )

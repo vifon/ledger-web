@@ -13,6 +13,10 @@ body {
 input {
   border-radius: 3px;
 }
+fieldset {
+  border-radius: 10px;
+  margin: 1em 0;
+}
 
 summary {
   display: block;
@@ -26,6 +30,11 @@ summary::-webkit-details-marker {
 details[open] > .subcard {
   animation-name: menuFadeIn;
   animation-duration: 0.3s;
+}
+
+.transaction-account-form {
+  display: flex;
+  flex-direction: row;
 }
 
 .register-header {
@@ -129,6 +138,10 @@ details[open] > .subcard {
   background-color: #2a2;
 }
 
+.error-msg {
+  color: red;
+  margin: 1em;
+}
 
 footer {
   color: rgba(0, 0, 0, 0.4);
@@ -197,7 +210,8 @@ pre.card {
   font-weight: bold;
 }
 
-.rule-preview-container {
+.rule-preview-container,
+.error-details {
   margin: 1em;
   padding: 1em;
   background-color: #ddd;
@@ -404,5 +418,8 @@ table.ledger-table {
   }
   .rules-mobile {
     display: block;
+  }
+  .transaction-account-form {
+    flex-direction: column;
   }
 }
