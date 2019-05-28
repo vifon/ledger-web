@@ -14,8 +14,7 @@
       <tr>
         <th>Payee</th>
         <th>New payee</th>
-        <th>Account from</th>
-        <th>Account to</th>
+        <th>Account</th>
       </tr>
       {% for rule in object_list %}
         <tr class="rule-row">
@@ -23,8 +22,7 @@
             <a href="{% url 'ledger_ui:rule' rule.pk %}">{{ rule.payee }}</a>
           </td>
           <td> {{ rule.new_payee }} </td>
-          <td> {{ rule.acc_from }} </td>
-          <td> {{ rule.acc_to }} </td>
+          <td> {{ rule.account }} </td>
           <td>
             <form action="{% url 'ledger_ui:rule_delete' rule.pk %}" method="post">
               {% csrf_token %}
@@ -51,13 +49,9 @@
               <dt>New payee</dt>
               <dd>{{ rule.new_payee }}</dd>
             {% endif %}
-            {% if rule.acc_from %}
-              <dt>Account from</dt>
-              <dd>{{ rule.acc_from }}</dd>
-            {% endif %}
-            {% if rule.acc_to %}
-              <dt>Account to:</dt>
-              <dd>{{ rule.acc_to }}</dd>
+            {% if rule.account %}
+              <dt>Account</dt>
+              <dd>{{ rule.account }}</dd>
             {% endif %}
           </dl>
         </a>

@@ -65,8 +65,7 @@ def add_ledger_entry(
             else:
                 if match:
                     payee = rule.new_payee or payee
-                    account_from = rule.acc_from or account_from
-                    account_to = rule.acc_to or account_to
+                    account_to = rule.account or account_to
                     break
 
     amount = amount.replace(",", ".").strip()

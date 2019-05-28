@@ -112,22 +112,19 @@ class SubmitTests(TestCase):
             user=self.user,
             payee='AUCHAN WARSZ.*',
             new_payee='Auchan',
-            acc_from='',
-            acc_to='Expenses:Food',
+            account='Expenses:Food',
         )
         Rule.objects.create(
             user=self.another_user,
             payee='AUCHAN WARSZ.*',
             new_payee='Carrefour LOL',
-            acc_from='',
-            acc_to='Expenses:Not Food',
+            account='Expenses:Not Food',
         )
         Rule.objects.create(
             user=self.user,
             payee='Pizza Dominium',
             new_payee='',
-            acc_from='',
-            acc_to='Expenses:Restaurants',
+            account='Expenses:Restaurants',
         )
 
         if not skip_url:
@@ -279,15 +276,13 @@ class SubmitTests(TestCase):
             user=self.user,
             payee=rules[0]['regex'],
             new_payee=rules[0]['replacement'],
-            acc_from='',
-            acc_to='Expenses:Food',
+            account='Expenses:Food',
         )
         Rule.objects.create(
             user=self.user,
             payee=rules[1]['regex'],
             new_payee=rules[1]['replacement'],
-            acc_from='',
-            acc_to='Expenses:Food',
+            account='Expenses:Food',
         )
 
         response = self.client.post(

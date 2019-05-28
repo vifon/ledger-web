@@ -105,12 +105,8 @@ class RuleModelForm(forms.ModelForm):
             name='new_payee',
             data_list=payees,
         )
-        self.fields['acc_from'].widget = fields.ListTextWidget(
-            name='acc_from',
-            data_list=accounts,
-        )
-        self.fields['acc_to'].widget = fields.ListTextWidget(
-            name='acc_to',
+        self.fields['account'].widget = fields.ListTextWidget(
+            name='account',
             data_list=accounts,
         )
 
