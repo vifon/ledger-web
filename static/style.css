@@ -226,7 +226,10 @@ pre.card {
   color: lightgrey;
   margin-top: 1em;
 }
-
+.time-controls {
+  margin-left: 5px;
+  margin-right: 5px;
+}
 
 div.ui-slider-range.ui-widget-header {
   background-color: skyblue;

@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="{% static "jquery.ui.touch-punch.min.js" %}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
   <script src="{% static "Chart.min.js" %}"></script>
@@ -27,34 +28,36 @@
     <canvas id="timechart"></canvas>
   </div>
 
-  <div id="slider-range"></div>
-  <div>
-    <div style="float: left">
-      <select id="range-select1">
-        {% for date in dates.data %}
-          <option
-            {% if forloop.first %} selected="selected" {% endif %}
-            value="{{ forloop.counter0 }}"
-          >
-            {{ date }}
-          </option>
-        {% endfor %}
-      </select>
+  <div class="time-controls">
+    <div id="slider-range"></div>
+    <div>
+      <div style="float: left">
+        <select id="range-select1">
+          {% for date in dates.data %}
+            <option
+              {% if forloop.first %} selected="selected" {% endif %}
+              value="{{ forloop.counter0 }}"
+            >
+              {{ date }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div style="float: right">
+        <select id="range-select2">
+          {% for date in dates.data %}
+            <option
+              {% if forloop.last %} selected="selected" {% endif %}
+              value="{{ forloop.counter0 }}"
+            >
+              {{ date }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
     </div>
-    <div style="float: right">
-      <select id="range-select2">
-        {% for date in dates.data %}
-          <option
-            {% if forloop.last %} selected="selected" {% endif %}
-            value="{{ forloop.counter0 }}"
-          >
-            {{ date }}
-          </option>
-        {% endfor %}
-      </select>
-    </div>
+    <div style="clear:both"></div>
   </div>
-  <div style="clear:both"></div>
 
   <hr class="chart-separator" />
   <div>
