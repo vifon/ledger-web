@@ -14,7 +14,6 @@ import re
 from .forms import SubmitForm, RuleModelForm, AccountFormSet
 from .models import Undo
 from ledger_submit.models import Rule
-from ledger_submit.views import add_ledger_entry
 from utils import ledger_api
 
 
