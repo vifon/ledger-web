@@ -16,13 +16,18 @@ class AccountForm(forms.Form):
         name='accounts',
         data_list=None,
     ))
-    amount = forms.DecimalField(decimal_places=2, required=False)
+    amount = forms.DecimalField(
+        decimal_places=2,
+        required=False,
+        widget=forms.NumberInput(attrs={'class': 'amount-input'}),
+    )
     currency = forms.CharField(widget=fields.ListTextWidget(
         name='currencies',
         data_list=None,
         attrs={
             'tabindex': -1,
             'size': 5,
+            'class': 'currency-input',
         },
     ))
 
