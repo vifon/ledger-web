@@ -1,5 +1,7 @@
 {% extends "./base.html" %}
 
+{% load static %}
+
 {% block title %}
   {{ block.super }} - New transaction
 {% endblock %}
@@ -36,25 +38,24 @@
     </table>
 
     {{ formset.management_form }}
-    <fieldset>
+    <fieldset class="transaction-forms">
       {{ formset.non_form_errors }}
       <legend>Accounts</legend>
       <div id="account-formset">
         {% for f in formset %}
-          <div class="transaction-account-form">
-            {{ f }}
-            <button tabindex="-1" onclick="deleteAccount(this, event)">Delete</button>
-          </div>
+          {% include "./components/transaction.html" with form=f %}
         {% endfor %}
       </div>
-      <button onclick="addAccount(this, event)">Add</button>
+      <hr />
+      <button onclick="addAccount(this, event)"
+              class="transaction-account-form-add"
+      >
+        <img alt="" src="{% static 'images/add.png' %}" />
+      </button>
     </fieldset>
 
     <div style="display: none;">
-      <div class="transaction-account-form" id="empty_form">
-        {{ formset.empty_form }}
-        <button tabindex="-1" onclick="deleteAccount(this, event)">Delete</button>
-      </div>
+      {% include "./components/transaction.html" with id="empty_form" form=formset.empty_form %}
     </div>
 
     <datalist id="list__accounts">

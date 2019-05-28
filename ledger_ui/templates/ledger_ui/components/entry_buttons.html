@@ -13,7 +13,7 @@
       {% csrf_token %}
       <input class="entry-button revert"
              type="submit" value="" title="Revert"
-             style="background-image: url('{% static 'images/revert.png' %}');"
+             style="background-image: url('{% static 'images/delete.png' %}');"
              onclick="return confirm('Really delete this entry?');"
       />
       <input name="revert" type="hidden" value="true" />

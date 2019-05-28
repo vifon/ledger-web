@@ -1,0 +1,12 @@
+{% load static %}
+
+<div class="transaction-account-form"
+     {% if id %} id="{{ id }}" {% endif %}
+>
+  {{ form }}
+  <button tabindex="-1"
+          onclick="deleteAccount(this, event)"
+          class="transaction-account-form-delete"
+          style="background-image: url('{% static 'images/delete.png' %}');"
+  ></button>
+</div>

@@ -18,6 +18,10 @@ fieldset {
   margin: 1em 0;
 }
 
+hr {
+  color: lightgrey;
+}
+
 summary {
   display: block;
   cursor: pointer;
@@ -35,6 +39,29 @@ details[open] > .subcard {
 .transaction-account-form {
   display: flex;
   flex-direction: row;
+}
+.transaction-forms button {
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+  border: none;
+  border-radius: 3px;
+  padding: 2px;
+  margin: 1px 0;
+  height: 24px;
+  width: 24px;
+}
+button.transaction-account-form-add {
+  background-color:  #1e90ff;
+  display: flex;
+  height: 28px;
+  width: 28px;
+}
+.transaction-account-form-add img {
+  max-width: 100%;
+}
+button.transaction-account-form-delete {
+  background-color: #d00;
 }
 
 .register-header {
@@ -147,10 +174,6 @@ footer {
   color: rgba(0, 0, 0, 0.4);
   text-align: center;
 }
-hr.footer {
-  color: lightgrey;
-  margin-top: 1em;
-}
 
 footer a {
   color: inherit;
@@ -221,10 +244,6 @@ pre.card {
 
 .chart-container {
   position: relative;
-}
-.chart-separator {
-  color: lightgrey;
-  margin-top: 1em;
 }
 .time-controls {
   margin-left: 5px;
@@ -424,5 +443,9 @@ table.ledger-table {
   }
   .transaction-account-form {
     flex-direction: column;
+    background-color: rgba(0,0,0,0.08);
+    border: 1px black solid;
+    padding: 5px;
+    margin: 20px 0;
   }
 }
