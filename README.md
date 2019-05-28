@@ -30,10 +30,6 @@ features visibly missing from *Ledger Web*.
   re-apply the rules to the very last added entry but that's it.
 - The register view won't show any included files' contents, it only
   reads the main file.  The other views are free from this limitation.
-- No support for complex entries, for example with more than two
-  accounts.  Personally if I need to enter a complex entry with no
-  access to *Ledger CLI*, I account it to `Expenses:Uncategorized` and
-  then refine it at my PC.
 
 ## Screenshots
 
