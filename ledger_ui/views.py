@@ -318,7 +318,6 @@ class RuleViewBase(CreateView):
         kwargs = super().get_form_kwargs()
         ledger_path = self.request.user.ledger_path.path
         journal = ledger_api.Journal(ledger_path)
-        kwargs['journal'] = journal
         kwargs['accounts'] = journal.accounts()
         kwargs['payees'] = journal.payees()
         kwargs['user'] = self.request.user
@@ -326,38 +325,7 @@ class RuleViewBase(CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-
-        ret = super().form_valid(form)
-
-        if form.data.get('amend'):
-            try:
-                undo = Undo.objects.get(pk=form.instance.user)
-            except Undo.DoesNotExist:
-                pass
-            else:
-                ledger_path = form.instance.user.ledger_path.path
-                journal = ledger_api.Journal(ledger_path, undo)
-
-                last_entry = undo.last_entry
-                try:
-                    journal.revert()
-                except journal.CannotRevert:
-                    return render(
-                        self.request,
-                        'ledger_ui/error/cannot_revert.html',
-                        status=409,
-                    )
-                add_ledger_entry(
-                    user=form.instance.user,
-                    account_from=last_entry.accounts[-1].name,
-                    account_to=last_entry.accounts[0].name,
-                    payee=last_entry.payee,
-                    amount=last_entry.accounts[0].amount,
-                    currency=last_entry.accounts[0].currency,
-                    date=last_entry.date,
-                )
-
-        return ret
+        return super().form_valid(form)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -373,15 +341,6 @@ class RuleCreateView(RuleViewBase, CreateView):
         try:
             payee = self.request.GET['payee']
             kwargs['initial']['payee'] = re.escape(payee)
-
-            user = self.request.user
-            undo = Undo.objects.get(pk=user)
-            ledger_path = user.ledger_path.path
-            journal = ledger_api.Journal(ledger_path, undo)
-
-            if journal.can_revert() \
-               and undo.last_entry.payee == payee:
-                kwargs['initial']['amend'] = True
         except (KeyError, Undo.DoesNotExist):
             pass
         return kwargs
