@@ -39,7 +39,10 @@ class SubmitForm(forms.Form):
         self.order_fields(self.field_order)
 
     amend = forms.BooleanField(
-        initial=False,
+        # Even though it's a BooleanField, the HiddenInput widget is
+        # textual. False would be cast to "False" which is true, so
+        # let's use a false string instead.
+        initial='',
         required=False,
         widget=forms.HiddenInput(),
     )
