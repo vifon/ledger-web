@@ -254,7 +254,7 @@ class Journal:
         except subprocess.CalledProcessError as e:
             raise Journal.LedgerCliError() from e
 
-        return output.strip().split("\n")
+        return output.strip().splitlines()
 
     def __iter__(self):
         def prepare_entry(entry_lines):
