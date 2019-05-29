@@ -175,6 +175,7 @@ def submit(request):
             entry = ledger_api.Entry(
                 date=validated['date'],
                 payee=validated['payee'],
+                comment=validated['comment'],
                 accounts=[
                     (account['name'], account['amount'], account['currency'])
                     for account in formset.cleaned_data
@@ -214,6 +215,7 @@ def submit(request):
                 {
                     'date': last_entry.date,
                     'payee': last_entry.payee,
+                    'comment': last_entry.comment,
                     'amend': True,
                 },
                 payees=payees,

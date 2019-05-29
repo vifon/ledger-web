@@ -451,6 +451,7 @@ class SubmitTestsV2(TestCase):
                     ['Expenses:Restaurants', '20.00', 'PLN'],
                     ['Liabilities:Credit Card', None, None],
                 ],
+                'comment': ':food:',
             }
         ),
         (
@@ -489,6 +490,7 @@ class SubmitTestsV2(TestCase):
             payee='Pizza Dominium',
             new_payee='',
             account='Expenses:Restaurants',
+            comment=':food:',
         )
 
         expected_output.setdefault('date', datetime.now().strftime("%F"))

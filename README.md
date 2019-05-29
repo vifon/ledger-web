@@ -184,6 +184,7 @@ JSON arguments:
 - `payee`
 - (optional) `date`: string (`YYYY-MM-DD`)
 - (optional) `skip_rules`: boolean
+- (optional) `comment`
 - `accounts`: list of any combination of such lists:
   - [`account`, `amount`, `currency`]
   - [`account`, `amount`]

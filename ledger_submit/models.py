@@ -7,6 +7,7 @@ class Rule(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     payee = models.CharField(max_length=512)
     new_payee = models.CharField(max_length=512, blank=True)
+    comment = models.TextField(blank=True)
     account = models.CharField(
         'Account',
         max_length=512,

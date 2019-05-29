@@ -141,6 +141,7 @@ def apply_rules(ledger_data, user):
         else:
             if match:
                 ledger_data['payee'] = rule.new_payee or payee
+                ledger_data['comment'] = rule.comment
                 for account in ledger_data['accounts']:
                     acc_name = account[0]
                     if acc_name == settings.LEDGER_DEFAULT_TO:
@@ -167,6 +168,7 @@ def submit_as_json(request):
         'payee': params['payee'],
         'date': params.get('date', datetime.now().strftime("%F")),
         'accounts': params['accounts'],
+        'comment': params.get('comment'),
     }
 
     if not params.get('skip_rules', False):
@@ -185,14 +187,17 @@ def submit_as_json(request):
         },
     )
 
-    return JsonResponse(
-        {
-            'payee': entry.payee,
-            'date': entry.date,
-            'accounts': [
-                list(account._asdict().values())
-                for account in entry.accounts
-            ],
-        },
-        status=201,
-    )
+    response_data = {
+        'payee': entry.payee,
+        'date': entry.date,
+        'accounts': [
+            list(account._asdict().values())
+            for account in entry.accounts
+        ],
+    }
+    optionals = {}
+    if entry.comment:
+        optionals['comment'] = entry.comment
+    response_data.update(optionals)
+
+    return JsonResponse(response_data, status=201)

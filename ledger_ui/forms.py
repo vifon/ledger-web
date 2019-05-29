@@ -70,6 +70,15 @@ class SubmitForm(forms.Form):
 
     date = forms.DateField(initial=datetime.date.today)
     payee = forms.CharField(max_length=512)
+    comment = forms.CharField(
+        required=False,
+        widget=forms.Textarea(
+            attrs={
+                'rows': 1,
+                'cols': 20,
+            },
+        ),
+    )
 
     amend = forms.BooleanField(
         # Even though it's a BooleanField, the HiddenInput widget is
@@ -109,6 +118,12 @@ class RuleModelForm(forms.ModelForm):
         self.fields['new_payee'].widget = fields.ListTextWidget(
             name='new_payee',
             data_list=payees,
+        )
+        self.fields['comment'].widget = forms.Textarea(
+            attrs={
+                'rows': 1,
+                'cols': 20,
+            },
         )
         self.fields['account'].widget = fields.ListTextWidget(
             name='account',

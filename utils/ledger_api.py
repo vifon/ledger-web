@@ -72,12 +72,14 @@ class Entry:
     ...      ("Assets:Loans:John", "5 USD"),
     ...      ("Liabilities:Credit Card",),
     ...    ],
+    ...    comment=":loan:",
     ...    date="2019-02-16",
     ... )
 
     >>> print(entry)
     <BLANKLINE>
     2019-02-16 McDonald's
+        ; :loan:
         Expenses:Food                              $5.00
         Assets:Loans:John                          $5.00
         Liabilities:Credit Card
@@ -86,6 +88,7 @@ class Entry:
     def __init__(self, **kwargs):
         self.payee = kwargs['payee']
         self.date = kwargs.get('date', time.strftime("%F"))
+        self.comment = kwargs.get('comment')
 
         self.accounts = []
         for account in kwargs['accounts']:
@@ -145,6 +148,9 @@ class Entry:
     def __str__(self):
         output = ['']
         output.append('{date} {payee}'.format(**vars(self)))
+        if self.comment:
+            for line in self.comment.splitlines():
+                output.append('    ; {comment}'.format(comment=line))
         for account in self.accounts:
             currency = self.normalize_currency(account.currency)
             if account.amount is None:
