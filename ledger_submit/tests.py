@@ -419,6 +419,25 @@ class SubmitTestsV2(TestCase):
             }
         ),
         (
+            # The comments are left intact if rule doesn't override them.
+            {
+                'payee': 'AUCHAN WARSZAWA',
+                'accounts': [
+                    ('Expenses:Restaurants', '10.00', 'PLN'),
+                    ('Liabilities:Credit Card',),
+                ],
+                'comment': ':groceries:',
+            },
+            {
+                'payee': 'Auchan',
+                'accounts': [
+                    ['Expenses:Restaurants', '10.00', 'PLN'],
+                    ['Liabilities:Credit Card', None, None],
+                ],
+                'comment': ':groceries:',
+            }
+        ),
+        (
             # Forcibly skip processing the rules.
             {
                 'payee': 'AUCHAN WARSZAWA',

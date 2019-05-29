@@ -141,7 +141,7 @@ def apply_rules(ledger_data, user):
         else:
             if match:
                 ledger_data['payee'] = rule.new_payee or payee
-                ledger_data['comment'] = rule.comment
+                ledger_data['comment'] = rule.comment or ledger_data['comment']
                 for account in ledger_data['accounts']:
                     acc_name = account[0]
                     if acc_name == settings.LEDGER_DEFAULT_TO:
