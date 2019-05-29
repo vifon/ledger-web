@@ -543,13 +543,11 @@ class SubmitTestsV2(TestCase):
         Rule.objects.create(
             user=self.user,
             payee='Pizza Dominium',
-            new_payee='',
             account='Expenses:Restaurants',
         )
         Rule.objects.create(
             user=self.user,
             payee='Pizza Hut',
-            new_payee='',
             account='Expenses:Restaurants',
             comment=':food:',
         )
