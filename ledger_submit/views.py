@@ -100,24 +100,6 @@ def add_ledger_entry(
 @require_POST
 @csrf_exempt
 @require_token
-def submit_as_url(request, account_from, account_to, payee, amount):
-    entry = add_ledger_entry(request.user, account_from, account_to, payee, amount)
-
-    return JsonResponse(
-        {
-            'payee': entry.payee,
-            'amount': entry.accounts[0].amount,
-            'currency': entry.accounts[0].currency,
-            'account_from': entry.accounts[1].name,
-            'account_to': entry.accounts[0].name,
-        },
-        status=201,
-    )
-
-
-@require_POST
-@csrf_exempt
-@require_token
 def submit_as_json(request):
     params = json.loads(request.body)
     ledger_data = {

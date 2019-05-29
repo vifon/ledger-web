@@ -71,8 +71,6 @@ class SubmitTests(TestCase):
                 'amount': '10.00',
                 'currency': 'PLN',
             },
-            # The as_url route doesn't support `skip_rules'.
-            True,
         ),
         (
             # Modify only accounts, don't touch payee.
@@ -107,7 +105,7 @@ class SubmitTests(TestCase):
             }
         ),
     ])
-    def test_replacements(self, input_data, expected_output, skip_url=False):
+    def test_replacements(self, input_data, expected_output):
         Rule.objects.create(
             user=self.user,
             payee='AUCHAN WARSZ.*',
@@ -126,26 +124,6 @@ class SubmitTests(TestCase):
             new_payee='',
             account='Expenses:Restaurants',
         )
-
-        if not skip_url:
-            response = self.client.post(
-                reverse(
-                    'ledger_submit:as_url',
-                    args=[input_data[key] for key in [
-                        'account_from',
-                        'account_to',
-                        'payee',
-                        'amount',
-                    ]]
-                ),
-                content_type='application/json',
-                data={'token': self.good_token},
-            )
-            self.assertEqual(response.status_code, 201)
-            self.assertJSONEqual(
-                response.content,
-                expected_output,
-            )
 
         response = self.client.post(
             reverse('ledger_submit:as_json'),
