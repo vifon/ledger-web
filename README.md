@@ -149,34 +149,60 @@ the owner UID to 1000 should do as a quick fix.
 *Ledger Web* exposes an HTTP API that is used to add new Ledger
 entries.  It is available under the following HTTP routes:
 
-- `POST /ledger/submit/account_from/<account_from>/account_to/<account_to>/payee/<payee>/amount/<amount>`
+### `POST /ledger/submit/v1/`
 
-  Additionally you need to pass the access token in the request BODY
-  as JSON (under the `token` key).
+JSON arguments:
 
-  For example:
+- `account_from`
+- `account_to`
+- `payee`
+- `amount`
+- `token`
+- (optional) `skip_rules`: boolean
 
-        curl -X POST 'http://localhost:8000/ledger/submit/account_from/Assets:Bank/account_to/Expenses:Food/payee/Pizza/amount/10%20USD' -H "Content-Type: application/json" -d '{"token": "my_secure_token"}'
+All arguments are strings unless specified otherwise.
 
-  Note: This route is likely to be deprecated.
+This is the legacy API from older *Ledger Web* versions.
 
-- `POST /ledger/submit/`
+The `skip_rules` argument is optional, it causes the transaction to
+be submitted verbatim with no rules applied to it.
 
-  This route accepts the same arguments as the previous one
-  (`account_from`, `account_to`, `payee`, `amount`) but as JSON.
-  Additionally there is an optional boolean argument `skip_rules` that
-  causes the transaction to be submitted verbatim with no rules
-  applied to it.
+For example:
 
-  For example:
+    curl -X POST 'http://localhost:8000/ledger/submit/v1/' -H "Content-Type: application/json" -d '{
+        "account_from": "Assets:Bank",
+        "account_to": "Expenses:Food",
+        "payee": "Pizza",
+        "amount": "10 USD",
+        "token": "my_secure_token"
+    }'
 
-        curl -X POST 'http://localhost:8000/ledger/submit/' -H "Content-Type: application/json" -d '{
-            "account_from": "Assets:Bank",
-            "account_to": "Expenses:Food",
-            "payee": "Pizza",
-            "amount": "10 USD",
-            "token": "my_secure_token"
-        }'
+### `POST /ledger/submit/v2/`
+
+JSON arguments:
+
+- `payee`
+- (optional) `date`: string (`YYYY-MM-DD`)
+- (optional) `skip_rules`: boolean
+- `accounts`: list of any combination of such lists:
+  - [`account`, `amount`, `currency`]
+  - [`account`, `amount`]
+  - [`account`, `amount currency`]
+  - [`account`]
+
+All arguments are strings unless specified otherwise.
+
+For example:
+
+    curl -X POST 'http://localhost:8000/ledger/submit/v2/' -H "Content-Type: application/json" -d '{
+        "payee": "Pizza with George",
+        "accounts": [
+            ["Assets:Food", "20 USD"],
+            ["Assets:Loans:George", "10", "USD"],
+            ["Assets:Bank"]
+        ],
+        "token": "my_secure_token"
+    }'
 
 ### Replacement rules
 
