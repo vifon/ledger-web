@@ -470,6 +470,62 @@ class SubmitTestsV2(TestCase):
                 ],
             }
         ),
+        (
+            # The comments are left intact if rule doesn't override them.
+            {
+                'payee': 'AUCHAN WARSZAWA',
+                'accounts': [
+                    ('Expenses:Food', '10.00', 'PLN'),
+                    ('Liabilities:Credit Card',),
+                ],
+                'comment': ':groceries:',
+            },
+            {
+                'payee': 'Auchan',
+                'accounts': [
+                    ['Expenses:Food', '10.00', 'PLN'],
+                    ['Liabilities:Credit Card', None, None],
+                ],
+                'comment': ':groceries:',
+            }
+        ),
+        (
+            # The comments are properly being set if absent...
+            {
+                'payee': 'Pizza Hut',
+                'accounts': [
+                    ('Expenses:Uncategorized', '20.00', 'PLN'),
+                    ('Liabilities:Credit Card',),
+                ],
+            },
+            {
+                'payee': 'Pizza Hut',
+                'accounts': [
+                    ['Expenses:Restaurants', '20.00', 'PLN'],
+                    ['Liabilities:Credit Card', None, None],
+                ],
+                'comment': ':food:',
+            }
+        ),
+        (
+            # ...and overridden if present.
+            {
+                'payee': 'Pizza Hut',
+                'accounts': [
+                    ('Expenses:Uncategorized', '20.00', 'PLN'),
+                    ('Liabilities:Credit Card',),
+                ],
+                'comment': ':trash-food:',
+            },
+            {
+                'payee': 'Pizza Hut',
+                'accounts': [
+                    ['Expenses:Restaurants', '20.00', 'PLN'],
+                    ['Liabilities:Credit Card', None, None],
+                ],
+                'comment': ':food:',
+            }
+        ),
     ])
     def test_replacements(self, input_data, expected_output):
         Rule.objects.create(
@@ -489,6 +545,13 @@ class SubmitTestsV2(TestCase):
             payee='Pizza Dominium',
             new_payee='',
             account='Expenses:Restaurants',
+        )
+        Rule.objects.create(
+            user=self.user,
+            payee='Pizza Hut',
+            new_payee='',
+            account='Expenses:Restaurants',
+            comment=':food:',
         )
 
         expected_output.setdefault('date', datetime.now().strftime("%F"))
