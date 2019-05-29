@@ -68,14 +68,8 @@ AccountFormSet = formset_factory(
 
 class SubmitForm(forms.Form):
 
-    def __init__(self, *args, payees, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['payee'].widget = fields.ListTextWidget(
-            name='payees',
-            data_list=payees,
-            attrs={'autofocus': ''},
-        )
-        self.order_fields(self.field_order)
+    date = forms.DateField(initial=datetime.date.today)
+    payee = forms.CharField(max_length=512)
 
     amend = forms.BooleanField(
         # Even though it's a BooleanField, the HiddenInput widget is
@@ -85,10 +79,16 @@ class SubmitForm(forms.Form):
         required=False,
         widget=forms.HiddenInput(),
     )
-    date = forms.DateField(initial=datetime.date.today)
-    payee = forms.CharField(max_length=512)
 
     field_order = ['date', 'payee']
+
+    def __init__(self, *args, payees, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['payee'].widget = fields.ListTextWidget(
+            name='payees',
+            data_list=payees,
+            attrs={'autofocus': ''},
+        )
 
 
 class RuleModelForm(forms.ModelForm):
