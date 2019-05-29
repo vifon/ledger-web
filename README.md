@@ -213,6 +213,10 @@ request.
 It can be used to process and/or clean up automated requests on card
 payment (left as an exercise for the user).
 
+In the v2 API the account name gets replaced only for accounts equal
+to `LEDGER_DEFAULT_TO` in `settings.py`, the other accounts are left
+intact.
+
 ## Copyright
 
 Copyright (C) 2019  Wojciech Siewierski
