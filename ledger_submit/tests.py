@@ -402,6 +402,23 @@ class SubmitTestsV2(TestCase):
             }
         ),
         (
+            # The non-default accounts are not replaced.
+            {
+                'payee': 'AUCHAN WARSZAWA',
+                'accounts': [
+                    ('Expenses:Restaurants', '10.00', 'PLN'),
+                    ('Liabilities:Credit Card',),
+                ],
+            },
+            {
+                'payee': 'Auchan',
+                'accounts': [
+                    ['Expenses:Restaurants', '10.00', 'PLN'],
+                    ['Liabilities:Credit Card', None, None],
+                ],
+            }
+        ),
+        (
             # Forcibly skip processing the rules.
             {
                 'payee': 'AUCHAN WARSZAWA',
