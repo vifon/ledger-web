@@ -1,7 +1,7 @@
 {% load static %}
 
 <script>
- function onMenu (menu) {
+ function onMenu () {
    const hamburger = document.getElementById('hamburger');
    hamburger.classList.toggle('is-active');
  }
@@ -9,7 +9,7 @@
 
 <details class="collapsible-menu-container"
          {% if menu_open %}open{% endif %}
-         ontoggle="onMenu(this)"
+         ontoggle="onMenu"
 >
   <summary class="collapsible-menu-button noselect">
     <div id="hamburger" class="hamburger hamburger--arrowalt" type="button">
