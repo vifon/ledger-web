@@ -135,7 +135,7 @@ def apply_rules(ledger_data, user):
     for rule in replacement_rules:
         try:
             match = True
-            for field in ['payee', 'comment']:
+            for field in ['payee', 'note']:
                 condition = getattr(rule, field)
                 if match and condition:
                     match = bool(
@@ -147,8 +147,8 @@ def apply_rules(ledger_data, user):
         else:
             if match:
                 ledger_data['payee'] = rule.new_payee or ledger_data['payee']
-                ledger_data['comment'] = \
-                    rule.new_comment or ledger_data['comment']
+                ledger_data['note'] = \
+                    rule.new_note or ledger_data['note']
                 for account in ledger_data['accounts']:
                     acc_name = account[0]
                     if acc_name == settings.LEDGER_DEFAULT_TO:
@@ -175,7 +175,7 @@ def submit_as_json(request):
         'payee': params['payee'],
         'date': params.get('date', datetime.now().strftime("%F")),
         'accounts': params['accounts'],
-        'comment': params.get('comment'),
+        'note': params.get('note'),
     }
 
     if not params.get('skip_rules', False):
@@ -203,8 +203,8 @@ def submit_as_json(request):
         ],
     }
     optionals = {}
-    if entry.comment:
-        optionals['comment'] = entry.comment
+    if entry.note:
+        optionals['note'] = entry.note
     response_data.update(optionals)
 
     return JsonResponse(response_data, status=201)

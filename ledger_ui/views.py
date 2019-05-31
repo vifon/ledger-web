@@ -97,7 +97,7 @@ def charts(request):
         header=None,
         names=[
             'date', 'code', 'payee', 'account', 'currency', 'amount',
-            'reconciled', 'comment',
+            'reconciled', 'note',
         ],
         usecols=['date', 'payee', 'account', 'amount'],
         parse_dates=['date'],
@@ -175,7 +175,7 @@ def submit(request):
             entry = ledger_api.Entry(
                 date=validated['date'],
                 payee=validated['payee'],
-                comment=validated['comment'],
+                note=validated['note'],
                 accounts=[
                     (account['name'], account['amount'], account['currency'])
                     for account in formset.cleaned_data
@@ -215,7 +215,7 @@ def submit(request):
                 {
                     'date': last_entry.date,
                     'payee': last_entry.payee,
-                    'comment': last_entry.comment,
+                    'note': last_entry.note,
                     'amend': True,
                 },
                 payees=payees,
@@ -266,7 +266,7 @@ def balance(request):
         header=None,
         names=[
             'date', 'code', 'payee', 'account', 'currency', 'amount',
-            'reconciled', 'comment',
+            'reconciled', 'note',
         ],
         usecols=['account', 'currency', 'amount'],
     )

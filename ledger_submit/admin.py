@@ -6,7 +6,7 @@ from .models import Rule, Token
 @admin.register(Rule)
 class RuleAdmin(admin.ModelAdmin):
     list_display = (
-        'user', 'payee', 'comment', 'new_comment', 'new_payee', 'account'
+        'user', 'payee', 'note', 'new_note', 'new_payee', 'account'
     )
 
 

@@ -471,14 +471,14 @@ class SubmitTestsV2(TestCase):
             }
         ),
         (
-            # The comments are left intact if rule doesn't override them.
+            # The notes are left intact if rule doesn't override them.
             {
                 'payee': 'AUCHAN WARSZAWA',
                 'accounts': [
                     ('Expenses:Food', '10.00', 'PLN'),
                     ('Liabilities:Credit Card',),
                 ],
-                'comment': ':groceries:',
+                'note': ':groceries:',
             },
             {
                 'payee': 'Auchan',
@@ -486,11 +486,11 @@ class SubmitTestsV2(TestCase):
                     ['Expenses:Food', '10.00', 'PLN'],
                     ['Liabilities:Credit Card', None, None],
                 ],
-                'comment': ':groceries:',
+                'note': ':groceries:',
             }
         ),
         (
-            # The comments are properly being set if absent...
+            # The notes are properly being set if absent...
             {
                 'payee': 'Pizza Hut',
                 'accounts': [
@@ -504,7 +504,7 @@ class SubmitTestsV2(TestCase):
                     ['Expenses:Restaurants', '20.00', 'PLN'],
                     ['Liabilities:Credit Card', None, None],
                 ],
-                'comment': ':food:',
+                'note': ':food:',
             }
         ),
         (
@@ -515,7 +515,7 @@ class SubmitTestsV2(TestCase):
                     ('Expenses:Uncategorized', '20.00', 'PLN'),
                     ('Liabilities:Credit Card',),
                 ],
-                'comment': ':trash-food:',
+                'note': ':trash-food:',
             },
             {
                 'payee': 'Pizza Hut',
@@ -523,18 +523,18 @@ class SubmitTestsV2(TestCase):
                     ['Expenses:Restaurants', '20.00', 'PLN'],
                     ['Liabilities:Credit Card', None, None],
                 ],
-                'comment': ':food:',
+                'note': ':food:',
             }
         ),
         (
-            # Match by both payee and comment, replace comment and accounts.
+            # Match by both payee and note, replace note and accounts.
             {
                 'payee': 'Lidl',
                 'accounts': [
                     ('Expenses:Uncategorized', '27.00', 'PLN'),
                     ('Liabilities:Credit Card',),
                 ],
-                'comment': ':automatic:',
+                'note': ':automatic:',
             },
             {
                 'payee': 'Lidl',
@@ -542,18 +542,18 @@ class SubmitTestsV2(TestCase):
                     ['Expenses:Food', '27.00', 'PLN'],
                     ['Liabilities:Credit Card', None, None],
                 ],
-                'comment': ':automated:',
+                'note': ':automated:',
             }
         ),
         (
-            # Match by comment and replace the comment.
+            # Match by note and replace the note.
             {
                 'payee': 'Salad Story',
                 'accounts': [
                     ('Expenses:Uncategorized', '23.00', 'PLN'),
                     ('Liabilities:Credit Card',),
                 ],
-                'comment': ':automatic:',
+                'note': ':automatic:',
             },
             {
                 'payee': 'Salad Story',
@@ -561,7 +561,7 @@ class SubmitTestsV2(TestCase):
                     ['Expenses:Restaurants', '23.00', 'PLN'],
                     ['Liabilities:Credit Card', None, None],
                 ],
-                'comment': ':automated:',
+                'note': ':automated:',
             }
         ),
     ])
@@ -587,19 +587,19 @@ class SubmitTestsV2(TestCase):
             user=self.user,
             payee='Pizza Hut',
             account='Expenses:Restaurants',
-            new_comment=':food:',
+            new_note=':food:',
         )
         Rule.objects.create(
             user=self.user,
-            comment=':automatic:',
-            new_comment=':automated:',
+            note=':automatic:',
+            new_note=':automated:',
             account='Expenses:Food',
         )
         Rule.objects.create(
             user=self.user,
             payee='Salad Story',
-            comment=':automatic:',
-            new_comment=':automated:',
+            note=':automatic:',
+            new_note=':automated:',
             account='Expenses:Restaurants',
         )
 

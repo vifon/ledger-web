@@ -74,7 +74,7 @@ class SubmitForm(forms.Form):
 
     date = forms.DateField(initial=datetime.date.today)
     payee = forms.CharField(max_length=512)
-    comment = forms.CharField(
+    note = forms.CharField(
         required=False,
         widget=forms.Textarea(
             attrs={
@@ -113,13 +113,13 @@ class RuleModelForm(forms.ModelForm):
     def conditions(self):
         return (
             self[field]
-            for field in ['payee', 'comment']
+            for field in ['payee', 'note']
         )
 
     def actions(self):
         return (
             self[field]
-            for field in ['new_payee', 'new_comment', 'account']
+            for field in ['new_payee', 'new_note', 'account']
         )
 
     def __init__(self, *args, accounts, payees, user, **kwargs):
@@ -131,7 +131,7 @@ class RuleModelForm(forms.ModelForm):
             name='payee',
             data_list=map(re.escape, payees),
         )
-        self.fields['comment'].widget = forms.Textarea(
+        self.fields['note'].widget = forms.Textarea(
             attrs={
                 'rows': 1,
                 'cols': 20,
@@ -141,7 +141,7 @@ class RuleModelForm(forms.ModelForm):
             name='new_payee',
             data_list=payees,
         )
-        self.fields['new_comment'].widget = forms.Textarea(
+        self.fields['new_note'].widget = forms.Textarea(
             attrs={
                 'rows': 1,
                 'cols': 20,

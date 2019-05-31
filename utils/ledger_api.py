@@ -72,7 +72,7 @@ class Entry:
     ...      ("Assets:Loans:John", "5 USD"),
     ...      ("Liabilities:Credit Card",),
     ...    ],
-    ...    comment=":loan:",
+    ...    note=":loan:",
     ...    date="2019-02-16",
     ... )
 
@@ -88,7 +88,7 @@ class Entry:
     def __init__(self, **kwargs):
         self.payee = kwargs['payee']
         self.date = kwargs.get('date', time.strftime("%F"))
-        self.comment = kwargs.get('comment')
+        self.note = kwargs.get('note')
 
         self.accounts = []
         for account in kwargs['accounts']:
@@ -152,9 +152,9 @@ class Entry:
     def __str__(self):
         output = ['']
         output.append('{date} {payee}'.format(**vars(self)))
-        if self.comment:
-            for line in self.comment.splitlines():
-                output.append('    ; {comment}'.format(comment=line))
+        if self.note:
+            for line in self.note.splitlines():
+                output.append('    ; {note}'.format(note=line))
         for account in self.accounts:
             currency = self.normalize_currency(account.currency)
             if account.amount is None:

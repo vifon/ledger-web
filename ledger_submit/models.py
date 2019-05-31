@@ -7,8 +7,8 @@ class Rule(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     payee = models.CharField(max_length=512, blank=True)
     new_payee = models.CharField(max_length=512, blank=True)
-    comment = models.TextField(blank=True)
-    new_comment = models.TextField(blank=True)
+    note = models.TextField(blank=True)
+    new_note = models.TextField(blank=True)
     account = models.CharField(
         'Account',
         max_length=512,
@@ -16,7 +16,7 @@ class Rule(models.Model):
     )
 
     class Meta:
-        unique_together = (('payee', 'user', 'comment'))
+        unique_together = (('payee', 'user', 'note'))
 
 
 class Token(models.Model):
