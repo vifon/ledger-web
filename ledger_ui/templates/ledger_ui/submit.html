@@ -129,7 +129,7 @@
        x => x.removeAttribute("placeholder")
      );
    };
-   const calculateRemainder = function (event) {
+   const calculateRemainder = function () {
      const currencyInputs =
        formsetRoot.getElementsByClassName("currency-input");
      const onlyOneCurrency = Array.prototype.every.call(
@@ -175,5 +175,6 @@
      document.getElementsByClassName("transaction-account-form-delete"),
      x => x.addEventListener("click", calculateRemainder)
    );
+   calculateRemainder();
   </script>
 {% endblock %}
