@@ -21,15 +21,18 @@ class AccountForm(forms.Form):
         required=False,
         widget=forms.NumberInput(attrs={'class': 'amount-input'}),
     )
-    currency = forms.CharField(widget=fields.ListTextWidget(
-        name='currencies',
-        data_list=None,
-        attrs={
-            'tabindex': -1,
-            'size': 5,
-            'class': 'currency-input',
-        },
-    ))
+    currency = forms.CharField(
+        required=False,
+        widget=fields.ListTextWidget(
+            name='currencies',
+            data_list=None,
+            attrs={
+                'tabindex': -1,
+                'size': 5,
+                'class': 'currency-input',
+            },
+        ),
+    )
 
     field_order = ['name', 'amount', 'currency']
 
