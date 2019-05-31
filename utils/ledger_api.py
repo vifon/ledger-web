@@ -113,6 +113,10 @@ class Entry:
                 # amount may be None if we got the 1-argument form.
                 if amount is not None:
                     amount = "{:.2f}".format(float(amount))
+                else:
+                    # Avoid storing a currency without a value, it
+                    # doesn't make sense and leads to weird bugs.
+                    currency = None
             self.accounts.append(EntryAccount(
                 name=name,
                 amount=amount,

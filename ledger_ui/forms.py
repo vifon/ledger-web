@@ -36,12 +36,12 @@ class AccountForm(forms.Form):
 
     field_order = ['name', 'amount', 'currency']
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, default_currency=None, **kwargs):
+        if default_currency is None:
+            default_currency = settings.LEDGER_DEFAULT_CURRENCY
         initial = kwargs.pop('initial', {})
-        initial['currency'] = (
-            initial.get('currency')
-            or settings.LEDGER_DEFAULT_CURRENCY
-        )
+        if initial.get('amount') is None:
+            initial['currency'] = default_currency
         super().__init__(*args, initial=initial, **kwargs)
 
 

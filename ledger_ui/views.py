@@ -220,7 +220,15 @@ def submit(request):
                 },
                 payees=payees,
             )
+            default_currency = settings.LEDGER_DEFAULT_CURRENCY
+            for account in last_entry.accounts:
+                if account.amount is not None:
+                    default_currency = account.currency
+                    break
             formset = AccountFormSet(
+                form_kwargs={
+                    'default_currency': default_currency,
+                },
                 initial=[
                     account._asdict()
                     for account in last_entry.accounts
