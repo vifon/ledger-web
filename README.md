@@ -31,6 +31,11 @@ features visibly missing from *Ledger Web*.
 - The register view won't show any included files' contents, it only
   reads the main file.  The other views are free from this limitation.
 
+### Known Bugs
+
+- The register view works correctly only if the Ledger journal uses
+  the YYYY-MM-DD date format.
+
 ## Screenshots
 
 ### Mobile version
