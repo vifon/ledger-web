@@ -26,8 +26,8 @@ convenient goodies) while not reinventing the wheel.  These are some
 features visibly missing from *Ledger Web*.
 
 - There is only a limited support for modifying the ledger file other
-  than appending new entries.  It's possible to modify, revert or
-  re-apply the rules to the very last added entry but that's it.
+  than appending new entries.  It's possible to modify or revert the
+  very last added entry but that's it.
 - The register view won't show any included files' contents, it only
   reads the main file.  The other views are free from this limitation.
 
