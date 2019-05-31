@@ -113,13 +113,13 @@ class RuleModelForm(forms.ModelForm):
     def conditions(self):
         return (
             self[field]
-            for field in ['payee']
+            for field in ['payee', 'comment']
         )
 
     def actions(self):
         return (
             self[field]
-            for field in ['new_payee', 'comment', 'account']
+            for field in ['new_payee', 'new_comment', 'account']
         )
 
     def __init__(self, *args, accounts, payees, user, **kwargs):
@@ -131,11 +131,17 @@ class RuleModelForm(forms.ModelForm):
             name='payee',
             data_list=map(re.escape, payees),
         )
+        self.fields['comment'].widget = forms.Textarea(
+            attrs={
+                'rows': 1,
+                'cols': 20,
+            },
+        )
         self.fields['new_payee'].widget = fields.ListTextWidget(
             name='new_payee',
             data_list=payees,
         )
-        self.fields['comment'].widget = forms.Textarea(
+        self.fields['new_comment'].widget = forms.Textarea(
             attrs={
                 'rows': 1,
                 'cols': 20,

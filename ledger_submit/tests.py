@@ -526,6 +526,44 @@ class SubmitTestsV2(TestCase):
                 'comment': ':food:',
             }
         ),
+        (
+            # Match by both payee and comment, replace comment and accounts.
+            {
+                'payee': 'Lidl',
+                'accounts': [
+                    ('Expenses:Uncategorized', '27.00', 'PLN'),
+                    ('Liabilities:Credit Card',),
+                ],
+                'comment': ':automatic:',
+            },
+            {
+                'payee': 'Lidl',
+                'accounts': [
+                    ['Expenses:Food', '27.00', 'PLN'],
+                    ['Liabilities:Credit Card', None, None],
+                ],
+                'comment': ':automated:',
+            }
+        ),
+        (
+            # Match by comment and replace the comment.
+            {
+                'payee': 'Salad Story',
+                'accounts': [
+                    ('Expenses:Uncategorized', '23.00', 'PLN'),
+                    ('Liabilities:Credit Card',),
+                ],
+                'comment': ':automatic:',
+            },
+            {
+                'payee': 'Salad Story',
+                'accounts': [
+                    ['Expenses:Restaurants', '23.00', 'PLN'],
+                    ['Liabilities:Credit Card', None, None],
+                ],
+                'comment': ':automated:',
+            }
+        ),
     ])
     def test_replacements(self, input_data, expected_output):
         Rule.objects.create(
@@ -549,7 +587,20 @@ class SubmitTestsV2(TestCase):
             user=self.user,
             payee='Pizza Hut',
             account='Expenses:Restaurants',
-            comment=':food:',
+            new_comment=':food:',
+        )
+        Rule.objects.create(
+            user=self.user,
+            comment=':automatic:',
+            new_comment=':automated:',
+            account='Expenses:Food',
+        )
+        Rule.objects.create(
+            user=self.user,
+            payee='Salad Story',
+            comment=':automatic:',
+            new_comment=':automated:',
+            account='Expenses:Restaurants',
         )
 
         expected_output.setdefault('date', datetime.now().strftime("%F"))

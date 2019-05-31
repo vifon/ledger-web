@@ -129,19 +129,26 @@ def submit_as_json_v1(request):
 
 
 def apply_rules(ledger_data, user):
-    payee = ledger_data['payee']
     replacement_rules = (
         Rule.objects.filter(user=user).order_by(Length('payee').desc())
     )
     for rule in replacement_rules:
         try:
-            match = re.fullmatch(rule.payee, payee)
+            match = True
+            for field in ['payee', 'comment']:
+                condition = getattr(rule, field)
+                if match and condition:
+                    match = bool(
+                        ledger_data[field]
+                        and re.fullmatch(condition, ledger_data[field])
+                    )
         except re.error:
             pass
         else:
             if match:
-                ledger_data['payee'] = rule.new_payee or payee
-                ledger_data['comment'] = rule.comment or ledger_data['comment']
+                ledger_data['payee'] = rule.new_payee or ledger_data['payee']
+                ledger_data['comment'] = \
+                    rule.new_comment or ledger_data['comment']
                 for account in ledger_data['accounts']:
                     acc_name = account[0]
                     if acc_name == settings.LEDGER_DEFAULT_TO:
