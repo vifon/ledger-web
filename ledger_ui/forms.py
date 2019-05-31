@@ -110,6 +110,18 @@ class RuleModelForm(forms.ModelForm):
         model = Rule
         exclude = ['user']
 
+    def conditions(self):
+        return (
+            self[field]
+            for field in ['payee']
+        )
+
+    def actions(self):
+        return (
+            self[field]
+            for field in ['new_payee', 'comment', 'account']
+        )
+
     def __init__(self, *args, accounts, payees, user, **kwargs):
         super().__init__(*args, **kwargs)
 

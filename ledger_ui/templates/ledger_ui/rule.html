@@ -8,9 +8,28 @@
   <h2>Edit rule</h2>
   <form action="{{ request.path }}" method="post">
     {% csrf_token %}
-    <table>
-      {{ form.as_table }}
-    </table>
+    <fieldset>
+      <legend>Conditions</legend>
+      <table>
+        {% for field in form.conditions %}
+          <tr>
+            <th>{{ field.label }}</th>
+            <td>{{ field }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    </fieldset>
+    <fieldset>
+      <legend>Actions</legend>
+      <table>
+        {% for field in form.actions %}
+          <tr>
+            <th>{{ field.label_tag }}</th>
+            <td>{{ field }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    </fieldset>
 
     <input type="submit" value="Submit" />
   </form>
@@ -30,52 +49,52 @@
 
   <script>
    document.getElementById('preview-button')
-    .addEventListener(
-      'click',
-      function () {
-        let regexp = document.getElementById('id_payee').value;
-        let req = new XMLHttpRequest();
-        req.open(
-          'GET',
-          "{% url 'ledger_query:transactions' %}?regexp="
-          + encodeURI(regexp)
-          + "&count=11",
-          true
-        );
-        req.onreadystatechange = function (aEvt) {
-          if (req.readyState == 4) {
-            if (req.status == 200) {
-              let target = document.getElementById('rule-preview');
-              while (target.firstChild) {
-                target.removeChild(target.firstChild);
-              }
+           .addEventListener(
+             'click',
+             function () {
+               let regexp = document.getElementById('id_payee').value;
+               let req = new XMLHttpRequest();
+               req.open(
+                 'GET',
+                 "{% url 'ledger_query:transactions' %}?regexp="
+                 + encodeURI(regexp)
+                 + "&count=11",
+                 true
+               );
+               req.onreadystatechange = function (aEvt) {
+                 if (req.readyState == 4) {
+                   if (req.status == 200) {
+                     let target = document.getElementById('rule-preview');
+                     while (target.firstChild) {
+                       target.removeChild(target.firstChild);
+                     }
 
-              let entries = JSON.parse(req.responseText).entries;
-              if (entries.length > 0) {
-                for (let entry in entries.slice(0, 10)) {
-                  let item = document.createElement('li');
-                  item.textContent = (
-                    entries[entry].date
-                    + ': '
-                    + entries[entry].payee
-                  );
-                  target.appendChild(item);
-                }
-                if (entries.length > 10) {
-                  let item = document.createElement('li');
-                  item.textContent = ('...');
-                  target.appendChild(item);
-                }
-              } else {
-                let item = document.createElement('li');
-                item.textContent = ('[no matches]');
-                target.appendChild(item);
-              }
-            }
-          }
-        };
-        req.send(null);
-      }
-    );
+                     let entries = JSON.parse(req.responseText).entries;
+                     if (entries.length > 0) {
+                       for (let entry in entries.slice(0, 10)) {
+                         let item = document.createElement('li');
+                         item.textContent = (
+                           entries[entry].date
+                           + ': '
+                           + entries[entry].payee
+                         );
+                         target.appendChild(item);
+                       }
+                       if (entries.length > 10) {
+                         let item = document.createElement('li');
+                         item.textContent = ('...');
+                         target.appendChild(item);
+                       }
+                     } else {
+                       let item = document.createElement('li');
+                       item.textContent = ('[no matches]');
+                       target.appendChild(item);
+                     }
+                   }
+                 }
+               };
+               req.send(null);
+             }
+           );
   </script>
 {% endblock %}
