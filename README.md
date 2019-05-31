@@ -203,7 +203,7 @@ For example:
     curl -X POST 'http://localhost:8000/ledger/submit/v2/' -H "Content-Type: application/json" -d '{
         "payee": "Pizza with George",
         "accounts": [
-            ["Assets:Food", "20 USD"],
+            ["Expenses:Food", "20 USD"],
             ["Assets:Loans:George", "10", "USD"],
             ["Assets:Bank"]
         ],
