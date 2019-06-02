@@ -1,14 +1,14 @@
 {% extends "./base.html" %}
 
 {% block title %}
-  {{ block.super }} - Register
+  {{ block.super }} - Journal
 {% endblock %}
 
 {% block content %}
   <a class="plain-link"
      href="{{ request.path }}?reverse={{ reverse | yesno:"False,True" }}{% if count != count_step %}&count={{ count }}{% endif %}"
   >
-    <h1 class="register-header">Ledger entries {{ reverse | yesno:"↑,↓" }}</h1>
+    <h1 class="journal-header">Ledger entries {{ reverse | yesno:"↑,↓" }}</h1>
   </a>
 
   <div class="list-container">

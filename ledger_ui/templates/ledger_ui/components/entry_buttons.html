@@ -9,7 +9,7 @@
       />
       <input name="amend" type="hidden" value="true" />
     </form>
-    <form action="{% url 'ledger_ui:register' %}" method="POST">
+    <form action="{% url 'ledger_ui:journal' %}" method="POST">
       {% csrf_token %}
       <input class="entry-button revert"
              type="submit" value="" title="Revert"

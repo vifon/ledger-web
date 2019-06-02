@@ -28,12 +28,12 @@ features visibly missing from *Ledger Web*.
 - There is only a limited support for modifying the ledger file other
   than appending new entries.  It's possible to modify or revert the
   very last added entry but that's it.
-- The register view won't show any included files' contents, it only
+- The journal view won't show any included files' contents, it only
   reads the main file.  The other views are free from this limitation.
 
 ### Known Bugs
 
-- The register view works correctly only if the Ledger journal uses
+- The journal view works correctly only if the Ledger journal uses
   the YYYY-MM-DD date format.
 
 ## Screenshots
@@ -56,11 +56,11 @@ features visibly missing from *Ledger Web*.
 
 [![](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Rules_mobile.png)](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Rules_mobile.png)
 
-### Ledger register
+### Ledger journal
 
-[![](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Register.png)](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Register.png)
+[![](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Journal.png)](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Journal.png)
 
-[![](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Register_mobile.png)](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Register_mobile.png)
+[![](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Journal_mobile.png)](https://raw.githubusercontent.com/vifon/ledger-web/master/examples/Journal_mobile.png)
 
 ### Ledger Web on Kindle
 

@@ -5,7 +5,7 @@ from . import views
 app_name = 'ledger_ui'
 urlpatterns = [
     path('', views.index, name='index'),
-    path('register/', views.register, name='register'),
+    path('journal/', views.journal, name='journal'),
     path('submit/', views.submit, name='submit'),
     path('balance/', views.balance, name='balance'),
     path('charts/', views.charts, name='charts'),

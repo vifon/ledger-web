@@ -64,7 +64,7 @@ button.transaction-account-form-delete {
   background-color: #d00;
 }
 
-.register-header {
+.journal-header {
   text-align: center;
   border: 2px solid lightgrey;
   border-radius: 5px;
@@ -72,7 +72,7 @@ button.transaction-account-form-delete {
   transition: background-color 0.3s;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
-.register-header:hover {
+.journal-header:hover {
   background-color: #ddd;
 }
 
@@ -301,7 +301,7 @@ div.ui-slider-range.ui-widget-header {
   grid-template-columns: 1fr 2fr 2fr 1fr;
   grid-template-rows: 1fr 1fr;
   grid-template-areas:
-    "submit register balance login"
+    "submit journal balance login"
     "submit charts rules user"
     ;
   grid-gap: 10px;
@@ -357,8 +357,8 @@ a.menu-login:hover {
 a.menu-login:active {
   background-color: #d00;
 }
-.menu-register {
-  grid-area: register;
+.menu-journal {
+  grid-area: journal;
 }
 .menu-charts {
   grid-area: charts;
@@ -405,7 +405,7 @@ table.ledger-table {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
     grid-template-areas:
-      "register register"
+      "journal journal"
       "charts charts"
       "balance balance"
       "submit submit"

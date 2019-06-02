@@ -76,7 +76,7 @@
     {% endif %}
   </form>
   {% if form.amend.value %}
-    <form action="{% url 'ledger_ui:register' %}" method="POST">
+    <form action="{% url 'ledger_ui:journal' %}" method="POST">
       {% csrf_token %}
       <input type="submit" value="Delete"
              onclick="return confirm('Really delete this entry?');"

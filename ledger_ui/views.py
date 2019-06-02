@@ -25,7 +25,7 @@ def index(request):
 
 
 @login_required
-def register(request):
+def journal(request):
     if request.method == 'POST':
         if request.POST.get('revert'):
             undo = get_object_or_404(Undo, pk=request.user)
@@ -73,7 +73,7 @@ def register(request):
 
     return render(
         request,
-        'ledger_ui/register.html',
+        'ledger_ui/journal.html',
         {
             'entries': entries,
             'reverse': reversed_sort,
@@ -205,7 +205,7 @@ def submit(request):
                     'new_position': new,
                 },
             )
-            return redirect('ledger_ui:register')
+            return redirect('ledger_ui:journal')
 
     else:
         amend = request.GET.get('amend', 'false').lower() not in ['false', '0']
