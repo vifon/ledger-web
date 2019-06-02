@@ -33,8 +33,9 @@ features visibly missing from *Ledger Web*.
 
 ### Known Bugs
 
-- The journal view works correctly only if the Ledger journal uses
-  the YYYY-MM-DD date format.
+- The journal view works correctly only if the Ledger journal uses the
+  YYYY-MM-DD or YYYY/MM/DD date format (possibly with DD and MM
+  switched).
 
 ## Screenshots
 

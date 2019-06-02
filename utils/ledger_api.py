@@ -267,9 +267,15 @@ class Journal:
         return output.strip().splitlines()
 
     def __iter__(self):
+        date_regexp = r'\d{4}-\d{2}-\d{2}|\d{4}/\d{2}/\d{2}'
         def prepare_entry(entry_lines):
             match = re.match(
-                r'(\d{4}-\d{2}-\d{2})(?: [!*])?\s+(.*)', entry_lines[0]
+                '({date}){cleared}({payee})'.format(
+                    date=date_regexp,
+                    cleared=r'(?: [!*])?',
+                    payee=r'.*'
+                ),
+                entry_lines[0],
             )
             return {
                 'body': "\n".join(entry_lines),
@@ -282,7 +288,7 @@ class Journal:
             for line in map(str.rstrip, ledger_file):
                 if not entry:
                     # Skipping the empty space and non-entries between entries.
-                    if re.match(r'\d{4}-\d{2}-\d{2} ', line):
+                    if re.match(r'{} '.format(date_regexp), line):
                         # A beginning of a next entry.
                         entry.append(line)
                 else:
