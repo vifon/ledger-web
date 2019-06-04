@@ -78,6 +78,7 @@ class SubmitForm(forms.Form):
         required=False,
         widget=forms.Textarea(
             attrs={
+                'tabindex': -1,
                 'rows': 1,
                 'cols': 20,
             },
