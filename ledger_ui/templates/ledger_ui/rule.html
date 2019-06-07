@@ -13,8 +13,11 @@
       <table>
         {% for field in form.conditions %}
           <tr>
-            <th>{{ field.label }}</th>
-            <td>{{ field }}</td>
+            <th>{{ field.label_tag }}</th>
+            <td>
+              {{ field.errors }}
+              {{ field }}
+            </td>
           </tr>
         {% endfor %}
       </table>
@@ -25,7 +28,10 @@
         {% for field in form.actions %}
           <tr>
             <th>{{ field.label_tag }}</th>
-            <td>{{ field }}</td>
+            <td>
+              {{ field.errors }}
+              {{ field }}
+            </td>
           </tr>
         {% endfor %}
       </table>
