@@ -270,7 +270,7 @@ class Journal:
         date_regexp = r'\d{4}-\d{2}-\d{2}|\d{4}/\d{2}/\d{2}'
         def prepare_entry(entry_lines):
             match = re.match(
-                '({date}){cleared}({payee})'.format(
+                '({date}){cleared}\s+({payee})'.format(
                     date=date_regexp,
                     cleared=r'(?: [!*])?',
                     payee=r'.*'
