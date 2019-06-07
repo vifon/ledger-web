@@ -34,7 +34,28 @@
 
     {% csrf_token %}
     <table>
-      {{ form.as_table }}
+      {% for field in form.visible_fields %}
+        <tr>
+          <th>{{ field.label_tag }}</th>
+          <td>
+            {{ field.errors }}
+            {{ field }}
+
+            {% if field.name == 'note' %}
+              <input type="button" value="⌫"
+                     class="no-decoration"
+                     onClick="document.getElementById('{{ field.id_for_label }}').value=''"
+              />
+            {% endif %}
+
+            {% if forloop.last %}
+              {% for hidden_field in form.hidden_fields %}
+                {{ hidden_field }}
+              {% endfor %}
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
     </table>
 
     {{ formset.management_form }}

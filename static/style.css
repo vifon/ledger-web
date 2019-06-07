@@ -64,6 +64,13 @@ button.transaction-account-form-delete {
   background-color: #d00;
 }
 
+input[type=button].no-decoration,
+button.no-decoration {
+  cursor: pointer;
+  border: none;
+  vertical-align: top;
+}
+
 .journal-header {
   text-align: center;
   border: 2px solid lightgrey;
