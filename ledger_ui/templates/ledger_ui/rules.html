@@ -53,6 +53,14 @@
               <dt>New payee</dt>
               <dd>{{ rule.new_payee }}</dd>
             {% endif %}
+            {% if rule.note %}
+              <dt>Note</dt>
+              <dd>{{ rule.note }}</dd>
+            {% endif %}
+            {% if rule.new_note %}
+              <dt>New note</dt>
+              <dd>{{ rule.new_note }}</dd>
+            {% endif %}
             {% if rule.account %}
               <dt>Account</dt>
               <dd>{{ rule.account }}</dd>
