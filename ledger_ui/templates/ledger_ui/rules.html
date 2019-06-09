@@ -13,7 +13,9 @@
     <table class="ledger-table">
       <tr>
         <th>Payee</th>
-        <th>New payee</th>
+        <th>Note</th>
+        <th class="table-separator">New payee</th>
+        <th>New note</th>
         <th>Account</th>
       </tr>
       {% for rule in object_list %}
@@ -21,7 +23,9 @@
           <td>
             <a href="{% url 'ledger_ui:rule' rule.pk %}">{{ rule.payee }}</a>
           </td>
-          <td> {{ rule.new_payee }} </td>
+          <td> {{ rule.note }} </td>
+          <td class="table-separator"> {{ rule.new_payee }} </td>
+          <td> {{ rule.new_note }} </td>
           <td> {{ rule.account }} </td>
           <td>
             <form action="{% url 'ledger_ui:rule_delete' rule.pk %}" method="post">

@@ -395,6 +395,9 @@ table.ledger-table {
   padding: 5px;
   border: 1px solid #aaa;
 }
+.ledger-table tr > .table-separator {
+  border-left: 2px solid #888;
+}
 
 .balance {
   text-align: right;
