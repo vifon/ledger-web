@@ -277,10 +277,25 @@ class Journal:
                 ),
                 entry_lines[0],
             )
+            date = match.group(1)
+            payee = match.group(2)
+
+            match = re.fullmatch(
+                '\s*;\s*(.*)',
+                entry_lines[1],
+            )
+            if match:
+                note = match.group(1)
+            else:
+                # In Django strings usually aren't nullable, let's
+                # keep this convention and just store an empty string.
+                note = ''
+
             return {
                 'body': "\n".join(entry_lines),
-                'date': match.group(1),
-                'payee': match.group(2),
+                'date': date,
+                'payee': payee,
+                'note': note,
             }
 
         entry = []

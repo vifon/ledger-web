@@ -5,6 +5,8 @@ from django.views.decorators.csrf import csrf_exempt
 import itertools
 import re
 
+from ledger_submit.models import Rule
+from ledger_submit.views import check_rule
 from utils import ledger_api
 
 
@@ -12,12 +14,15 @@ from utils import ledger_api
 def transactions(request):
     entries = reversed(list(ledger_api.Journal(request.user.ledger_path.path)))
 
-    transaction_regexp = request.GET.get('regexp')
-    if transaction_regexp is not None:
-        entries = (
-            entry for entry in entries
-            if re.fullmatch(transaction_regexp, entry['payee'])
-        )
+    payee = request.GET.get('payee')
+    note = request.GET.get('note')
+
+    rule = Rule(payee=payee, note=note)
+
+    entries = (
+        entry for entry in entries
+        if check_rule(entry, rule) is not None
+    )
 
     count = request.GET.get('count')
     if count is not None:

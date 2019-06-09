@@ -128,23 +128,30 @@ def submit_as_json_v1(request):
 # </LEGACY>
 
 
-def apply_rule(ledger_data, rule):
+def check_rule(ledger_data, rule):
     matches = {}
     for field in ['payee', 'note']:
         condition = getattr(rule, field)
-        if all(matches.values()):
-            if condition:
-                try:
-                    matches[field] = re.match(
-                        '^(?:{})$'.format(condition),
-                        ledger_data[field],
-                    )
-                except re.error:
-                    return False
-        else:
-            return False
-
+        if condition:
+            try:
+                matches[field] = re.match(
+                    '^(?:{})$'.format(condition),
+                    ledger_data[field],
+                )
+                if not matches[field]:
+                    return None
+            except re.error:
+                return None
     if all(matches.values()):
+        return matches
+    else:
+        return None
+
+
+def apply_rule(ledger_data, rule):
+    matches = check_rule(ledger_data, rule)
+
+    if matches is not None:
         for field in ['payee', 'note']:
             replacement = getattr(rule, 'new_{}'.format(field))
             if replacement or field in matches:

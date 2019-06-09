@@ -58,12 +58,14 @@
            .addEventListener(
              'click',
              function () {
-               let regexp = document.getElementById('id_payee').value;
+               let payee = document.getElementById('id_payee').value;
+               let note = document.getElementById('id_note').value;
                let req = new XMLHttpRequest();
                req.open(
                  'GET',
-                 "{% url 'ledger_query:transactions' %}?regexp="
-                 + encodeURI(regexp)
+                 "{% url 'ledger_query:transactions' %}"
+                 + "?payee=" + encodeURI(payee)
+                 + "&note=" + encodeURI(note)
                  + "&count=11",
                  true
                );
