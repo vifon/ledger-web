@@ -128,6 +128,37 @@ def submit_as_json_v1(request):
 # </LEGACY>
 
 
+def apply_rule(ledger_data, rule):
+    try:
+        matches = {}
+        for field in ['payee', 'note']:
+            condition = getattr(rule, field)
+            if all(matches.values()):
+                if condition:
+                    matches[field] = re.match(
+                        '^(?:{})$'.format(condition),
+                        ledger_data[field],
+                    )
+            else:
+                return False
+    except re.error:
+        return False
+    else:
+        if all(matches.values()):
+            for field, match in matches.items():
+                ledger_data[field] = match.re.sub(
+                    getattr(rule, 'new_{}'.format(field)),
+                    match.string,
+                )
+            for account in ledger_data['accounts']:
+                acc_name = account[0]
+                if acc_name == settings.LEDGER_DEFAULT_TO:
+                    account[0] = rule.account or acc_name
+            return True
+        else:
+            return False
+
+
 def apply_rules(ledger_data, user):
     replacement_rules = (
         Rule.objects.filter(user=user).order_by(
@@ -135,33 +166,9 @@ def apply_rules(ledger_data, user):
         )
     )
     for rule in replacement_rules:
-        try:
-            matches = {}
-            for field in ['payee', 'note']:
-                condition = getattr(rule, field)
-                if all(matches.values()):
-                    if condition:
-                        matches[field] = re.match(
-                            '^(?:{})$'.format(condition),
-                            ledger_data[field],
-                        )
-                else:
-                    break
-        except re.error:
-            pass
-        else:
-            if all(matches.values()):
-                for field, match in matches.items():
-                    ledger_data[field] = match.re.sub(
-                        getattr(rule, 'new_{}'.format(field)),
-                        match.string,
-                    )
-                for account in ledger_data['accounts']:
-                    acc_name = account[0]
-                    if acc_name == settings.LEDGER_DEFAULT_TO:
-                        account[0] = rule.account or acc_name
-                break
-    return ledger_data
+        if apply_rule(ledger_data, rule):
+            return True
+    return False
 
 
 def normalize_data(ledger_data):
