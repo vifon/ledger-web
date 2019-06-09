@@ -108,7 +108,7 @@ def charts(request):
             'ledger_ui/charts.html',
         )
 
-    assets = df[df['account'].str.contains("^Assets:")]
+    assets = df[df['account'].str.contains("^Assets:|^Liabilities:")]
     income = df[df['account'].str.contains("^Income:")]
 
     account_filter = request.GET.get('account_filter', '')
