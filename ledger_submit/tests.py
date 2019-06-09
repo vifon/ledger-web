@@ -564,6 +564,24 @@ class SubmitTestsV2(TestCase):
                 'note': ':automated:',
             }
         ),
+        (
+            # Match by payee and erase the note.
+            {
+                'payee': 'Salad Story',
+                'accounts': [
+                    ('Expenses:Uncategorized', '23.00', 'PLN'),
+                    ('Liabilities:Credit Card',),
+                ],
+                'note': ':erase_me:',
+            },
+            {
+                'payee': 'Salad Story',
+                'accounts': [
+                    ['Expenses:Uncategorized', '23.00', 'PLN'],
+                    ['Liabilities:Credit Card', None, None],
+                ],
+            }
+        ),
     ])
     def test_replacements(self, input_data, expected_output):
         Rule.objects.create(
@@ -580,13 +598,16 @@ class SubmitTestsV2(TestCase):
         )
         Rule.objects.create(
             user=self.user,
-            payee='Pizza Dominium',
+            payee='(Pizza Dominium)',
             account='Expenses:Restaurants',
+            new_payee=r'\1',
         )
         Rule.objects.create(
             user=self.user,
-            payee='Pizza Hut',
+            payee='(Pizza Hut)',
+            note='.*',
             account='Expenses:Restaurants',
+            new_payee=r'\1',
             new_note=':food:',
         )
         Rule.objects.create(
@@ -597,8 +618,16 @@ class SubmitTestsV2(TestCase):
         )
         Rule.objects.create(
             user=self.user,
-            payee='Salad Story',
+            payee='(Salad Story)',
+            note='.*',
+            new_payee=r'\1',
+            new_note='',
+        )
+        Rule.objects.create(
+            user=self.user,
+            payee='(Salad Story)',
             note=':automatic:',
+            new_payee=r'\1',
             new_note=':automated:',
             account='Expenses:Restaurants',
         )

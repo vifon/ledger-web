@@ -130,25 +130,32 @@ def submit_as_json_v1(request):
 
 def apply_rules(ledger_data, user):
     replacement_rules = (
-        Rule.objects.filter(user=user).order_by(Length('payee').desc())
+        Rule.objects.filter(user=user).order_by(
+            *(Length(field).desc() for field in ['payee', 'note'])
+        )
     )
     for rule in replacement_rules:
         try:
-            match = True
+            matches = {}
             for field in ['payee', 'note']:
                 condition = getattr(rule, field)
-                if match and condition:
-                    match = bool(
-                        ledger_data[field]
-                        and re.fullmatch(condition, ledger_data[field])
-                    )
+                if all(matches.values()):
+                    if condition:
+                        matches[field] = re.match(
+                            '^(?:{})$'.format(condition),
+                            ledger_data[field],
+                        )
+                else:
+                    break
         except re.error:
             pass
         else:
-            if match:
-                ledger_data['payee'] = rule.new_payee or ledger_data['payee']
-                ledger_data['note'] = \
-                    rule.new_note or ledger_data['note']
+            if all(matches.values()):
+                for field, match in matches.items():
+                    ledger_data[field] = match.re.sub(
+                        getattr(rule, 'new_{}'.format(field)),
+                        match.string,
+                    )
                 for account in ledger_data['accounts']:
                     acc_name = account[0]
                     if acc_name == settings.LEDGER_DEFAULT_TO:
@@ -175,7 +182,7 @@ def submit_as_json(request):
         'payee': params['payee'],
         'date': params.get('date', datetime.now().strftime("%F")),
         'accounts': params['accounts'],
-        'note': params.get('note'),
+        'note': params.get('note', ''),
     }
 
     if not params.get('skip_rules', False):
