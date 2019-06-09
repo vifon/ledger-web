@@ -605,7 +605,6 @@ class SubmitTestsV2(TestCase):
         Rule.objects.create(
             user=self.user,
             payee='(Pizza Hut)',
-            note='.*',
             account='Expenses:Restaurants',
             new_payee=r'\1',
             new_note=':food:',

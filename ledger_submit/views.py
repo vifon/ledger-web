@@ -129,34 +129,40 @@ def submit_as_json_v1(request):
 
 
 def apply_rule(ledger_data, rule):
-    try:
-        matches = {}
-        for field in ['payee', 'note']:
-            condition = getattr(rule, field)
-            if all(matches.values()):
-                if condition:
+    matches = {}
+    for field in ['payee', 'note']:
+        condition = getattr(rule, field)
+        if all(matches.values()):
+            if condition:
+                try:
                     matches[field] = re.match(
                         '^(?:{})$'.format(condition),
                         ledger_data[field],
                     )
-            else:
-                return False
-    except re.error:
-        return False
-    else:
-        if all(matches.values()):
-            for field, match in matches.items():
-                ledger_data[field] = match.re.sub(
-                    getattr(rule, 'new_{}'.format(field)),
-                    match.string,
-                )
-            for account in ledger_data['accounts']:
-                acc_name = account[0]
-                if acc_name == settings.LEDGER_DEFAULT_TO:
-                    account[0] = rule.account or acc_name
-            return True
+                except re.error:
+                    return False
         else:
             return False
+
+    if all(matches.values()):
+        for field in ['payee', 'note']:
+            replacement = getattr(rule, 'new_{}'.format(field))
+            if replacement or field in matches:
+                try:
+                    regex = matches[field].re
+                except KeyError:
+                    regex = re.compile(r'.*')
+                ledger_data[field] = regex.sub(
+                    getattr(rule, 'new_{}'.format(field)),
+                    ledger_data[field],
+                )
+        for account in ledger_data['accounts']:
+            acc_name = account[0]
+            if acc_name == settings.LEDGER_DEFAULT_TO:
+                account[0] = rule.account or acc_name
+        return True
+    else:
+        return False
 
 
 def apply_rules(ledger_data, user):
