@@ -44,6 +44,15 @@ def journal(request):
 
     entries = list(ledger_api.Journal(request.user.ledger_path.path))
 
+
+    entry_filter = request.GET.get('filter', '')
+    if entry_filter:
+        entries = [
+            entry
+            for entry in entries
+            if entry_filter.lower() in entry['payee'].lower()
+        ]
+
     count = request.GET.get('count', settings.LEDGER_ENTRY_COUNT)
     try:
         count = int(count)
@@ -78,6 +87,7 @@ def journal(request):
             'entries': entries,
             'reverse': reversed_sort,
             'count': count,
+            'filter': entry_filter,
             'count_step': settings.LEDGER_ENTRY_COUNT,
             'can_revert': journal.can_revert(),
         },

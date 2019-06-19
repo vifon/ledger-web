@@ -6,10 +6,16 @@
 
 {% block content %}
   <a class="plain-link"
-     href="{{ request.path }}?reverse={{ reverse | yesno:"False,True" }}{% if count != count_step %}&count={{ count }}{% endif %}"
+     href="{{ request.path }}?reverse={{ reverse | yesno:"False,True" }}{% if count != count_step %}&count={{ count }}{% endif %}{% if filter %}&filter={{ filter }}{% endif %}"
   >
     <h1 class="journal-header">Ledger entries {{ reverse | yesno:"↑,↓" }}</h1>
   </a>
+
+  <form action="{{ request.path }}">
+    <input name="reverse" type="hidden" value="{{ reverse }}" />
+    <input name="filter" type="text" value="{{ filter }}" />
+    <input type="submit" value="Filter" />
+  </form>
 
   <div class="list-container">
     {% if not reverse and count != 'all' %}

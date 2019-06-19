@@ -1,5 +1,5 @@
 <a class="plain-link"
-   href="{{ request.path }}?{% if not reverse %}reverse={{ reverse }}&{% endif %}count=all"
+   href="{{ request.path }}?{% if not reverse %}reverse={{ reverse }}&{% endif %}{% if filter %}filter={{ filter }}&{% endif %}count=all"
 >
   <div class="card show-all">Show all…</div>
 </a>
