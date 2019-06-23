@@ -20,7 +20,16 @@ def require_token(view):
             token = params['token']
             token_obj = Token.objects.get(token=token)
             request.user = token_obj.user
-        except (KeyError, json.decoder.JSONDecodeError):
+        except json.decoder.JSONDecodeError:
+            return JsonResponse(
+                {
+                    'error': {
+                        'invalid_json': True
+                    },
+                },
+                status=400,
+            )
+        except KeyError:
             return JsonResponse(
                 {
                     'error': {
