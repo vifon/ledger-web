@@ -50,7 +50,7 @@ def journal(request):
         entries = [
             entry
             for entry in entries
-            if entry_filter.lower() in entry['payee'].lower()
+            if entry_filter.lower() in entry['body'].lower()
         ]
 
     count = request.GET.get('count', settings.LEDGER_ENTRY_COUNT)
