@@ -7,7 +7,7 @@
 {% block content %}
   <h2>Register</h2>
   <form action="{{ request.path }}" method="GET">
-    <input name="search" type="text" value="{{ search }}" />
+    <input name="filter" type="text" value="{{ filter }}" />
     <input type="submit" value="Search" />
   </form>
   {% if currency_count > 1 %}

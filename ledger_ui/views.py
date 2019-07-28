@@ -323,7 +323,7 @@ def register(request):
         usecols=['date', 'payee', 'account', 'currency', 'amount'],
     )
 
-    search = request.GET.get('search', '').lower()
+    search = request.GET.get('filter', '').lower()
     if search:
         df = df[df['account'].str.contains(search, case=False)]
 
@@ -333,7 +333,7 @@ def register(request):
             'ledger_ui/register.html',
             {
                 'transactions': [],
-                'search': search,
+                'filter': search,
             },
         )
 
@@ -345,7 +345,7 @@ def register(request):
         'ledger_ui/register.html',
         {
             'transactions': transactions,
-            'search': search,
+            'filter': search,
             'currency_count': transactions['currency'].unique().size,
         },
     )

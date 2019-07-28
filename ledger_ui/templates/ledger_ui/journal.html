@@ -16,6 +16,9 @@
       <input name="reverse" type="hidden" value="{{ reverse }}" />
       <input name="filter" type="text" value="{{ filter }}" />
       <input type="submit" value="Filter" />
+      <input type="submit" value="Show register"
+             formaction="{% url 'ledger_ui:register' %}"
+      />
     </form>
 
     {% if not reverse and count != 'all' %}
