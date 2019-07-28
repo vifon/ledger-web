@@ -281,7 +281,7 @@ def balance(request):
         usecols=['account', 'currency', 'amount'],
     )
 
-    search = request.GET.get('search', '').lower()
+    search = request.GET.get('filter', '').lower()
     if search:
         df = df[df['account'].str.contains(search, case=False)]
 
@@ -291,7 +291,7 @@ def balance(request):
             'ledger_ui/balance.html',
             {
                 'accounts': [],
-                'search': search,
+                'filter': search,
             },
         )
 
@@ -303,7 +303,7 @@ def balance(request):
         'ledger_ui/balance.html',
         {
             'accounts': balance.to_dict()['amount'],
-            'search': search,
+            'filter': search,
         },
     )
 
