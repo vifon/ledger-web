@@ -281,7 +281,7 @@ def balance(request):
         usecols=['account', 'currency', 'amount'],
     )
 
-    search = request.GET.get('filter', '').lower()
+    search = request.GET.get('filter', '')
     if search:
         df = df[df['account'].str.contains(search, case=False)]
 
@@ -323,7 +323,7 @@ def register(request):
         usecols=['date', 'payee', 'account', 'currency', 'amount'],
     )
 
-    search = request.GET.get('filter', '').lower()
+    search = request.GET.get('filter', '')
     if search:
         df = df[df['account'].str.contains(search, case=False)]
 
