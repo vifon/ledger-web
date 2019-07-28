@@ -402,10 +402,10 @@ table.ledger-table {
 .balance {
   text-align: right;
 }
-.negative-balance td:not(:first-child) {
+.negative-balance td.color-amount {
   color: red;
 }
-.null-balance td:not(:first-child) {
+.null-balance td.color-amount {
   opacity: 0.4;
 }
 

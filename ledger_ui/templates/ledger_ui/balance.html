@@ -21,10 +21,10 @@
                  {% if amount < 0 %}negative-balance{% endif %}
                  ">
         <td>{% ifchanged %}{{ key.0 }}{% endifchanged %}</td>
-        <td class="balance">
+        <td class="color-amount balance">
           {{ amount|floatformat:2 }}
         </td>
-        <td>{{ key.1 }}</td>
+        <td class="color-amount">{{ key.1 }}</td>
       </tr>
     {% endfor %}
   </table>
