@@ -20,7 +20,15 @@
       <tr class="{% if amount == 0 %}null-balance{% endif %}
                  {% if amount < 0 %}negative-balance{% endif %}
                  ">
-        <td>{% ifchanged %}{{ key.0 }}{% endifchanged %}</td>
+        <td>
+          {% ifchanged %}
+            <a href="{% url 'ledger_ui:register' %}?filter={{ key.0 }}"
+               class="plain-link"
+            >
+              {{ key.0 }}
+            </a>
+          {% endifchanged %}
+        </td>
         <td class="color-amount balance">
           {{ amount|floatformat:2 }}
         </td>
