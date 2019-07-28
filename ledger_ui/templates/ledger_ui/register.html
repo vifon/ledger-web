@@ -1,0 +1,43 @@
+{% extends "./base.html" %}
+
+{% block title %}
+  {{ block.super }} - Register
+{% endblock %}
+
+{% block content %}
+  <h2>Register</h2>
+  <form action="{{ request.path }}" method="GET">
+    <input name="search" type="text" value="{{ search }}" />
+    <input type="submit" value="Search" />
+  </form>
+  {% if currency_count > 1 %}
+    {# FIXME #}
+    <p>
+      <strong>Warning</strong>: the "Total" column is incorrect for
+      queries with multiple currencies.
+    </p>
+  {% endif %}
+  <table class="ledger-table">
+    <tr>
+      <th>Date</th>
+      <th>Payee</th>
+      <th>Account</th>
+      <th>Amount</th>
+      <th>Currency</th>
+      <th>Total</th>
+    </tr>
+    {% for _, row in transactions.iterrows reversed %}
+      <tr class="{% if row.amount == 0 %}null-balance{% endif %}
+                 {% if row.amount < 0 %}negative-balance{% endif %}">
+        <td>{{ row.date }}</td>
+        <td>{{ row.payee }}</td>
+        <td>{{ row.account }}</td>
+        <td class="color-amount balance">{{ row.amount|floatformat:2 }}</td>
+        <td class="color-amount">{{ row.currency }}</td>
+        <td class="{% if row.total == 0 %}null-balance{% endif %}
+                   {% if row.total < 0 %}negative-balance{% endif %}
+                   balance">{{ row.total|floatformat:2 }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock %}

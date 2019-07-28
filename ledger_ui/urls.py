@@ -9,6 +9,7 @@ urlpatterns = [
     path('submit/', views.submit, name='submit'),
     path('balance/', views.balance, name='balance'),
     path('charts/', views.charts, name='charts'),
+    path('register/', views.register, name='register'),
     path('rules/', views.RuleIndexView.as_view(), name='rules'),
     path('rule/', views.RuleCreateView.as_view(), name='rule'),
     path('rule/<int:pk>/', views.RuleEditView.as_view(), name='rule'),

@@ -402,9 +402,11 @@ table.ledger-table {
 .balance {
   text-align: right;
 }
+td.negative-balance,
 .negative-balance td.color-amount {
   color: red;
 }
+td.null-balance,
 .null-balance td.color-amount {
   opacity: 0.4;
 }

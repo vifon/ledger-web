@@ -308,6 +308,49 @@ def balance(request):
     )
 
 
+@login_required
+def register(request):
+    ledger_path = request.user.ledger_path.path
+
+    csv = ledger_api.Journal(ledger_path).csv()
+    df = pd.read_csv(
+        csv,
+        header=None,
+        names=[
+            'date', 'code', 'payee', 'account', 'currency', 'amount',
+            'reconciled', 'note',
+        ],
+        usecols=['date', 'payee', 'account', 'currency', 'amount'],
+    )
+
+    search = request.GET.get('search', '').lower()
+    if search:
+        df = df[df['account'].str.contains(search, case=False)]
+
+    if len(df) == 0:
+        return render(
+            request,
+            'ledger_ui/register.html',
+            {
+                'transactions': [],
+                'search': search,
+            },
+        )
+
+    transactions = df
+    transactions['total'] = transactions['amount'].cumsum().round(2)
+
+    return render(
+        request,
+        'ledger_ui/register.html',
+        {
+            'transactions': transactions,
+            'search': search,
+            'currency_count': transactions['currency'].unique().size,
+        },
+    )
+
+
 @method_decorator(login_required, name='dispatch')
 class RuleIndexView(generic.ListView):
     model = Rule
