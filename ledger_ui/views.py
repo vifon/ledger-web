@@ -89,7 +89,7 @@ def journal(request):
             'count': count,
             'filter': entry_filter,
             'count_step': settings.LEDGER_ENTRY_COUNT,
-            'can_revert': journal.can_revert(),
+            'can_revert': not entry_filter and journal.can_revert(),
         },
     )
 
