@@ -99,6 +99,7 @@ def charts(request):
     ledger_path = request.user.ledger_path.path
 
     csv = ledger_api.Journal(ledger_path).csv(
+	'--real',
         '--monthly',
         '-X', settings.LEDGER_DEFAULT_CURRENCY,
     )
