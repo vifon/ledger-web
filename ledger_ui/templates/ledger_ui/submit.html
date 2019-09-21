@@ -177,7 +177,7 @@
                       .reduce((x,y) => x + y, 0);
      const idx = Array.prototype.findIndex.call(
        amountInputs, x => x.value === "");
-     amountInputs[idx].setAttribute("placeholder", -sum);
+     amountInputs[idx].setAttribute("placeholder", (-sum).toFixed(2));
    };
 
    Array.prototype.forEach.call(
