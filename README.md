@@ -88,7 +88,7 @@ docker run --name ledger-web \
   -p 8080:5000 --link ledger-db:db -d vifon/ledger-web
 ```
 
-...substituting the passwords of 
+...substituting the passwords for the database and *Ledger Web* itself.
 
 *Ledger Web* should be running on port 8080 now.
 
