@@ -74,6 +74,16 @@ easily accessible from mobile devices.  That being said, it's possible
 to run it on demand locally for example just to analyze the charts.
 The instructions below assume the former case though.
 
+### Demo
+
+There is a live demo available to try out *Ledger Web* before
+installation.
+
+https://ledger-web.herokuapp.com/
+
+Login: demo  
+Password: demopass  
+
 ### Docker
 
 There is a **experimental** Docker image available.  To use it, run:
