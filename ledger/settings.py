@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
+import django_heroku
+
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -134,3 +136,5 @@ LEDGER_ENTRY_COUNT = 20
 LEDGER_DEFAULT_CURRENCY = '$'
 LEDGER_DEFAULT_FROM = 'Liabilities:Credit Card'
 LEDGER_DEFAULT_TO = 'Expenses:Uncategorized'
+
+django_heroku.settings(locals())
