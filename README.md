@@ -79,7 +79,7 @@ The instructions below assume the former case though.
 There is a live demo available to try out *Ledger Web* before
 installation.
 
-https://ledger-web.herokuapp.com/
+[https://ledger-web.herokuapp.com/](https://ledger-web.herokuapp.com/)
 
 Login: demo  
 Password: demopass  
