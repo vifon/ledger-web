@@ -33,7 +33,7 @@
           {% endif %}
         {% endif %}
         <a class="plain-link"
-           href="{% url 'ledger_ui:rule' %}?payee={{ entry.payee }}"
+           href="{% url 'ledger_ui:rule' %}?payee={{ entry.payee | urlencode }}"
         >
           <pre class="card">{{ entry.body }}</pre>
         </a>
@@ -51,7 +51,7 @@
           </div>
         </summary>
         <a class="plain-link subcard"
-           href="{% url 'ledger_ui:rule' %}?payee={{ entry.payee }}"
+           href="{% url 'ledger_ui:rule' %}?payee={{ entry.payee | urlencode }}"
         >
           <pre class="card">{{ entry.body }}</pre>
         </a>

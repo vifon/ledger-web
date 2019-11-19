@@ -64,8 +64,8 @@
                req.open(
                  'GET',
                  "{% url 'ledger_query:transactions' %}"
-                 + "?payee=" + encodeURI(payee)
-                 + "&note=" + encodeURI(note)
+                 + "?payee=" + encodeURIComponent(payee)
+                 + "&note=" + encodeURIComponent(note)
                  + "&count=11",
                  true
                );
