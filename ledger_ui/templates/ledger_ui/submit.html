@@ -97,6 +97,7 @@
     {% endif %}
   </form>
   {% if form.amend.value %}
+    <br />
     <form action="{% url 'ledger_ui:journal' %}" method="POST">
       {% csrf_token %}
       <input type="submit" value="Delete"
