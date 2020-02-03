@@ -37,8 +37,10 @@ details[open] > .subcard {
 }
 
 .transaction-account-form {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-areas:
+    "name amount currency delete"
+    ;
 }
 .transaction-forms button {
   background-size: cover;
@@ -62,6 +64,19 @@ button.transaction-account-form-add {
 }
 button.transaction-account-form-delete {
   background-color: #d00;
+}
+
+.transaction-account-form .name-input {
+  grid-area: name;
+}
+.transaction-account-form .amount-input {
+  grid-area: amount;
+}
+.transaction-account-form .currency-input {
+  grid-area: currency;
+}
+.transaction-account-form .transaction-account-form-delete {
+  grid-area: delete;
 }
 
 input[type=button].no-decoration,
@@ -453,9 +468,13 @@ td.null-balance,
     display: block;
   }
   .transaction-account-form {
-    flex-direction: column;
+    grid-template-areas:
+      "name delete"
+      "amount currency"
+      ;
     background-color: rgba(0,0,0,0.08);
     border: 1px black solid;
+    border-radius: 3px;
     padding: 5px;
     margin: 20px 0;
   }
