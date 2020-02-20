@@ -34,7 +34,7 @@
 
     {% csrf_token %}
     <table>
-      {% for field in form.visible_fields %}
+      {% for field in form.top_fields %}
         <tr>
           <th>{{ field.label_tag }}</th>
           <td>
@@ -91,6 +91,13 @@
     </datalist>
 
     {% if form.amend.value %}
+      <div>
+        {{ form.save_rule.label_tag }}
+        {{ form.save_rule }}
+        {{ form.save_rule.errors }}
+      </div>
+
+      <br />
       <input name="" type="submit" value="Amend" />
     {% else %}
       <input name="" type="submit" value="Submit" />

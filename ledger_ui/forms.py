@@ -93,8 +93,17 @@ class SubmitForm(forms.Form):
         required=False,
         widget=forms.HiddenInput(),
     )
+    save_rule = forms.BooleanField(
+        label="Save as a new rule",
+        initial=False,
+        required=False,
+    )
 
-    field_order = ['date', 'payee']
+    def top_fields(self):
+        return (
+            self[field]
+            for field in ['date', 'payee', 'note']
+        )
 
     def __init__(self, *args, payees, **kwargs):
         super().__init__(*args, **kwargs)

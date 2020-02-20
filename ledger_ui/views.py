@@ -198,6 +198,24 @@ def submit(request):
                 undo = get_object_or_404(Undo, pk=request.user)
                 journal.last_data = undo
 
+                if validated['save_rule']:
+                    Rule.objects.create(
+                        user=request.user,
+                        payee=undo.last_entry.payee,
+                        note=(
+                            undo.last_entry.note
+                            if undo.last_entry.note != entry.note
+                            else ''
+                        ),
+                        new_payee=entry.payee,
+                        new_note=(
+                            entry.note
+                            if undo.last_entry.note != entry.note
+                            else ''
+                        ),
+                        account=entry.accounts[0][0],
+                    )
+
                 try:
                     journal.revert()
                 except journal.CannotRevert:
