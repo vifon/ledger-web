@@ -422,7 +422,7 @@ class RuleCreateView(RuleViewBase, CreateView):
         try:
             payee = self.request.GET['payee']
             kwargs['initial']['payee'] = re.escape(payee)
-        except (KeyError, Undo.DoesNotExist):
+        except KeyError:
             pass
         return kwargs
 
