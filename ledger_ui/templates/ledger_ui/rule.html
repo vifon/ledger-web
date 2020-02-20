@@ -42,6 +42,7 @@
   {% if form.instance.pk is not None %}
     <form action="{% url 'ledger_ui:rule_delete' form.instance.pk %}" method="post">
       {% csrf_token %}
+      <br />
       <input type="submit" value="Delete"
              onclick="return confirm('Really delete this rule?');"
       />
