@@ -201,7 +201,7 @@ def submit(request):
                 if validated['save_rule']:
                     Rule.objects.create(
                         user=request.user,
-                        payee=undo.last_entry.payee,
+                        payee=re.escape(undo.last_entry.payee),
                         note=(
                             undo.last_entry.note
                             if undo.last_entry.note != entry.note
