@@ -5,6 +5,7 @@ default:
     - virtualenv .venv
     - source .venv/bin/activate
     - pip install -r requirements-test.txt
+    - ./manage.py migrate
   cache:
     key: shared
     paths:
