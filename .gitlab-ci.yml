@@ -1,0 +1,21 @@
+default:
+  image: python:3.7
+  before_script:
+    - pip install virtualenv
+    - virtualenv .venv
+    - source .venv/bin/activate
+    - pip install -r requirements-test.txt
+  cache:
+    key: shared
+    paths:
+      - .cache/pip
+      - .venv
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+
+tests:
+  stage: test
+  script:
+    - ./manage.py test
