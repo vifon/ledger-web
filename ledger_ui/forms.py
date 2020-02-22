@@ -15,6 +15,7 @@ class AccountForm(forms.Form):
     name = forms.CharField(widget=fields.ListTextWidget(
         name='accounts',
         data_list=None,
+        attrs={'class': 'name-input'},
     ))
     amount = forms.DecimalField(
         decimal_places=2,
