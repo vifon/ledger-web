@@ -67,6 +67,7 @@ button.transaction-account-form-delete {
 }
 
 .transaction-account-form .name-input {
+  width: 75%;
   grid-area: name;
 }
 .transaction-account-form .amount-input {
@@ -468,8 +469,10 @@ td.null-balance,
     display: block;
   }
   .transaction-account-form {
+    grid-template-columns: 3fr 1fr;
+    grid-template-rows: 1fr 1fr;
     grid-template-areas:
-      "name delete"
+      "name   delete"
       "amount currency"
       ;
     background-color: rgba(0,0,0,0.08);

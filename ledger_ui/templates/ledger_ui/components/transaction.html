@@ -3,11 +3,15 @@
 <div class="transaction-account-form"
      {% if id %} id="{{ id }}" {% endif %}
 >
-  {% for field in form %}
-    <div class="{{ field.label }}-grid-item">
-      {{ field.label_tag }} {{ field }}
-    </div>
-  {% endfor %}
+  <div class="{{ form.name.label }}-grid-item">
+    {{ form.name.label_tag }} {{ form.name }}
+  </div>
+  <div class="{{ form.amount.label }}-grid-item">
+    {{ form.amount.label_tag }} {{ form.amount }}
+  </div>
+  <div class="{{ form.currency.label }}-grid-item">
+    {{ form.currency }}
+  </div>
   <button tabindex="-1"
           onclick="deleteAccount(this, event)"
           class="transaction-account-form-delete"
