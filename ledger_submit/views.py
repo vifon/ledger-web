@@ -167,7 +167,7 @@ def apply_rule(ledger_data, rule):
                 try:
                     regex = matches[field].re
                 except KeyError:
-                    regex = re.compile(r'.*')
+                    regex = re.compile(r'^.*$')
                 ledger_data[field] = regex.sub(
                     getattr(rule, 'new_{}'.format(field)),
                     ledger_data[field],
