@@ -94,7 +94,8 @@ docker run --name ledger-web \
   -e USERNAME=user \
   -e PASSWORD=change_me \
   -e POSTGRES_PASSWORD=mysecretpassword \
-  -v /path/to/ledger.dat:/home/app/ledger.dat \
+  -e LEDGER_PATH=/home/app/ledger/ledger.dat \
+  -v /path/to/ledger_dir:/home/app/ledger \
   -p 8080:5000 --link ledger-db:db -d vifon/ledger-web
 ```
 
