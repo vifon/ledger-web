@@ -1,2 +1,2 @@
-Django==2.2.13
-pandas==0.24.2
+Django>=2.2, <3.0
+pandas>=0.24
