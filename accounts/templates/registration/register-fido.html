@@ -1,0 +1,47 @@
+{% extends "ledger_ui/base.html" %}
+
+{% load static %}
+
+{% block head %}
+  {{ block.super }}
+  <script src="{% static "cbor.js" %}"></script>
+{% endblock %}
+
+{% block title %}
+  {{ block.super }} - Register FIDO2
+{% endblock %}
+
+{% block content %}
+
+  <div>
+    <h2>Adding a new FIDO2 credential…</h2>
+  </div>
+
+  <script>
+   fetch("{% url 'register-fido_begin' %}", {
+     method: 'POST',
+   }).then(function(response) {
+     if(response.ok) return response.arrayBuffer();
+     throw new Error('Error getting registration data!');
+   }).then(CBOR.decode).then(function(options) {
+     return navigator.credentials.create(options);
+   }).then(function(attestation) {
+     return fetch("{% url 'register-fido_complete' %}", {
+       method: 'POST',
+       headers: {'Content-Type': 'application/cbor'},
+       body: CBOR.encode({
+         "attestationObject": new Uint8Array(attestation.response.attestationObject),
+         "clientDataJSON": new Uint8Array(attestation.response.clientDataJSON),
+       })
+     });
+   }).then(function(response) {
+     var stat = response.ok ? 'successful' : 'unsuccessful';
+     alert('Registration ' + stat + ' More details in server log...');
+   }, function(reason) {
+     alert(reason);
+   }).then(function() {
+     window.location = '/';
+   });
+  </script>
+
+{% endblock %}
