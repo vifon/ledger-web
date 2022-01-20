@@ -4,5 +4,5 @@ from .models import FIDOCredential
 
 @admin.register(FIDOCredential)
 class FIDOCredentialAdmin(admin.ModelAdmin):
-    list_display = ('user', 'id')
+    list_display = ('user', 'credential_name', 'id')
 

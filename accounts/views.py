@@ -74,6 +74,7 @@ def register_begin(request):
 @csrf_exempt
 def register_complete(request):
     data = cbor.decode(request.body)
+    credential_name = data.pop("credentialName", "")
     client_data = ClientData(data["clientDataJSON"])
     att_obj = AttestationObject(data["attestationObject"])
     auth_data = fido_server.register_complete(
@@ -84,6 +85,7 @@ def register_complete(request):
     FIDOCredential.objects.create(
         user=request.user,
         credential=auth_data.credential_data,
+        credential_name=credential_name,
     )
     return HttpResponse(
         cbor.encode({"status": "OK"}),

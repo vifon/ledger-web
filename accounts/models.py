@@ -9,6 +9,7 @@ class FIDOCredential(models.Model):
         on_delete=models.CASCADE,
     )
     raw_credential = models.BinaryField()
+    credential_name = models.CharField(max_length=512, blank=True)
 
     @property
     def credential(self):
