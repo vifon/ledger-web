@@ -238,7 +238,7 @@ intact.
 
 ## Copyright
 
-Copyright (C) 2019–2020  Wojciech Siewierski
+Copyright (C) 2019–2022  Wojciech Siewierski
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
