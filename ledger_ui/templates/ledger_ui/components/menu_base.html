@@ -3,13 +3,15 @@
     <div class="menu-element menu-user">
       User: <span>
       <span class="username">{{ user }}</span>
-      <a class="plain-link" href="{% url 'register-fido' %}">
-        {% if user.fidocredential_set.count > 0 %}
-          🔒
-        {% else %}
-          🔓
-        {% endif %}
-      </a>
+      {% if fido_enabled %}
+        <a class="plain-link" href="{% url 'register-fido' %}">
+          {% if user.fidocredential_set.count > 0 %}
+            🔒
+          {% else %}
+            🔓
+          {% endif %}
+        </a>
+      {% endif %}
       </span>
     </div>
     <a class="menu-element menu-login" href="{% url 'logout' %}">Logout</a>
