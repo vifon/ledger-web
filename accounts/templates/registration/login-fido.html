@@ -1,0 +1,50 @@
+{% extends "ledger_ui/base.html" %}
+
+{% load static %}
+
+{% block head %}
+  {{ block.super }}
+  <script src="{% static "cbor.js" %}"></script>
+{% endblock %}
+
+{% block title %}
+  {{ block.super }} - FIDO2
+{% endblock %}
+
+{% block content %}
+
+  <div>
+    <h2>Use the FIDO2 authenticator.</h2>
+  </div>
+
+  <script>
+   fetch("{% url 'authenticate-fido_begin' %}", {
+     method: 'POST',
+   }).then(function(response) {
+     if(response.ok) return response.arrayBuffer();
+     throw new Error('No credential available to authenticate!');
+   }).then(CBOR.decode).then(function(options) {
+     return navigator.credentials.get(options);
+   }).then(function(assertion) {
+     return fetch("{% url 'authenticate-fido_complete' %}", {
+       method: 'POST',
+       headers: {'Content-Type': 'application/cbor'},
+       body: CBOR.encode({
+         "credentialId": new Uint8Array(assertion.rawId),
+         "authenticatorData": new Uint8Array(assertion.response.authenticatorData),
+         "clientDataJSON": new Uint8Array(assertion.response.clientDataJSON),
+         "signature": new Uint8Array(assertion.response.signature)
+       })
+     })
+   }).then(function(response) {
+     if (!response.ok) {
+       alert('Authentication unsuccessful. More details in server log...');
+     }
+   }, function(reason) {
+     alert(reason);
+   }).then(function() {
+     window.location = '/';
+   });
+  </script>
+
+{% endblock %}

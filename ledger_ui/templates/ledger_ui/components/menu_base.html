@@ -1,7 +1,18 @@
 <nav class="menu-grid">
   {% if user.is_authenticated %}
     <div class="menu-element menu-user">
-      User: <span class="username">{{ user }}</span>
+      User: <span>
+      <span class="username">{{ user }}</span>
+      {% if fido_enabled %}
+        <a class="plain-link" href="{% url 'register-fido' %}">
+          {% if user.fidocredential_set.count > 0 %}
+            🔒
+          {% else %}
+            🔓
+          {% endif %}
+        </a>
+      {% endif %}
+      </span>
     </div>
     <a class="menu-element menu-login" href="{% url 'logout' %}">Logout</a>
   {% else %}
