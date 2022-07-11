@@ -299,24 +299,23 @@ class Journal:
             }
 
         entry = []
-        with open(self.path, 'r') as ledger_file:
-            for line in map(str.rstrip, ledger_file):
-                if not entry:
-                    # Skipping the empty space and non-entries between entries.
-                    if re.match(r'{} '.format(date_regexp), line):
-                        # A beginning of a next entry.
-                        entry.append(line)
+        for line in self._call("print"):
+            if not entry:
+                # Skipping the empty space and non-entries between entries.
+                if re.match(r'{} '.format(date_regexp), line):
+                    # A beginning of a next entry.
+                    entry.append(line)
+            else:
+                # In the middle of parsing an entry.
+                if line:
+                    # Let's parse some more of it.
+                    entry.append(line)
                 else:
-                    # In the middle of parsing an entry.
-                    if line:
-                        # Let's parse some more of it.
-                        entry.append(line)
-                    else:
-                        # End of an entry.
-                        yield prepare_entry(entry)
-                        entry = []
-            if entry:
-                yield prepare_entry(entry)
+                    # End of an entry.
+                    yield prepare_entry(entry)
+                    entry = []
+        if entry:
+            yield prepare_entry(entry)
 
 
 if __name__ == '__main__':
