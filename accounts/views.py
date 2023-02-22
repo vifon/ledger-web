@@ -8,11 +8,14 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET, require_POST
 
-from fido2.webauthn import PublicKeyCredentialRpEntity
-from fido2.client import ClientData
-from fido2.server import Fido2Server
-from fido2.ctap2 import AttestationObject, AuthenticatorData
 from fido2 import cbor
+from fido2.server import Fido2Server
+from fido2.webauthn import (
+    AttestationObject,
+    AuthenticatorData,
+    CollectedClientData,
+    PublicKeyCredentialRpEntity,
+)
 
 from .models import FIDOCredential
 
@@ -66,7 +69,7 @@ def register_begin(request):
     request.session["state"] = state
     return HttpResponse(
         cbor.encode(registration_data),
-        content_type='application/cbor',
+        content_type="application/cbor",
     )
 
 @login_required
@@ -75,7 +78,7 @@ def register_begin(request):
 def register_complete(request):
     data = cbor.decode(request.body)
     credential_name = data.pop("credentialName", "")
-    client_data = ClientData(data["clientDataJSON"])
+    client_data = CollectedClientData(data["clientDataJSON"])
     att_obj = AttestationObject(data["attestationObject"])
     auth_data = fido_server.register_complete(
         request.session["state"],
@@ -116,7 +119,7 @@ def authenticate_begin(request):
 def authenticate_complete(request):
     data = cbor.decode(request.body)
     credential_id = data["credentialId"]
-    client_data = ClientData(data["clientDataJSON"])
+    client_data = CollectedClientData(data["clientDataJSON"])
     auth_data = AuthenticatorData(data["authenticatorData"])
     signature = data["signature"]
     credentials = [

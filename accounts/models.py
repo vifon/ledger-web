@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
+from fido2.webauthn import AttestedCredentialData
 
-from fido2.ctap2 import AttestedCredentialData
 
 class FIDOCredential(models.Model):
     user = models.ForeignKey(
