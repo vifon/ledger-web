@@ -8,7 +8,6 @@ evolved into a more general web UI for Ledger.
 ## Features
 
 - HTTP API for submitting new payment entries.
-- FIDO2 two factor authentication.
 - Rules to override the attributes of the entries submitted via the API.
 - A web form for submitting new payment entries.
 - Expenses & income charting.

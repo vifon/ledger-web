@@ -22,12 +22,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'km&+&g_pcaj03g9dqhzg+qcg2)5bvu_rc*_n17!ol3571a8%u8'
 
-# The FIDO2 secure origin, i.e. domain.  Change it for FIDO2 to work!
-FIDO2_APP_ID = "localhost"
-
-FIDO2_ENABLED = False
-
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -73,7 +67,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'accounts.context_processors.FIDOContextProcessor',
             ],
         },
     },
